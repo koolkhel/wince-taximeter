@@ -1,0 +1,41 @@
+option optimize_for = LITE_RUNTIME;
+
+option java_package = "ru.indigosystem.taxi.pb";
+
+option java_outer_classname = "HelloPB";
+
+message hello
+{
+	// позывной
+	optional int32 drivername   = 1 [default=0];
+	optional string text_string = 2 [default=""];
+
+	enum TaxiEvent {
+		NOTHING 		=	0;
+		ARRIVED			=	1	;	//	Вышел на линию
+		DAY_END			=	2	;	//	Смена закончена
+		GO_DINNER		=	3	;	//	Ушел на обед
+		BACK_DINNER		=	4	;	//	Вернулся с обеда
+		MOVE_OUT		=	5	;	//	Отлучился
+		BACK_MOVE_OUT		=	6	;	//	Вернулся
+		GO_FROM_CAR		=	7	;	//	Вышел из машины
+		BACK_TO_CAR		=	8	;	//	Вернулся в машину
+		GET_DAMAGE		=	9	;	//	Поломка
+		REPEAR_DAMAGE		=	10	;	//	Отремонтировался
+		TECHHELP		=	11	;	//	Поехал на тех помощь
+		BACK_TECHHELP		=	12	;	//	Вернулся с тех помощи
+		IN_PLACE		=	13	;	//	На месте. Приглашай
+		MOVE_TO_CLIENT		=	14	;	//	Поехал за клиентом
+		START_CLIENT_MOVE	=	15	;	//	Поехал с клиентом
+		HELP			=	16	;	//	Помощь
+		NOT_TO_ME		=	17	;	//	Отказ от заказа (водителем)
+	}
+
+	optional TaxiEvent event = 3 [default = NOTHING];
+
+	optional float latitude = 4;
+
+	optional float longitude = 5;
+
+	optional int32 speed_kmh = 6 [default=0];
+}

@@ -1,0 +1,28 @@
+#pragma once
+
+#include <QtCore/QQueue>
+#include <QtCore/QByteArray>
+/**
+	* Класс нужен для того, чтобы относительно дёшево и удобно держать очередь с необработанными
+	* данными TcpSocketа/QByteArray. Заточен на char
+	*
+	*
+	*/
+
+class IndigoQueue
+{
+private:
+	QQueue<char> queue;
+
+public:
+	IndigoQueue(void)
+	{}
+	~IndigoQueue(void);
+
+	void push(char data);
+	void pushAll(QByteArray &array);
+    char pop();
+    char peek();
+	int size();
+    bool isEmpty();
+};
