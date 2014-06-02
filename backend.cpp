@@ -150,6 +150,9 @@ void Backend::send_message(hello &var)
 	google::protobuf::io::ArrayOutputStream arr(buffer, sizeof(buffer));
 	google::protobuf::io::CodedOutputStream output(&arr);
 
+	var.set_drivername(driverName);
+	var.set_taxiid(1); // FIXME
+
 	output.WriteVarint32(var.ByteSize());
 	var.SerializeToCodedStream(&output);
 
@@ -225,7 +228,6 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 void Backend::sendLocationData()
 {
 	static hello var;
-	var.set_drivername(driverName);
 	
 	QGeoPositionInfo info = positionSource->lastKnownPosition();
 	if (info.isValid()) {

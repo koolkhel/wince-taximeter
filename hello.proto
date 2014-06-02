@@ -38,4 +38,6 @@ message hello
 	optional float longitude = 5;
 
 	optional int32 speed_kmh = 6 [default=0];
+
+	optional int32 taxiid = 7 [default = 0]; 
 }
