@@ -1,7 +1,7 @@
 #include "backend.h"
 #include "logger.h"
 
-#define GPS_SEND_INTERVAL (10 * 1000)
+#define GPS_SEND_INTERVAL (5 * 1000)
 
 Backend::Backend(QObject *parent)
 : QObject(parent),
@@ -19,7 +19,11 @@ message_length(0)
 
 // FIXME port number aquire
 #ifdef UNDER_CE
-	QString portName = "COM7";
+	QString registryKey = "HKEY_LOCAL_MACHINE\\Drivers\\BuiltIn\\GPS";
+	QSettings registry(registryKey, QSettings::NativeFormat);
+	QString portIndex = registry.value("index").toString();
+	QString portPrefix = registry.value("Prefix").toString();	
+	QString portName = portPrefix + portIndex;
 #else
 	QString portName = "COM7";
 #endif
@@ -42,6 +46,7 @@ message_length(0)
 
 
 	gpsTimer = new QTimer(this);
+	gpsTimer->setSingleShot(false);
 	gpsTimer->setInterval(GPS_SEND_INTERVAL);
 	connect(gpsTimer, SIGNAL(timeout()), SLOT(sendLocationData()));
 	gpsTimer->start();
@@ -126,12 +131,13 @@ void Backend::disconnected()
 {
 	qDebug() << "disconnected";
 	emit connectedToServer(false);
-	QTimer::singleShot(1000, this, SLOT(reconnect()));
+	QTimer::singleShot(5000, this, SLOT(reconnect()));
 }
 
 void Backend::reconnect()
 {
-	socket->connectToHost("192.168.91.1", 9090);
+	//socket->connectToHost("192.168.91.1", 9099);
+	socket->connectToHost("87.117.17.221", 9099);
 	//socket->connectToHost("indigosystem.ru", 9090);
 }
 
@@ -223,20 +229,18 @@ void Backend::consumeSocketData()
 void Backend::positionUpdated(const QGeoPositionInfo &update) 
 {
 	// надо будет фильтровать данные, чтобы скорость сохран€лась. ¬ разных сообщени€х еЄ может не быть, так что -- это проблема, что ли?
+	
+	if (update.isValid()) {
+		positionMessage.set_longitude(update.coordinate().longitude());
+		positionMessage.set_latitude(update.coordinate().latitude());
+		if (update.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
+			positionMessage.set_speed_kmh((int) (update.attribute(QGeoPositionInfo::GroundSpeed) * 3.6));
+		}
+	}
+
 }
 
 void Backend::sendLocationData()
 {
-	static hello var;
-	
-	QGeoPositionInfo info = positionSource->lastKnownPosition();
-	if (info.isValid()) {
-		var.set_longitude(info.coordinate().longitude());
-		var.set_latitude(info.coordinate().latitude());
-		if (info.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
-			var.set_speed_kmh((int) (info.attribute(QGeoPositionInfo::GroundSpeed) * 3.6));
-		}
-	}
-
-	send_message(var);
+	send_message(positionMessage);	
 }

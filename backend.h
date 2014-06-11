@@ -71,6 +71,7 @@ private:
 
 	QTimer *gpsTimer;
 	QNmeaPositionInfoSource *positionSource;
+	hello positionMessage;
 
 	QSerialPort *gpsSerialPort;
 };

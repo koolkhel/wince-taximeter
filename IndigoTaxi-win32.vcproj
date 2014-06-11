@@ -197,7 +197,7 @@
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
-				RemoteDirectory="\SDMMC\IndigoTaxi"
+				RemoteDirectory="\ResidentFlash\IndigoTaxi\"
 				RegisterOutput="0"
 				AdditionalFiles=""
 			/>

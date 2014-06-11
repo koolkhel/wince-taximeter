@@ -11,6 +11,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 #ifdef UNDER_CE
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 #endif
+	setAttribute(Qt::WA_QuitOnClose);
 
 	settingsForm = new SettingsForm(this);
 	

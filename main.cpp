@@ -26,8 +26,8 @@ void myMessageOutput(QtMsgType type, const char *msg)
 		 } else {
 			 fprintf(stderr, "%s\n", msg);
 		 }
-		 if (logger != NULL)
-			 logger->addLine(msg);
+		// if (logger != NULL)
+		//	 logger->addLine(msg);
 
          break;
      case QtWarningMsg:
@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
 {	
 	qInstallMsgHandler(myMessageOutput);
 	QApplication a(argc, argv);
+	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("CP1251"));
 
 	// for virtual keyboard
