@@ -69,16 +69,8 @@ Debug: "WindowsMobile"
 	logger = new Logger(w.getLogWidget());
 	mainWindow = &w;
 	
-	    // FIXME QtSerialPort
-
-	//QGPSDevice device(portName);
-
 #if 0
-	GPSReader gpsreader(NULL);
-	gpsreader.setGPSDevice(&device);
-	QObject::connect(&device, SIGNAL(updatePosition()), &gpsreader, SLOT(updatePosition()));
-#endif
-#if 0
+	QList<QSerialPortInfo> serialPortInfoList = QSerialPortInfo::availablePorts();
 	QStringList results;
 	const QString blankString = QObject::tr("N/A");
 	QString description;
@@ -104,7 +96,6 @@ Debug: "WindowsMobile"
 	
 	}
 #endif
-	
 	qDebug() << "Indigo Taxi started";
 
 #ifdef UNDER_CE

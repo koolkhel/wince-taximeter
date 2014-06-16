@@ -24,11 +24,14 @@ message_length(0)
 	QString portIndex = registry.value("index").toString();
 	QString portPrefix = registry.value("Prefix").toString();	
 	QString portName = portPrefix + portIndex;
+	// COM5 COM2
+	portName = "COM1";
 #else
 	QString portName = "COM7";
 #endif
 
 	gpsSerialPort = new QSerialPort(this);
+	// qint32 baudRate = QSerialPort::Baud38400;
 	qint32 baudRate = QSerialPort::Baud38400;
 	
 	gpsSerialPort->setPortName(portName);
@@ -231,6 +234,7 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 	// надо будет фильтровать данные, чтобы скорость сохран€лась. ¬ разных сообщени€х еЄ может не быть, так что -- это проблема, что ли?
 	
 	if (update.isValid()) {
+		qDebug() << "longitude" << update.coordinate().longitude() << "latitude" << update.coordinate().latitude();
 		positionMessage.set_longitude(update.coordinate().longitude());
 		positionMessage.set_latitude(update.coordinate().latitude());
 		if (update.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
