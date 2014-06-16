@@ -7,6 +7,8 @@
 
 #include "qgeopositioninfosource.h"
 
+#include "filedownloader.h"
+
 #include "backend.h"
 #include "settingsform.h"
 
@@ -19,6 +21,10 @@ public:
 	~IndigoTaxi();
 
 	QTextEdit *getLogWidget() { return ui.logText; }
+
+	static int const EXIT_CODE_REBOOT;
+signals:
+		void reboot_application();
 	
 public slots:
 
@@ -31,10 +37,18 @@ public slots:
 	void inPlace();
 	void startClientMove();
 
+	void rebootApp();
+
+	void checkVersion();
+	void newVersionDownloaded();
+
 private:
 	Ui::IndigoTaxiClass ui;
 	SettingsForm *settingsForm;
 	Backend *backend;
+
+	FileDownloader *downloader;
+	QMutex restartMutex;
 };
 
 #endif // INDIGOTAXI_H

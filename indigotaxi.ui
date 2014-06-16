@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>254</height>
+    <height>272</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -148,7 +148,7 @@
      <rect>
       <x>260</x>
       <y>160</y>
-      <width>121</width>
+      <width>146</width>
       <height>41</height>
      </rect>
     </property>
@@ -167,6 +167,32 @@
     </property>
     <property name="text">
      <string>Нет соединения</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="versionCaption">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>0</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Версия:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="versionLabel">
+    <property name="geometry">
+     <rect>
+      <x>445</x>
+      <y>0</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0.0.1</string>
     </property>
    </widget>
   </widget>

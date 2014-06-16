@@ -26,7 +26,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 		 } else {
 			 fprintf(stderr, "%s\n", msg);
 		 }
-		// if (logger != NULL)
+		//if (logger != NULL)
 		//	 logger->addLine(msg);
 
          break;
@@ -46,6 +46,8 @@ Logger *logger = NULL;
 
 int main(int argc, char *argv[])
 {	
+	int retcode = 0;
+	
 	qInstallMsgHandler(myMessageOutput);
 	QApplication a(argc, argv);
 	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
@@ -62,12 +64,22 @@ Debug: "WindowsMobile"
 #ifdef UNDER_CE
 		QApplication::setStyle("WindowsCE");
 #else
-		QApplication::setStyle("Plastique");
+		QApplication::setStyle("Windows");
 #endif
 	
-	IndigoTaxi w;
-	logger = new Logger(w.getLogWidget());
-	mainWindow = &w;
+		IndigoTaxi w;
+		logger = new Logger(w.getLogWidget());
+		mainWindow = &w;
+
+#ifdef UNDER_CE
+		w.showFullScreen();
+#else
+		w.show();
+#endif
+		retcode = a.exec();	
+
+		return retcode;
+
 	
 #if 0
 	QList<QSerialPortInfo> serialPortInfoList = QSerialPortInfo::availablePorts();
@@ -96,13 +108,6 @@ Debug: "WindowsMobile"
 	
 	}
 #endif
-	qDebug() << "Indigo Taxi started";
-
-#ifdef UNDER_CE
-	w.showFullScreen();
-#else
-	w.show();
-#endif
 	
-	return a.exec();
+	
 }
