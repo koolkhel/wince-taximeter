@@ -36,7 +36,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	downloader = new FileDownloader(version, this);
 	connect(downloader, SIGNAL(downloaded()), SLOT(checkVersion()));
 }
-
+		
 IndigoTaxi::~IndigoTaxi()
 {
 
