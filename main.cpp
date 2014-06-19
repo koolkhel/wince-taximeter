@@ -26,8 +26,6 @@ void myMessageOutput(QtMsgType type, const char *msg)
 		 } else {
 			 fprintf(stderr, "%s\n", msg);
 		 }
-		//if (logger != NULL)
-		//	 logger->addLine(msg);
 
          break;
      case QtWarningMsg:
@@ -68,7 +66,6 @@ Debug: "WindowsMobile"
 #endif
 	
 		IndigoTaxi w;
-		logger = new Logger(w.getLogWidget());
 		mainWindow = &w;
 
 #ifdef UNDER_CE

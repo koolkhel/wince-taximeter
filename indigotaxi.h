@@ -19,9 +19,6 @@ class IndigoTaxi : public QMainWindow
 public:
 	IndigoTaxi(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~IndigoTaxi();
-
-	QTextEdit *getLogWidget() { return ui.logText; }
-
 	static int const EXIT_CODE_REBOOT;
 signals:
 		void reboot_application();

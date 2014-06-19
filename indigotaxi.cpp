@@ -21,7 +21,6 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	
 	settingsForm->hide();
 
-	ui.logText->hide();
 	backend = new Backend(this);
 	connect(backend, SIGNAL(protobuf_message(hello)), SLOT(protobuf_message(hello)));
 	connect(backend, SIGNAL(connectedToServer(bool)), SLOT(connectionStatus(bool)));
@@ -51,11 +50,6 @@ void IndigoTaxi::settingsButtonClick()
 
 void IndigoTaxi::showHideLog() 
 {
-	if (ui.logText->isVisible()) {
-		ui.logText->hide();
-	} else {
-		ui.logText->show();
-	}
 }
 
 void IndigoTaxi::moveToClient() 
