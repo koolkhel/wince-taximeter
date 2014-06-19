@@ -35,7 +35,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,0">
+   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -836,6 +836,17 @@
             </property>
             <item row="0" column="1">
              <widget class="QPushButton" name="dutyStart">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>Начало смены</string>
               </property>
@@ -855,6 +866,17 @@
             </item>
             <item row="1" column="1">
              <widget class="QPushButton" name="dinnerButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>Обед</string>
               </property>
@@ -865,6 +887,17 @@
             </item>
             <item row="1" column="0">
              <widget class="QPushButton" name="awayButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>Отлучился</string>
               </property>
@@ -874,6 +907,11 @@
              <layout class="QVBoxLayout" name="verticalLayout_17">
               <item>
                <widget class="QLabel" name="label_12">
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Позывной:</string>
                 </property>
@@ -881,6 +919,19 @@
               </item>
               <item>
                <widget class="QLineEdit" name="driverNameLineEdit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="keyboard" stdset="0">
                  <bool>true</bool>
                 </property>
@@ -890,13 +941,35 @@
             </item>
             <item row="4" column="0">
              <widget class="QPushButton" name="backToStandByButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
-               <string>Вернуться в режим ожидания</string>
+               <string>Вернуться</string>
               </property>
              </widget>
             </item>
             <item row="3" column="0">
              <widget class="QPushButton" name="fromCarButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>Вышел из машины</string>
               </property>
@@ -904,6 +977,17 @@
             </item>
             <item row="2" column="0">
              <widget class="QPushButton" name="pushButton_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>Ремонт</string>
               </property>
@@ -911,6 +995,17 @@
             </item>
             <item row="2" column="1">
              <widget class="QPushButton" name="refuseButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>Отказ от заказа</string>
               </property>
@@ -918,6 +1013,17 @@
             </item>
             <item row="3" column="1">
              <widget class="QPushButton" name="techhelpButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>Техпомощь</string>
               </property>
@@ -925,6 +1031,12 @@
             </item>
             <item row="4" column="1">
              <widget class="QPushButton" name="exitButton_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
