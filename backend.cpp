@@ -56,7 +56,6 @@ message_length(0)
 
 	reconnect();
 
-	driverName = 14;
 }
 
 Backend::~Backend()
@@ -66,6 +65,7 @@ Backend::~Backend()
 
 void Backend::setDriverName(int _driverName) {
 	driverName = _driverName;
+	emit driverNameChanged(driverName);
 }
 
 // Static.

@@ -21,9 +21,18 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	//settingsForm->hide();
 
 	backend = new Backend(this);
+	
 	connect(backend, SIGNAL(protobuf_message(hello)), SLOT(protobuf_message(hello)));
 	connect(backend, SIGNAL(connectedToServer(bool)), SLOT(connectionStatus(bool)));
+	connect(backend, SIGNAL(driverNameChanged(int)), SLOT(driverNameChanged(int)));
 	//settingsForm->setBackend(backend);
+
+	settingsIniFile = new QSettings("indigotaxi.ini", QSettings::IniFormat, this);
+	settingsIniFile->beginGroup("main");
+	int driverName = settingsIniFile->value("driverName", QVariant(500)).toInt();
+	settingsIniFile->endGroup();
+
+	backend->setDriverName(driverName);
 
 	ui.versionLabel->setText(version);
 
@@ -33,6 +42,13 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	QUrl version(versionUrl);
 	downloader = new FileDownloader(version, this);
 	connect(downloader, SIGNAL(downloaded()), SLOT(checkVersion()));
+
+	ui.driverNameLineEdit->setProperty("keyboard",true); //enable the keyboard (this is a custom property)
+	QValidator *validator = new QIntValidator(0, 500, this);
+	ui.driverNameLineEdit->setValidator(validator); //add a int validator min value 0 max value 500. This will force the numpad to show, you can also use a QDoubleValidator
+
+	ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
+	//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
 }
 		
 IndigoTaxi::~IndigoTaxi()
@@ -162,4 +178,42 @@ void IndigoTaxi::exitButtonClick()
 void IndigoTaxi::backToStandByClick()
 {
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+}
+
+void IndigoTaxi::dutyButtonClicked(bool pressed)
+{
+	if (pressed) {
+		backend->sendEvent(hello_TaxiEvent_ARRIVED);
+		ui.dutyStart->setText("Конец смены");
+	} else {
+		backend->sendEvent(hello_TaxiEvent_DAY_END);
+		ui.dutyStart->setText("Начало смены");
+	}
+}
+
+void IndigoTaxi::dinnerStartClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_GO_DINNER);
+	ui.settingsStackedWidget->setCurrentWidget(ui.dinnerPage2);
+}
+
+void IndigoTaxi::dinnerStopClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_BACK_DINNER);
+	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
+}
+
+void IndigoTaxi::driverNameChanged(int driverName)
+{
+	ui.driverNumberButton->setText(QString::number(driverName));
+	ui.driverNameLineEdit->setText(QString::number(driverName));
+	settingsIniFile->beginGroup("main");
+	settingsIniFile->setValue("driverName", QVariant(driverName));
+	settingsIniFile->endGroup();
+	settingsIniFile->sync();
+}
+
+void IndigoTaxi::driverNameEdited(QString newValue)
+{
+	backend->setDriverName(newValue.toInt());
 }

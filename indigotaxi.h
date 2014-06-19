@@ -28,6 +28,7 @@ public slots:
 	void protobuf_message(hello message);
 	void showHideLog();
 	void connectionStatus(bool status);
+	void driverNameChanged(int driverName);
 	
 	void rebootApp();
 
@@ -51,11 +52,18 @@ public slots:
 	// page 4
 	void exitButtonClick();
 	void backToStandByClick();
+	void dutyButtonClicked(bool pressed);
+
+	void dinnerStartClicked();
+	void dinnerStopClicked();
+
+	void driverNameEdited(QString newValue);
 
 private:
 	Ui::IndigoTaxiClass ui;
 	SettingsForm *settingsForm;
 	Backend *backend;
+	QSettings *settingsIniFile;
 
 	FileDownloader *downloader;
 	QMutex restartMutex;

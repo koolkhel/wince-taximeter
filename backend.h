@@ -26,11 +26,13 @@ class Backend : public QObject
 public:
 	Backend(QObject *parent);
 	~Backend();
-	void Backend::setDriverName(int _driverName);
+	void setDriverName(int _driverName);
+	int getDriverName() { return driverName; }
 
 signals:
 	void protobuf_message(hello message);
 	void connectedToServer(bool status);
+	void driverNameChanged(int driverName);
 	
 public slots:
 	// from gps
@@ -47,6 +49,7 @@ public slots:
 	void reconnect();
 
 private:
+	QSettings *settingsIniFile;
 	void consumeSocketData();
 
 	QTcpSocket *socket;

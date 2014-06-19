@@ -35,7 +35,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
+   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,0">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -823,24 +823,154 @@
        </layout>
       </widget>
       <widget class="QWidget" name="settingsPage4">
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="0">
-         <widget class="QPushButton" name="exitButton">
-          <property name="font">
-           <font>
-            <pointsize>14</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Выход</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="backToStandByButton">
-          <property name="text">
-           <string>Вернуться в режим ожидания</string>
-          </property>
+       <layout class="QVBoxLayout" name="verticalLayout_18">
+        <item>
+         <widget class="QStackedWidget" name="settingsStackedWidget">
+          <widget class="QWidget" name="mainSettingsPage1">
+           <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="dutyStart">
+              <property name="text">
+               <string>Начало смены</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="dinnerButton">
+              <property name="text">
+               <string>Обед</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="awayButton">
+              <property name="text">
+               <string>Отлучился</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_17">
+              <item>
+               <widget class="QLabel" name="label_12">
+                <property name="text">
+                 <string>Позывной:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="driverNameLineEdit">
+                <property name="keyboard" stdset="0">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="4" column="0">
+             <widget class="QPushButton" name="backToStandByButton">
+              <property name="text">
+               <string>Вернуться в режим ожидания</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="fromCarButton">
+              <property name="text">
+               <string>Вышел из машины</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="pushButton_3">
+              <property name="text">
+               <string>Ремонт</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="refuseButton">
+              <property name="text">
+               <string>Отказ от заказа</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="techhelpButton">
+              <property name="text">
+               <string>Техпомощь</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QPushButton" name="exitButton_2">
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Выход</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="dinnerPage2">
+           <layout class="QVBoxLayout" name="verticalLayout_19">
+            <item>
+             <widget class="QPushButton" name="pushButton_4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Вернулся с обеда</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="awayPage3">
+           <layout class="QVBoxLayout" name="verticalLayout_20">
+            <item>
+             <widget class="QPushButton" name="pushButton_5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Вернулся в машину</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -1007,18 +1137,66 @@
    </hints>
   </connection>
   <connection>
-   <sender>exitButton</sender>
+   <sender>dutyStart</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>dutyButtonClicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>500</x>
+     <y>8</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dinnerButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>dinnerStartClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>437</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>442</x>
+     <y>-8</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>dinnerStopClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>-27</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exitButton_2</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
    <slot>exitButtonClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>71</x>
-     <y>269</y>
+     <x>416</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
-     <x>252</x>
-     <y>7</y>
+     <x>397</x>
+     <y>-4</y>
     </hint>
    </hints>
   </connection>
@@ -1029,12 +1207,28 @@
    <slot>backToStandByClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>358</x>
-     <y>122</y>
+     <x>264</x>
+     <y>297</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>-9</y>
+     <x>258</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>driverNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>driverNameEdited(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>205</x>
+     <y>-21</y>
     </hint>
    </hints>
   </connection>
@@ -1051,5 +1245,9 @@
   <slot>clearMessageClick()</slot>
   <slot>exitButtonClick()</slot>
   <slot>backToStandByClick()</slot>
+  <slot>dutyButtonClicked(bool)</slot>
+  <slot>dinnerStartClicked()</slot>
+  <slot>dinnerStopClicked()</slot>
+  <slot>driverNameEdited(QString)</slot>
  </slots>
 </ui>

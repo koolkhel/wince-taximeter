@@ -5,12 +5,7 @@ SettingsForm::SettingsForm(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	ui.lineEdit->setProperty("keyboard",true); //enable the keyboard (this is a custom property)
-	QValidator *validator = new QIntValidator(0, 500, this);
-	ui.lineEdit->setValidator(validator); //add a int validator min value 0 max value 500. This will force the numpad to show, you can also use a QDoubleValidator
-
-	ui.lineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
-//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
+	
 
 }
 
