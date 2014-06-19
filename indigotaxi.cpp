@@ -17,14 +17,13 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 #endif
 	setAttribute(Qt::WA_QuitOnClose);
 
-	settingsForm = new SettingsForm(this);
-	
-	settingsForm->hide();
+	//settingsForm = new SettingsForm(this);
+	//settingsForm->hide();
 
 	backend = new Backend(this);
 	connect(backend, SIGNAL(protobuf_message(hello)), SLOT(protobuf_message(hello)));
 	connect(backend, SIGNAL(connectedToServer(bool)), SLOT(connectionStatus(bool)));
-	settingsForm->setBackend(backend);
+	//settingsForm->setBackend(backend);
 
 	ui.versionLabel->setText(version);
 
@@ -45,7 +44,7 @@ void IndigoTaxi::settingsButtonClick()
 {
 	//emit reboot_application();
 	//rebootApp();
-	settingsForm->show();
+	ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
 }
 
 void IndigoTaxi::showHideLog() 
@@ -65,6 +64,7 @@ void IndigoTaxi::inPlace()
 void IndigoTaxi::startClientMove()
 {
 	backend->sendEvent(hello_TaxiEvent_START_CLIENT_MOVE);
+	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
 }
 
 void IndigoTaxi::protobuf_message(hello message)
@@ -131,4 +131,35 @@ void IndigoTaxi::newVersionDownloaded()
 			emit reboot_application();
 		}
 	}
+}
+
+void IndigoTaxi::paytimeClick() 
+{
+	// stop accounting
+	ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
+}
+
+void IndigoTaxi::freeButtonClick()
+{
+	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+}
+
+void IndigoTaxi::resumeVoyageClick()
+{
+	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
+}
+
+void IndigoTaxi::clearMessageClick()
+{
+	ui.serverMessage->setPlainText("");
+}
+
+void IndigoTaxi::exitButtonClick()
+{
+	qApp->quit();
+}
+
+void IndigoTaxi::backToStandByClick()
+{
+	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }

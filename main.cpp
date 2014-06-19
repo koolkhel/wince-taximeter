@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 	int retcode = 0;
 	
 	qInstallMsgHandler(myMessageOutput);
+	
 	QApplication a(argc, argv);
 	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("CP1251"));
@@ -68,11 +69,25 @@ Debug: "WindowsMobile"
 		IndigoTaxi w;
 		mainWindow = &w;
 
+		
 #ifdef UNDER_CE
+		QRect rect = QApplication::desktop()->geometry();
+		int width = rect.width();
+		int height = rect.height();
+		int dpi = (int) sqrt(width*width + height*height) / 4.5; // average screen size
+		qDebug() << "calculated DPI:" << dpi;
+		w.setProperty("_q_customDpiX", QVariant(dpi));
+		w.setProperty("_q_customDpiY", QVariant(dpi));
+		w.show();
 		w.showFullScreen();
 #else
 		w.show();
 #endif
+
+		qDebug() << "screen height:" << QApplication::desktop()->heightMM() << "width:" << QApplication::desktop()->widthMM();
+		qDebug() << "physical screen dpi height:" << w.physicalDpiY() << "width:" << w.physicalDpiX();
+		//qDebug() << "logical screen dpi height:" << w.logicalDpiY() << "width:" << w.logicalDpiX();
+
 		retcode = a.exec();	
 
 		return retcode;

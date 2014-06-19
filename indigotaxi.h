@@ -26,18 +26,31 @@ signals:
 public slots:
 
 	void protobuf_message(hello message);
-	void settingsButtonClick();
 	void showHideLog();
 	void connectionStatus(bool status);
-
-	void moveToClient();
-	void inPlace();
-	void startClientMove();
-
+	
 	void rebootApp();
 
 	void checkVersion();
 	void newVersionDownloaded();
+
+// page1
+	void moveToClient();
+	void inPlace();
+	void startClientMove();
+	void settingsButtonClick();
+	void clearMessageClick();
+
+	// page 2
+	void paytimeClick();
+
+	// page 3
+	void freeButtonClick();
+	void resumeVoyageClick();
+
+	// page 4
+	void exitButtonClick();
+	void backToStandByClick();
 
 private:
 	Ui::IndigoTaxiClass ui;

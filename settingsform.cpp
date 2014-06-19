@@ -21,7 +21,7 @@ SettingsForm::~SettingsForm()
 
 void SettingsForm::setBackend(Backend *backend)
 {
-	this->backend = backend;
+	//this->backend = backend;
 }
 
 void SettingsForm::newDriverName(QString name)

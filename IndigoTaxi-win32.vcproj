@@ -912,6 +912,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\settingsform.h"
 				>
 				<FileConfiguration
