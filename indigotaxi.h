@@ -53,6 +53,10 @@ public slots:
 	void exitButtonClick();
 	void backToStandByClick();
 	void dutyButtonClicked(bool pressed);
+	void awayButtonClicked();
+	void awayEndButtonClicked();
+	void fromcarButtonClicked();
+	void fromcarEndButtonClicked();
 
 	void dinnerStartClicked();
 	void dinnerStopClicked();

@@ -1,6 +1,10 @@
 #include "backend.h"
 #include "logger.h"
 
+#define SERVER_ADDRESS "87.117.17.221"
+//#define SERVER_ADDRESS "192.168.91.1"
+// #define SERVER_ADDRESS "indigosystem.ru"
+#define SERVER_PORT 9099
 #define GPS_SEND_INTERVAL (5 * 1000)
 
 Backend::Backend(QObject *parent)
@@ -137,11 +141,14 @@ void Backend::disconnected()
 	QTimer::singleShot(5000, this, SLOT(reconnect()));
 }
 
+void Backend::error(QAbstractSocket::SocketError &error)
+{
+	qDebug() << "error" << socket->errorString();
+}
+
 void Backend::reconnect()
 {
-	//socket->connectToHost("192.168.91.1", 9099);
-	socket->connectToHost("87.117.17.221", 9099);
-	//socket->connectToHost("indigosystem.ru", 9090);
+	socket->connectToHost(SERVER_ADDRESS, SERVER_PORT);
 }
 
 void Backend::sendEvent(hello_TaxiEvent event)

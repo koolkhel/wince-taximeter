@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>272</height>
+    <width>737</width>
+    <height>464</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,30 +28,14 @@
   <widget class="QPushButton" name="exitButton">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>230</y>
+     <x>135</x>
+     <y>320</y>
      <width>91</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
     <string>Вернуться</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="dinnerStart">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>180</y>
-     <width>106</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Обед</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="dinnerStop">
@@ -81,70 +65,6 @@
     <string>Конец смены</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>125</x>
-     <y>30</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="keyboard" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="dutyStart">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>106</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Начало смены</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-   <property name="autoDefault">
-    <bool>false</bool>
-   </property>
-   <property name="default">
-    <bool>false</bool>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>125</x>
-     <y>10</y>
-     <width>71</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Позывной:</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="refuseButton">
-   <property name="geometry">
-    <rect>
-     <x>125</x>
-     <y>70</y>
-     <width>121</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Отказ от заказа</string>
-   </property>
-  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
@@ -156,44 +76,12 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>218</x>
-     <y>163</y>
+     <x>135</x>
+     <y>320</y>
     </hint>
     <hint type="destinationlabel">
      <x>206</x>
      <y>108</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>SettingsForm</receiver>
-   <slot>newDriverName(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>138</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>281</x>
-     <y>58</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dutyStart</sender>
-   <signal>clicked()</signal>
-   <receiver>SettingsForm</receiver>
-   <slot>dutyStart()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>44</x>
-     <y>38</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>307</x>
-     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -226,22 +114,6 @@
     <hint type="destinationlabel">
      <x>168</x>
      <y>207</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dinnerStart</sender>
-   <signal>clicked()</signal>
-   <receiver>SettingsForm</receiver>
-   <slot>dinnerStop()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>34</x>
-     <y>209</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>123</x>
-     <y>240</y>
     </hint>
    </hints>
   </connection>

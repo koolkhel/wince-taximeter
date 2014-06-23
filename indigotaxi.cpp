@@ -5,7 +5,7 @@
 #include "backend.h"
 
 /* main version string! */
-static const char *version = "0.0.3";
+static const char *version = "0.0.6";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -216,4 +216,28 @@ void IndigoTaxi::driverNameChanged(int driverName)
 void IndigoTaxi::driverNameEdited(QString newValue)
 {
 	backend->setDriverName(newValue.toInt());
+}
+
+void IndigoTaxi::awayButtonClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_MOVE_OUT);
+	ui.settingsStackedWidget->setCurrentWidget(ui.awayPage3);
+}
+
+void IndigoTaxi::awayEndButtonClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_BACK_MOVE_OUT);
+	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
+}
+
+void IndigoTaxi::fromcarButtonClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_GO_FROM_CAR);
+	ui.settingsStackedWidget->setCurrentWidget(ui.fromcarPage4);
+}
+
+void IndigoTaxi::fromcarEndButtonClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_BACK_TO_CAR);
+	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
 }

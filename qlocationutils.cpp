@@ -228,7 +228,7 @@ static void qlocationutils_readZda(const char *data, int size, QGeoPositionInfo 
 }
 
 bool QLocationUtils::getPosInfoFromNmea(const char *data, int size, QGeoPositionInfo *info, bool *hasFix)
-{//qDebug() << data;
+{
     if (!info)
         return false;
 

@@ -81,6 +81,8 @@ Debug: "WindowsMobile"
 		w.show();
 		w.showFullScreen();
 #else
+		w.setProperty("_q_customDpiX", QVariant(180));
+		w.setProperty("_q_customDpiY", QVariant(180));
 		w.show();
 #endif
 
