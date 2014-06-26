@@ -9,6 +9,8 @@
 	*
 	*/
 
+#define MAXIMUM_QUEUE_SIZE 200
+
 class IndigoQueue
 {
 private:

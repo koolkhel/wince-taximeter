@@ -167,7 +167,7 @@ void Backend::send_message(hello &var)
 	google::protobuf::io::CodedOutputStream output(&arr);
 
 	var.set_drivername(driverName);
-	var.set_taxiid(1); // FIXME
+	var.set_taxiid(4); // FIXME
 
 	output.WriteVarint32(var.ByteSize());
 	var.SerializeToCodedStream(&output);

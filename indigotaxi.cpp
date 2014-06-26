@@ -2,10 +2,12 @@
 #include <QtGui>
 #include <QtCore>
 
+#include "windows.h"
+
 #include "backend.h"
 
 /* main version string! */
-static const char *version = "0.0.6";
+static const char *version = "0.0.7";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -47,6 +49,12 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	QValidator *validator = new QIntValidator(0, 500, this);
 	ui.driverNameLineEdit->setValidator(validator); //add a int validator min value 0 max value 500. This will force the numpad to show, you can also use a QDoubleValidator
 
+	timeTimer = new QTimer(this);
+	connect(timeTimer, SIGNAL(timeout()), SLOT(updateTime()));
+	timeTimer->setInterval(1000);
+	timeTimer->setSingleShot(false);
+	timeTimer->start();
+
 	//ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
 	//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
 }
@@ -54,6 +62,13 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 IndigoTaxi::~IndigoTaxi()
 {
 
+}
+
+void IndigoTaxi::updateTime()
+{
+	QTime time = QTime::currentTime();    
+    QString text = time.toString("hh:mm:ss");
+    ui.timeLabel->setText(text);
 }
 
 void IndigoTaxi::settingsButtonClick()
@@ -240,4 +255,10 @@ void IndigoTaxi::fromcarEndButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_TO_CAR);
 	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
+}
+
+void IndigoTaxi::notToMeButtonClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_NOT_TO_ME);
+	ui.serverMessage->setPlainText("");
 }

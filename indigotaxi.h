@@ -35,6 +35,8 @@ public slots:
 	void checkVersion();
 	void newVersionDownloaded();
 
+	void updateTime();
+
 // page1
 	void moveToClient();
 	void inPlace();
@@ -57,6 +59,7 @@ public slots:
 	void awayEndButtonClicked();
 	void fromcarButtonClicked();
 	void fromcarEndButtonClicked();
+	void notToMeButtonClicked();
 
 	void dinnerStartClicked();
 	void dinnerStopClicked();
@@ -64,6 +67,7 @@ public slots:
 	void driverNameEdited(QString newValue);
 
 private:
+	QTimer *timeTimer;
 	Ui::IndigoTaxiClass ui;
 	SettingsForm *settingsForm;
 	Backend *backend;

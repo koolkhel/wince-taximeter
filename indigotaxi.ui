@@ -77,7 +77,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,5,1,2">
+     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,2,5,1,2">
       <property name="spacing">
        <number>5</number>
       </property>
@@ -90,6 +90,19 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
       <property name="rightMargin">
        <number>5</number>
       </property>
+      <item>
+       <widget class="QLabel" name="timeLabel">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>00:00:00</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QLabel" name="connectionLabel">
         <property name="sizePolicy">
@@ -119,10 +132,16 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
       <item>
        <widget class="QLabel" name="versionCaption">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="text">
          <string>Версия:</string>
@@ -734,7 +753,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
             </property>
             <property name="font">
              <font>
-              <pointsize>18</pointsize>
+              <pointsize>16</pointsize>
              </font>
             </property>
             <property name="text">
@@ -780,7 +799,8 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
              </font>
             </property>
             <property name="text">
-             <string>Отдалённый р-н</string>
+             <string>Отдалённый
+р-н</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -841,7 +861,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
             </property>
             <property name="font">
              <font>
-              <pointsize>24</pointsize>
+              <pointsize>20</pointsize>
              </font>
             </property>
             <property name="text">
@@ -859,7 +879,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
             </property>
             <property name="font">
              <font>
-              <pointsize>24</pointsize>
+              <pointsize>20</pointsize>
              </font>
             </property>
             <property name="text">
@@ -1498,6 +1518,22 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>refuseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>notToMeButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>215</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>396</x>
+     <y>-26</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -1519,5 +1555,6 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
   <slot>fromcarButtonClicked()</slot>
   <slot>awayEndButtonClicked()</slot>
   <slot>fromcarEndButtonClicked()</slot>
+  <slot>notToMeButtonClicked()</slot>
  </slots>
 </ui>
