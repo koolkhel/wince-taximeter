@@ -100,8 +100,24 @@ void IndigoTaxi::startClientMove()
 
 void IndigoTaxi::protobuf_message(hello message)
 {
+	// old
 	if (message.text_string().length() > 0)
 		ui.serverMessage->setPlainText(QString::fromUtf8(message.text_string().c_str()));
+
+	// new
+	if (message.has_taxiorder()) {
+		if (message.taxiorder().has_address()) {
+			ui.serverMessage->setPlainText(QString::fromUtf8(message.taxiorder().address().c_str()));
+		}
+	}
+
+	if (message.has_taxirate()) {
+		int count = message.taxirate().rates_size();
+
+		for (int i = 0; i < count; i++) {
+
+		}
+	}
 }
 
 void IndigoTaxi::connectionStatus(bool status)

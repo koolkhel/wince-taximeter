@@ -7,37 +7,123 @@ option java_outer_classname = "HelloPB";
 message hello
 {
 	// позывной
-	optional int32 drivername   = 1 [default=0];
-	optional string text_string = 2 [default=""];
+	optional int32 drivername   = 1 [ default = 0 ];
+	optional string text_string = 2 [ default = "" ];
 
 	enum TaxiEvent {
 		NOTHING 		=	0;
-		ARRIVED			=	1	;	//	Вышел на линию
-		DAY_END			=	2	;	//	Смена закончена
-		GO_DINNER		=	3	;	//	Ушел на обед
-		BACK_DINNER		=	4	;	//	Вернулся с обеда
-		MOVE_OUT		=	5	;	//	Отлучился
-		BACK_MOVE_OUT		=	6	;	//	Вернулся
-		GO_FROM_CAR		=	7	;	//	Вышел из машины
-		BACK_TO_CAR		=	8	;	//	Вернулся в машину
-		GET_DAMAGE		=	9	;	//	Поломка
-		REPEAR_DAMAGE		=	10	;	//	Отремонтировался
-		TECHHELP		=	11	;	//	Поехал на тех помощь
-		BACK_TECHHELP		=	12	;	//	Вернулся с тех помощи
-		IN_PLACE		=	13	;	//	На месте. Приглашай
-		MOVE_TO_CLIENT		=	14	;	//	Поехал за клиентом
-		START_CLIENT_MOVE	=	15	;	//	Поехал с клиентом
-		HELP			=	16	;	//	Помощь
-		NOT_TO_ME		=	17	;	//	Отказ от заказа (водителем)
+    //	Вышел на линию
+		ARRIVED			=	1	;
+    //	Смена закончена	
+		DAY_END			=	2	;	
+    //	Ушел на обед
+		GO_DINNER		=	3	;	
+    //	Вернулся с обеда
+		BACK_DINNER		=	4	;	
+    //	Отлучился
+		MOVE_OUT		=	5	;	
+    //	Вернулся
+		BACK_MOVE_OUT		=	6	;	
+    //	Вышел из машины
+		GO_FROM_CAR		=	7	;	
+    //	Вернулся в машину
+		BACK_TO_CAR		=	8	;	
+    //	Поломка
+		GET_DAMAGE		=	9	;	
+    //	Отремонтировался
+		REPEAR_DAMAGE		=	10	;
+    //	Поехал на тех помощь	
+		TECHHELP		=	11	;	
+    //	Вернулся с тех помощи
+		BACK_TECHHELP		=	12	;	
+    //	На месте. Приглашай
+		IN_PLACE		=	13	;	
+    //	Поехал за клиентом
+		MOVE_TO_CLIENT		=	14	;	
+    //	Поехал с клиентом
+		START_CLIENT_MOVE	=	15	;
+    //	Помощь
+		HELP			=	16	;
+    //	Отказ от заказа (водителем)
+		NOT_TO_ME		=	17	;
+    // Расчёт	
+    END_CLIENT_MOVE = 18 ; 
 	}
 
-	optional TaxiEvent event = 3 [default = NOTHING];
+	optional TaxiEvent event = 3     [default = NOTHING];
 
 	optional float latitude = 4;
 
 	optional float longitude = 5;
 
-	optional int32 speed_kmh = 6 [default=0];
+	optional int32 speed_kmh = 6     [default=0];
 
-	optional int32 taxiid = 7 [default = 0]; 
+	optional int32 taxiid = 7        [default = 0]; 
+
+  // от сервера к устройству список тарифов
+  optional TaxiRateAll taxiRate = 8;
+  
+  // от сервера к устройству список районов
+  optional TaxiRegionList taxiRegionList = 9;
+  
+  optional TaxiOrder taxiOrder = 10;
+}
+
+message TaxiOrder {
+  // сумма расчёта по поездке
+  optional float money = 1                  [ default = 0 ];
+  // 
+  optional int32 order_id = 2               [ default = 0 ];
+  
+  optional float distance_travelled = 3                [ default = 0.0 ];
+  
+  optional int32 seconds_travelled = 4      [ default = 0 ];
+  
+  optional int32 destination_region_id = 5 [ default = 0 ];
+  
+  optional string address = 6 [ default = "" ];
+  
+  enum OrderStatus {
+    NOTHING = 0;
+    BEGIN = 1;
+    END = 2;
+    ABORT = 3;
+  }
+  optional OrderStatus status = 7 [ default = NOTHING ];
+  
+  // потом сюда пойдёт перегруз, всякие стоянки и т.д.
+}
+
+// MIN=60/TAL_IN=37/TAL_MIN=6.2/BONUS=5/MG=17;
+// DATE_BEG=7:00:00/DATE_END=22:00:00/CAR_IN=42/CAR_MIN=7.5/KM_G=11.1;
+// DATE_BEG=22:00:00/DATE_END=23:59:00/CAR_IN=42/CAR_MIN=8/KM_G=13.3;
+// DATE_BEG=0:00:01/DATE_END=7:00:00/CAR_IN=42/CAR_MIN=8/KM_G=12.2;
+// тариф
+message TaxiRateAll {
+  repeated TaxiRatePeriod rates = 1;
+}
+
+message TaxiRatePeriod {
+  optional int32 begin_hour = 1   [ default = 0 ];
+  optional int32 begin_minute = 2 [ default = 0 ];
+  optional int32 end_hour = 3     [ default = 0 ];
+  optional int32 end_minute = 4   [ default = 0 ];
+  
+  optional string period_name = 5 [ default = "" ];
+  
+  // подача машины
+  optional float car_in = 6       [ default = 0.0 ];
+  // стоимость километра
+  optional float km_g = 7         [ default = 0.0 ];
+  // стоимость минуты
+  optional float car_min = 8      [ default = 0.0 ];
+} 
+
+message TaxiRegionList {
+  repeated TaxiRegion regions = 1;
+}
+
+message TaxiRegion {
+  optional string region_name = 1 [ default = "" ];
+  optional int32 region_id = 2    [ default = 0 ];
 }
