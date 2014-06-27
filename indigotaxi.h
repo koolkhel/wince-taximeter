@@ -40,6 +40,7 @@ public slots:
 // page1
 	void moveToClient();
 	void inPlace();
+	void selectRegionClicked();
 	void startClientMove();
 	void settingsButtonClick();
 	void clearMessageClick();
@@ -67,6 +68,9 @@ public slots:
 	void driverNameEdited(QString newValue);
 
 private:
+	TaxiRegionList taxiRegionList;
+	TaxiRateAll taxiRates;
+
 	QTimer *timeTimer;
 	Ui::IndigoTaxiClass ui;
 	SettingsForm *settingsForm;
@@ -75,6 +79,11 @@ private:
 
 	FileDownloader *downloader;
 	QMutex restartMutex;
+
+	void updateTaxiRegionList();
+	void updateTaxiRates();
+
+	void handleNewOrder(TaxiOrder order);
 };
 
 #endif // INDIGOTAXI_H

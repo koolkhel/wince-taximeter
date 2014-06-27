@@ -1,12 +1,12 @@
 #include "taxiorder.h"
 
-TaxiOrder::TaxiOrder(QObject *parent)
+ITaxiOrder::ITaxiOrder(QObject *parent)
 	: QObject(parent)
 {
 
 }
 
-TaxiOrder::~TaxiOrder()
+ITaxiOrder::~ITaxiOrder()
 {
 
 }

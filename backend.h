@@ -30,6 +30,7 @@ public:
 	int getDriverName() { return driverName; }
 
 signals:
+	// передаётся по значению
 	void protobuf_message(hello message);
 	void connectedToServer(bool status);
 	void driverNameChanged(int driverName);

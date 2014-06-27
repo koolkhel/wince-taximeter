@@ -64,6 +64,11 @@ background: qradialgradient(cx: 0.4, cy: -0.1,
 fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
 }
+
+
+#regionList QScrollBar:vertical {
+      width: 80px;
+}
 </string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
@@ -313,7 +318,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
              </font>
             </property>
             <property name="text">
-             <string>Тарифы</string>
+             <string>Тариф</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -332,10 +337,18 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
                 <property name="text">
                  <string>Подача</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="QLabel" name="label_2">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
                 </property>
@@ -344,6 +357,9 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
                 </property>
                 <property name="text">
                  <string>35 р.</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -359,10 +375,18 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
                 <property name="text">
                  <string>1 км</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="QLabel" name="label_5">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
                 </property>
@@ -372,89 +396,8 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
                 <property name="text">
                  <string>15 р.</string>
                 </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_6">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_6">
-                <property name="text">
-                 <string>1 км заг.</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_7">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Plain</enum>
-                </property>
-                <property name="text">
-                 <string>17 р.</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_10">
-                <property name="text">
-                 <string>Перегруз</string>
-                </property>
-                <property name="scaledContents">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_11">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Plain</enum>
-                </property>
-                <property name="text">
-                 <string>50%</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_8">
-                <property name="text">
-                 <string>Остановка</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_9">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Plain</enum>
-                </property>
-                <property name="text">
-                 <string>5 р.</string>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -1198,6 +1141,52 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
        </layout>
       </widget>
       <widget class="QWidget" name="aboutPage5"/>
+      <widget class="QWidget" name="regionListPage6">
+       <layout class="QVBoxLayout" name="verticalLayout_22" stretch="5,2">
+        <item>
+         <widget class="QListWidget" name="regionList">
+          <property name="font">
+           <font>
+            <family>MS Shell Dlg 2</family>
+            <pointsize>22</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1">
+          <item>
+           <widget class="QPushButton" name="pushButton_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Отмена</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Подтвердить</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -1227,22 +1216,6 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
     <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>startClientMoveButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>startClientMove()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>739</x>
-     <y>297</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>352</x>
-     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -1534,6 +1507,54 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>backToStandByClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>262</x>
+     <y>364</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>321</x>
+     <y>-17</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>startClientMove()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>499</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>-14</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startClientMoveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>selectRegionClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>601</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>616</x>
+     <y>-7</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -1556,5 +1577,6 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
   <slot>awayEndButtonClicked()</slot>
   <slot>fromcarEndButtonClicked()</slot>
   <slot>notToMeButtonClicked()</slot>
+  <slot>selectRegionClicked()</slot>
  </slots>
 </ui>

@@ -1,17 +1,29 @@
 #ifndef TAXIORDER_H
 #define TAXIORDER_H
 
-#include <QObject>
+#include <QtCore>
 
-class TaxiOrder : public QObject
+#include "hello.pb.h"
+
+class ITaxiOrder : public QObject
 {
 	Q_OBJECT
 
 public:
-	TaxiOrder(QObject *parent);
-	~TaxiOrder();
+	ITaxiOrder(QObject *parent);
+	~ITaxiOrder();
+
+signals:
+	void paymentChanged(float payment);
+public slots:
 
 private:
+	float distance_travelled;
+	float seconds_travelled;
+	int order_id;
+	int region_id;
+
+	QString addressText;
 	
 };
 

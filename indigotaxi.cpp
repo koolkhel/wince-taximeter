@@ -95,6 +95,8 @@ void IndigoTaxi::inPlace()
 void IndigoTaxi::startClientMove()
 {
 	backend->sendEvent(hello_TaxiEvent_START_CLIENT_MOVE);
+	ui.directionValueLabel->setText(
+		QString::fromUtf8(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_name().c_str()));
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
 }
 
@@ -106,18 +108,35 @@ void IndigoTaxi::protobuf_message(hello message)
 
 	// new
 	if (message.has_taxiorder()) {
-		if (message.taxiorder().has_address()) {
-			ui.serverMessage->setPlainText(QString::fromUtf8(message.taxiorder().address().c_str()));
-		}
+		handleNewOrder(message.taxiorder());		
 	}
 
 	if (message.has_taxirate()) {
-		int count = message.taxirate().rates_size();
-
-		for (int i = 0; i < count; i++) {
-
-		}
+		taxiRates = message.taxirate();
+		updateTaxiRates();
 	}
+
+	if (message.has_taxiregionlist()) {
+		taxiRegionList = message.taxiregionlist();
+		updateTaxiRegionList();
+	}
+}
+
+void IndigoTaxi::updateTaxiRates()
+{
+	for (int i = 0; i < taxiRates.rates_size(); i++) {
+		qDebug() << "KM_G:" << taxiRates.rates().Get(i).km_g();
+	}
+}
+
+void IndigoTaxi::updateTaxiRegionList()
+{
+	int index = ui.regionList->currentRow();
+	ui.regionList->clear();
+	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
+		ui.regionList->addItem(QString::fromUtf8(taxiRegionList.regions().Get(i).region_name().c_str()));
+	}
+	ui.regionList->setCurrentRow(index);
 }
 
 void IndigoTaxi::connectionStatus(bool status)
@@ -277,4 +296,18 @@ void IndigoTaxi::notToMeButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_NOT_TO_ME);
 	ui.serverMessage->setPlainText("");
+}
+
+void IndigoTaxi::selectRegionClicked() 
+{
+	ui.stackedWidget->setCurrentWidget(ui.regionListPage6);
+}
+
+void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
+{
+	qDebug() << "Order ID:" << taxiOrder.order_id();
+
+	if (taxiOrder.has_address()) {
+		ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
+	}
 }
