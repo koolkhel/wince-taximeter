@@ -10,7 +10,8 @@
 Backend::Backend(QObject *parent)
 : QObject(parent),
 receive_state(NOTHING),
-message_length(0)
+message_length(0),
+taxiId(4)
 {
 	socket = new QTcpSocket(this);
 	connect(socket, SIGNAL(readyRead()), SLOT(readyRead()), Qt::QueuedConnection);
@@ -59,7 +60,6 @@ message_length(0)
 	gpsTimer->start();
 
 	reconnect();
-
 }
 
 Backend::~Backend()
@@ -160,6 +160,36 @@ void Backend::sendEvent(hello_TaxiEvent event)
 	send_message(var);
 }
 
+void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
+{
+	hello var;
+
+	if (order == NULL)
+		return;
+	
+	var.set_drivername(driverName);
+	var.set_taxiid(taxiId);
+	var.set_event(event);
+
+	TaxiOrder *pbOrder = var.mutable_taxiorder();
+
+	pbOrder->set_order_id(order->getOrderId());
+
+	switch (event) {
+		case hello_TaxiEvent_END_CLIENT_MOVE:
+			pbOrder->set_money(order->calculateSum());
+			break;
+		case hello_TaxiEvent_START_CLIENT_MOVE:
+			pbOrder->set_destination_region_id(order->getRegionId());
+			break;
+		default:
+			break;
+	}	
+
+	send_message(var);
+}
+
+
 void Backend::send_message(hello &var)
 {
 	char buffer[1024];
@@ -167,7 +197,7 @@ void Backend::send_message(hello &var)
 	google::protobuf::io::CodedOutputStream output(&arr);
 
 	var.set_drivername(driverName);
-	var.set_taxiid(4); // FIXME
+	var.set_taxiid(taxiId);
 
 	output.WriteVarint32(var.ByteSize());
 	var.SerializeToCodedStream(&output);
@@ -248,6 +278,8 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 		if (update.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
 			positionMessage.set_speed_kmh((int) (update.attribute(QGeoPositionInfo::GroundSpeed) * 3.6));
 		}
+
+		emit newPosition(update.coordinate());
 	}
 
 }

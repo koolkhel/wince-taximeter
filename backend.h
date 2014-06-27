@@ -19,6 +19,8 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 
+#include "taxiorder.h"
+
 class Backend : public QObject
 {
 	Q_OBJECT
@@ -34,12 +36,14 @@ signals:
 	void protobuf_message(hello message);
 	void connectedToServer(bool status);
 	void driverNameChanged(int driverName);
+	void newPosition(const QGeoCoordinate coordinate);
 	
 public slots:
 	// from gps
 	void positionUpdated(const QGeoPositionInfo &update);
 
 	void sendEvent(hello_TaxiEvent event);
+	void sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order);
 
 	// from timer
 	void sendLocationData();
@@ -73,6 +77,7 @@ private:
 	void send_message(hello &var);
 
 	int driverName;
+	int taxiId;
 
 	QTimer *gpsTimer;
 	QNmeaPositionInfoSource *positionSource;

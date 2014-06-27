@@ -12,6 +12,8 @@
 #include "backend.h"
 #include "settingsform.h"
 
+#include "taxiorder.h"
+
 class IndigoTaxi : public QMainWindow
 {
 	Q_OBJECT
@@ -83,6 +85,8 @@ private:
 	void updateTaxiRegionList();
 	void updateTaxiRates();
 
+	ITaxiOrder *iTaxiOrder;
+	TaxiRatePeriod getCurrentTaxiRatePeriod();
 	void handleNewOrder(TaxiOrder order);
 };
 

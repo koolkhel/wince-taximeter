@@ -11,7 +11,7 @@ static const char *version = "0.0.7";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags)
+	: QMainWindow(parent, flags), iTaxiOrder(NULL)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -84,17 +84,18 @@ void IndigoTaxi::showHideLog()
 
 void IndigoTaxi::moveToClient() 
 {
-	backend->sendEvent(hello_TaxiEvent_MOVE_TO_CLIENT);
+	backend->sendOrderEvent(hello_TaxiEvent_MOVE_TO_CLIENT, iTaxiOrder);
 }
 
 void IndigoTaxi::inPlace()
 {
-	backend->sendEvent(hello_TaxiEvent_IN_PLACE);
+	backend->sendOrderEvent(hello_TaxiEvent_IN_PLACE, iTaxiOrder);
 }
 
 void IndigoTaxi::startClientMove()
 {
-	backend->sendEvent(hello_TaxiEvent_START_CLIENT_MOVE);
+	backend->sendOrderEvent(hello_TaxiEvent_START_CLIENT_MOVE, iTaxiOrder);
+	iTaxiOrder->startOrder();
 	ui.directionValueLabel->setText(
 		QString::fromUtf8(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_name().c_str()));
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
@@ -202,21 +203,32 @@ void IndigoTaxi::newVersionDownloaded()
 void IndigoTaxi::paytimeClick() 
 {
 	// stop accounting
+	if (iTaxiOrder != NULL) {
+		iTaxiOrder->stopOrder();
+		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
+	}
 	ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
 }
 
 void IndigoTaxi::freeButtonClick()
 {
+	
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
 void IndigoTaxi::resumeVoyageClick()
 {
+	iTaxiOrder->startOrder();
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
 }
 
 void IndigoTaxi::clearMessageClick()
 {
+	if (iTaxiOrder != NULL) {
+		delete iTaxiOrder;
+		iTaxiOrder = NULL;
+	}
+	
 	ui.serverMessage->setPlainText("");
 }
 
@@ -294,8 +306,10 @@ void IndigoTaxi::fromcarEndButtonClicked()
 
 void IndigoTaxi::notToMeButtonClicked()
 {
-	backend->sendEvent(hello_TaxiEvent_NOT_TO_ME);
-	ui.serverMessage->setPlainText("");
+	if (iTaxiOrder != NULL) {
+		backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);		
+		ui.serverMessage->setPlainText("");
+	}
 }
 
 void IndigoTaxi::selectRegionClicked() 
@@ -303,9 +317,32 @@ void IndigoTaxi::selectRegionClicked()
 	ui.stackedWidget->setCurrentWidget(ui.regionListPage6);
 }
 
+TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
+	int i = 0;
+	QTime currentTime = QTime::currentTime();
+	int hour = currentTime.hour();
+	int minute = currentTime.minute();
+	int minutes = hour * 60 + minute;
+	for (i = 0; i < taxiRates.rates_size(); i++) {
+		TaxiRatePeriod period = taxiRates.rates().Get(i);
+		int begin_minutes = period.begin_hour() * 60 + period.begin_minute();
+		int end_minutes = period.end_hour() * 60 + period.end_minute();
+
+		if (hour >= begin_minutes && hour < end_minutes) 
+			return period;
+	}
+
+	qDebug() << "rate period not found!!!";
+	return TaxiRatePeriod::default_instance();
+}
+
 void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 {
-	qDebug() << "Order ID:" << taxiOrder.order_id();
+	// qDebug() << "Order ID:" << taxiOrder.order_id();
+	if (iTaxiOrder != NULL)
+		delete iTaxiOrder;
+
+	iTaxiOrder = new ITaxiOrder(taxiOrder.order_id(), getCurrentTaxiRatePeriod(), this);
 
 	if (taxiOrder.has_address()) {
 		ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
