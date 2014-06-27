@@ -20,12 +20,13 @@ public:
 	float calculateSum();
 
 signals:
-	void paymentChanged(float payment);
+	void paymentChanged(float);
 	void regionChanged(int regionId);
+	void newMileage(float mileage);
 
 public slots:
 	void recalcSum();
-	void newGeoPosition(const QGeoCoordinate newPosition);
+	void newPosition(QGeoCoordinate);
 	void startOrder();
 	void stopOrder();
 

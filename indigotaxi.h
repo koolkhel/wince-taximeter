@@ -48,6 +48,9 @@ public slots:
 	void clearMessageClick();
 
 	// page 2
+	void newPaymentCalculated(float);
+	void newSpeed(int speed_kmh);
+	void newMileage(float mileage);
 	void paytimeClick();
 
 	// page 3

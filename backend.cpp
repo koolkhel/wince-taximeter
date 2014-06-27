@@ -52,7 +52,6 @@ taxiId(4)
 
 	}
 
-
 	gpsTimer = new QTimer(this);
 	gpsTimer->setSingleShot(false);
 	gpsTimer->setInterval(GPS_SEND_INTERVAL);
@@ -167,8 +166,6 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 	if (order == NULL)
 		return;
 	
-	var.set_drivername(driverName);
-	var.set_taxiid(taxiId);
 	var.set_event(event);
 
 	TaxiOrder *pbOrder = var.mutable_taxiorder();
@@ -277,6 +274,8 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 		positionMessage.set_latitude(update.coordinate().latitude());
 		if (update.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
 			positionMessage.set_speed_kmh((int) (update.attribute(QGeoPositionInfo::GroundSpeed) * 3.6));
+
+			emit newSpeed((int) (update.attribute(QGeoPositionInfo::GroundSpeed) * 3.6));
 		}
 
 		emit newPosition(update.coordinate());

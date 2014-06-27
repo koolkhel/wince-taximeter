@@ -36,7 +36,8 @@ signals:
 	void protobuf_message(hello message);
 	void connectedToServer(bool status);
 	void driverNameChanged(int driverName);
-	void newPosition(const QGeoCoordinate coordinate);
+	void newPosition(QGeoCoordinate coordinate);
+	void newSpeed(int speed_kmh);
 	
 public slots:
 	// from gps

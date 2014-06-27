@@ -30,7 +30,8 @@ int ITaxiOrder::getRegionId()
 float ITaxiOrder::calculateSum()
 {
 	// стоимость поездки -- это стоимость подачи
-	return taxiRate.car_in() + ceil(distance_travelled / 1000.0) * taxiRate.km_g();
+	double value = taxiRate.car_in() + distance_travelled / 1000.0 * taxiRate.km_g();
+	return QString("%1").arg(value, 0, 'f', 1).toFloat();
 }
 
 void ITaxiOrder::recalcSum()
@@ -39,11 +40,13 @@ void ITaxiOrder::recalcSum()
 	emit paymentChanged(payment);
 }
 
-void ITaxiOrder::newGeoPosition(QGeoCoordinate newPosition)
+void ITaxiOrder::newPosition(QGeoCoordinate newPosition)
 {
+	qDebug() << "ITaxiOrder::newPosition";
 	if (started) {
 		if (gotPosition) {
 			distance_travelled += newPosition.distanceTo(currentPosition);
+			emit newMileage(distance_travelled / 1000.0);
 			recalcSum();
 		}
 		currentPosition = newPosition;

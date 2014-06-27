@@ -36,6 +36,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	backend->setDriverName(driverName);
 
+	connect(backend, SIGNAL(newSpeed(int)), SLOT(newSpeed(int)));
+
 	ui.versionLabel->setText(version);
 
 	connect(this, SIGNAL(reboot_application()), SLOT(rebootApp()));
@@ -94,8 +96,10 @@ void IndigoTaxi::inPlace()
 
 void IndigoTaxi::startClientMove()
 {
+	iTaxiOrder->setRegionId(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
 	backend->sendOrderEvent(hello_TaxiEvent_START_CLIENT_MOVE, iTaxiOrder);
 	iTaxiOrder->startOrder();
+	iTaxiOrder->recalcSum();
 	ui.directionValueLabel->setText(
 		QString::fromUtf8(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_name().c_str()));
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
@@ -205,14 +209,16 @@ void IndigoTaxi::paytimeClick()
 	// stop accounting
 	if (iTaxiOrder != NULL) {
 		iTaxiOrder->stopOrder();
-		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
+		ui.finalPaymentAmountLabel->setText(QString("%1 руб.").arg(iTaxiOrder->calculateSum(), 0, 'f', 1));
 	}
 	ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
 }
 
 void IndigoTaxi::freeButtonClick()
 {
-	
+	if (iTaxiOrder != NULL) {
+		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
+	}
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
@@ -328,7 +334,7 @@ TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 		int begin_minutes = period.begin_hour() * 60 + period.begin_minute();
 		int end_minutes = period.end_hour() * 60 + period.end_minute();
 
-		if (hour >= begin_minutes && hour < end_minutes) 
+		if (minutes >= begin_minutes && minutes < end_minutes) 
 			return period;
 	}
 
@@ -343,8 +349,30 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 		delete iTaxiOrder;
 
 	iTaxiOrder = new ITaxiOrder(taxiOrder.order_id(), getCurrentTaxiRatePeriod(), this);
+	connect(backend, SIGNAL(newPosition(QGeoCoordinate)), iTaxiOrder, SLOT(newPosition(QGeoCoordinate)));
+	connect(iTaxiOrder, SIGNAL(newMileage(float)), SLOT(newMileage(float)));
+	connect(iTaxiOrder, SIGNAL(paymentChanged(float)), SLOT(newPaymentCalculated(float)));
+
+	iTaxiOrder->recalcSum();
 
 	if (taxiOrder.has_address()) {
 		ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
 	}
+}
+
+void IndigoTaxi::newPaymentCalculated(float payment)
+{
+	ui.paymentAmountLabel->setText(QString("%1 руб.").arg(payment, 0, 'f', 1));
+}
+
+void IndigoTaxi::newSpeed(int speed_kmh)
+{
+	qDebug() << "newSpeed" << speed_kmh;
+	ui.speedValueLabel->setText(QString("%1 км/ч").arg(speed_kmh));
+}
+
+void IndigoTaxi::newMileage(float mileage)
+{
+	qDebug() << "newMileage" << mileage;
+	ui.distanceValueLabel->setText(QString("%1 км").arg(mileage, 0, 'f', 1));
 }
