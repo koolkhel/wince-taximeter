@@ -68,3 +68,8 @@ int ITaxiOrder::getOrderId()
 {
 	return order_id;
 }
+
+void ITaxiOrder::setOrderId(int _order_id)
+{
+	order_id = _order_id;
+}

@@ -54,12 +54,16 @@ public slots:
 	void error(QAbstractSocket::SocketError &error);
 	void disconnected();
 	void reconnect();
+	void flushOrderEvents();
 
 private:
 	QSettings *settingsIniFile;
 	void consumeSocketData();
 
+	IndigoOrderQueue orderEventsQueue;
+
 	QTcpSocket *socket;
+	QMutex socketMutex;
 	IndigoQueue receiveBuffer;
 
 	enum receive_state_t

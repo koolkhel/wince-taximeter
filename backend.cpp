@@ -17,6 +17,7 @@ taxiId(4)
 	connect(socket, SIGNAL(readyRead()), SLOT(readyRead()), Qt::QueuedConnection);
 	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(disconnected()));
 	connect(socket, SIGNAL(connected()), SLOT(connected()));
+	connect(socket, SIGNAL(connected()), SLOT(flushOrderEvents()));
 	connect(socket, SIGNAL(disconnected()), SLOT(disconnected()));
 
 	positionSource = new QNmeaPositionInfoSource(QNmeaPositionInfoSource::RealTimeMode, this);
@@ -154,9 +155,11 @@ void Backend::sendEvent(hello_TaxiEvent event)
 {
 	hello var;
 	var.set_drivername(driverName);
+	var.set_taxiid(taxiId);
 	var.set_event(event);
 
-	send_message(var);
+	orderEventsQueue.push(var);
+	flushOrderEvents();
 }
 
 void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
@@ -166,6 +169,8 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 	if (order == NULL)
 		return;
 	
+	var.set_drivername(driverName);
+	var.set_taxiid(taxiId);
 	var.set_event(event);
 
 	TaxiOrder *pbOrder = var.mutable_taxiorder();
@@ -183,10 +188,42 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 			break;
 	}	
 
-	send_message(var);
+	orderEventsQueue.push(var);
+	flushOrderEvents();
+}
+
+// "гарантия" доставки
+void Backend::flushOrderEvents()
+{		
+	while (!orderEventsQueue.isEmpty()) {
+		if (socket->state() == QTcpSocket::ConnectedState) {
+			hello var = orderEventsQueue.peek();
+			
+			char buffer[1024];
+			google::protobuf::io::ArrayOutputStream arr(buffer, sizeof(buffer));
+			google::protobuf::io::CodedOutputStream output(&arr);
+
+			output.WriteVarint32(var.ByteSize());
+			var.SerializeToCodedStream(&output);
+
+			socketMutex.lock();
+			qint64 result = socket->write(buffer, output.ByteCount());
+			socket->flush();
+			socketMutex.unlock();
+			if (result != -1) {
+				orderEventsQueue.pop();
+			} else {
+				break;
+			}
+
+		} else {
+			break;
+		}
+	}
 }
 
 
+// сообщение не будет доставлено, если нет связи
 void Backend::send_message(hello &var)
 {
 	char buffer[1024];
@@ -199,7 +236,12 @@ void Backend::send_message(hello &var)
 	output.WriteVarint32(var.ByteSize());
 	var.SerializeToCodedStream(&output);
 
-	socket->write(buffer, output.ByteCount());
+	if (socket->state() == QTcpSocket::ConnectedState) {
+		socketMutex.lock();
+		socket->write(buffer, output.ByteCount());
+		socket->flush();
+		socketMutex.unlock();
+	}
 }
 
 #if 0
@@ -280,10 +322,10 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 
 		emit newPosition(update.coordinate());
 	}
-
 }
 
 void Backend::sendLocationData()
 {
+	// нет связи -- не доставлено
 	send_message(positionMessage);	
 }

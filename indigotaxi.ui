@@ -343,7 +343,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="label_2">
+               <widget class="QLabel" name="car_in_label">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -381,7 +381,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="label_5">
+               <widget class="QLabel" name="km_g_label">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>

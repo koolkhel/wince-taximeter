@@ -71,6 +71,8 @@ void IndigoTaxi::updateTime()
 	QTime time = QTime::currentTime();    
     QString text = time.toString("hh:mm:ss");
     ui.timeLabel->setText(text);
+
+	updateTaxiRates();
 }
 
 void IndigoTaxi::settingsButtonClick()
@@ -86,6 +88,14 @@ void IndigoTaxi::showHideLog()
 
 void IndigoTaxi::moveToClient() 
 {
+	//qDebug() << waveOutSetVolume((HWAVEOUT)WAVE_MAPPER, MAKELONG( 0xFFFFFFFFF, 0xFFFFFFFF));
+//	qDebug() << QFile::exists("alarm.wav");
+	// QSound::play("alarm.wav");
+	//int flags = SND_FILENAME|SND_ASYNC; 
+//	int flags = SND_FILENAME; 
+	//qDebug() << PlaySoundW(L"alarm.wav", 0, flags);
+	
+//	MessageBeep(MB_OK);
 	backend->sendOrderEvent(hello_TaxiEvent_MOVE_TO_CLIENT, iTaxiOrder);
 }
 
@@ -96,6 +106,10 @@ void IndigoTaxi::inPlace()
 
 void IndigoTaxi::startClientMove()
 {
+	if (iTaxiOrder == NULL) {
+		// заказ инициирован водителем
+		iTaxiOrder = new ITaxiOrder(NO_ORDER_ID, getCurrentTaxiRatePeriod(), this);
+	}
 	iTaxiOrder->setRegionId(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
 	backend->sendOrderEvent(hello_TaxiEvent_START_CLIENT_MOVE, iTaxiOrder);
 	iTaxiOrder->startOrder();
@@ -129,19 +143,18 @@ void IndigoTaxi::protobuf_message(hello message)
 
 void IndigoTaxi::updateTaxiRates()
 {
-	for (int i = 0; i < taxiRates.rates_size(); i++) {
-		qDebug() << "KM_G:" << taxiRates.rates().Get(i).km_g();
-	}
+	TaxiRatePeriod period = getCurrentTaxiRatePeriod();
+	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in(), 0, 'f', 1));
+	ui.km_g_label->setText(QString("%1 руб.").arg(period.km_g(), 0, 'f', 1));
 }
 
 void IndigoTaxi::updateTaxiRegionList()
 {
-	int index = ui.regionList->currentRow();
 	ui.regionList->clear();
 	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
 		ui.regionList->addItem(QString::fromUtf8(taxiRegionList.regions().Get(i).region_name().c_str()));
 	}
-	ui.regionList->setCurrentRow(index);
+	ui.regionList->setCurrentRow(0);
 }
 
 void IndigoTaxi::connectionStatus(bool status)
@@ -218,6 +231,7 @@ void IndigoTaxi::freeButtonClick()
 {
 	if (iTaxiOrder != NULL) {
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
+		delete iTaxiOrder;
 	}
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
