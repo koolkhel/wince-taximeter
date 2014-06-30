@@ -14,6 +14,10 @@
 
 #include "taxiorder.h"
 
+#include "isoundplayer.h"
+#include "voicelady.h"
+
+
 class IndigoTaxi : public QMainWindow
 {
 	Q_OBJECT
@@ -75,6 +79,10 @@ public slots:
 private:
 	TaxiRegionList taxiRegionList;
 	TaxiRateAll taxiRates;
+
+	QThread *soundThread;
+	ISoundPlayer *iSoundPlayer;
+	VoiceLady *voiceLady;
 
 	QTimer *timeTimer;
 	Ui::IndigoTaxiClass ui;

@@ -3,9 +3,12 @@
 #include <QtCore>
 
 #include "windows.h"
+#ifdef UNDER_CE
 #include "Pm.h"
+#endif
 
 #include "backend.h"
+#include "voicelady.h"
 
 /* main version string! */
 static const char *version = "0.0.8";
@@ -57,6 +60,16 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	timeTimer->setInterval(1000);
 	timeTimer->setSingleShot(false);
 	timeTimer->start();
+
+	voiceLady = new VoiceLady(this);
+	iSoundPlayer = new ISoundPlayer();
+	soundThread = new QThread(this);
+	soundThread->start();
+
+	iSoundPlayer->moveToThread(soundThread);
+
+	connect(voiceLady, SIGNAL(playSound(QString)), iSoundPlayer, SLOT(playResourceSound(QString)));
+
 
 	//ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
 	//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
@@ -250,9 +263,22 @@ void IndigoTaxi::resumeVoyageClick()
 
 void IndigoTaxi::clearMessageClick()
 {
+	
+	voiceLady->speakMoney(1117);
+	voiceLady->speakMoney(2222);
+	
+	voiceLady->speakMoney(1012);
+	voiceLady->speakMoney(512);
+	voiceLady->speakMoney(102);
+	voiceLady->speakMoney(150);	
+	voiceLady->speakMoney(117);
+	voiceLady->speakMoney(572);
+	voiceLady->speakMoney(331);	
+	voiceLady->speakMoney(30);
+	
 	//SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
 	//QSound::play("click.wav");
-	QSound::play(qApp->applicationDirPath() + QDir::separator() + "stop.wav");
+	//QSound::play(qApp->applicationDirPath() + QDir::separator() + "stop.wav");
 	if (iTaxiOrder != NULL) {
 		delete iTaxiOrder;
 		iTaxiOrder = NULL;

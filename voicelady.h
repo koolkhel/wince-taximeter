@@ -8,9 +8,12 @@ class VoiceLady : public QObject
 	Q_OBJECT
 
 public:
-	VoiceLady(QObject *parent);
+	VoiceLady(QObject *parent = 0);
 	~VoiceLady();
-
+public slots:
+	void speakMoney(int amount);
+signals:
+	void playSound(QString);
 private:
 	
 };

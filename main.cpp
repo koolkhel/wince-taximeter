@@ -45,7 +45,12 @@ Logger *logger = NULL;
 int main(int argc, char *argv[])
 {	
 	int retcode = 0;
-	
+#ifdef UNDER_CE	
+	QResource::registerResource("\\ResidentFlash\\IndigoTaxi\\my.rcc");	
+#else
+	QResource::registerResource("C:\\my.rcc");
+#endif
+		
 	qInstallMsgHandler(myMessageOutput);
 	
 	QApplication a(argc, argv);
