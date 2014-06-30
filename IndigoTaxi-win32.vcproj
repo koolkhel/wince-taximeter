@@ -465,6 +465,10 @@
 				RelativePath=".\taxiorder.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\voicelady.cpp"
+				>
+			</File>
 			<Filter
 				Name="InputDevice"
 				>
@@ -1009,6 +1013,54 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing taxiorder.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D__arm__ -D_ARM_ -D_ARMV4I_ -D_M_ARM -D_UNICODE -D_WIN32 -D_WIN32_WCE=0x500 -D_WINDOWS -DARM -Darmv4i -DARMV4I -DNDEBUG -DQ_OS_WINCE_STD -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_HAVE_3DNOW -DQT_HAVE_MMX -DQT_HAVE_MMXEXT -DQT_HAVE_SSE -DQT_HAVE_SSE2 -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_NO_PRINTDIALOG -DQT_NO_PRINTER -DQT_THREAD_SUPPORT -DSTANDARDSHELL_UI_MODEL -DUNDER_CE -DUNICODE -DWINCE &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles\Debug-Win32&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\GeneratedFiles\release-win32&quot; &quot;-I.\..\..\..\qt\4.8.5-windows\mkspecs\default&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\voicelady.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing voicelady.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_DLL -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_SCL_SECURE_NO_WARNINGS &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles\Debug-Win32&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\GeneratedFiles\debug-win32&quot; &quot;-I.\..\..\..\qt\4.8.5-windows\mkspecs\default&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-Ic:\qt\qt-qtserialport\build-host\include&quot; &quot;-IC:\Projects\protobuf-2.5.0\include&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|STANDARDSDK_500 (ARMV4I)"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing voicelady.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D__arm__ -D_ARM_ -D_ARMV4I_ -D_M_ARM -D_UNICODE -D_WIN32 -D_WIN32_WCE=0x500 -D_WINDOWS -DARM -Darmv4i -DARMV4I -DQ_OS_WINCE_STD -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_HAVE_3DNOW -DQT_HAVE_MMX -DQT_HAVE_MMXEXT -DQT_HAVE_SSE -DQT_HAVE_SSE2 -DQT_NETWORK_LIB -DQT_NO_PRINTDIALOG -DQT_NO_PRINTER -DQT_THREAD_SUPPORT -DSTANDARDSHELL_UI_MODEL -DUNDER_CE -DUNICODE -DWINCE -D__ARMEL__ -DPROTOBUF_USE_DLLS &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles\Debug-Win32&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\GeneratedFiles\debug-win32&quot; &quot;-I.\..\..\..\qt\4.8.5-windows\mkspecs\default&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-Ic:\qt\qt-qtserialport\build-wince\include&quot; &quot;-IC:\Projects\protobuf-2.5.0\include&quot; &quot;-IC:\qt\4.8.5-windows\mkspecs\win32-msvc2005&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing voicelady.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles\Debug-Win32&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\GeneratedFiles\release-win32&quot; &quot;-I.\..\..\..\qt\4.8.5-windows\mkspecs\default&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|STANDARDSDK_500 (ARMV4I)"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing voicelady.h..."
 						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D__arm__ -D_ARM_ -D_ARMV4I_ -D_M_ARM -D_UNICODE -D_WIN32 -D_WIN32_WCE=0x500 -D_WINDOWS -DARM -Darmv4i -DARMV4I -DNDEBUG -DQ_OS_WINCE_STD -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_HAVE_3DNOW -DQT_HAVE_MMX -DQT_HAVE_MMXEXT -DQT_HAVE_SSE -DQT_HAVE_SSE2 -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_NO_PRINTDIALOG -DQT_NO_PRINTER -DQT_THREAD_SUPPORT -DSTANDARDSHELL_UI_MODEL -DUNDER_CE -DUNICODE -DWINCE &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles\Debug-Win32&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\GeneratedFiles\release-win32&quot; &quot;-I.\..\..\..\qt\4.8.5-windows\mkspecs\default&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
@@ -1590,6 +1642,26 @@
 						/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath=".\generatedfiles\debug\moc_voicelady.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|STANDARDSDK_500 (ARMV4I)"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 			<Filter
 				Name="Release"
@@ -2102,6 +2174,46 @@
 				</File>
 				<File
 					RelativePath=".\generatedfiles\Release\moc_taxiorder.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|STANDARDSDK_500 (ARMV4I)"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|STANDARDSDK_500 (ARMV4I)"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\generatedfiles\Release\moc_voicelady.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"

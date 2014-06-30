@@ -1,8 +1,8 @@
 #include "backend.h"
 #include "logger.h"
 
-//#define SERVER_ADDRESS "87.117.17.221"
-#define SERVER_ADDRESS "192.168.91.1"
+#define SERVER_ADDRESS "87.117.17.221"
+//#define SERVER_ADDRESS "192.168.91.1"
 // #define SERVER_ADDRESS "indigosystem.ru"
 #define SERVER_PORT 9099
 #define GPS_SEND_INTERVAL (5 * 1000)
@@ -179,7 +179,7 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 
 	switch (event) {
 		case hello_TaxiEvent_END_CLIENT_MOVE:
-			pbOrder->set_money(order->calculateSum());
+			pbOrder->set_money((int) floor(order->calculateSum() + 0.5));
 			break;
 		case hello_TaxiEvent_START_CLIENT_MOVE:
 			pbOrder->set_destination_region_id(order->getRegionId());

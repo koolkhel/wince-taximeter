@@ -3,11 +3,12 @@
 #include <QtCore>
 
 #include "windows.h"
+#include "Pm.h"
 
 #include "backend.h"
 
 /* main version string! */
-static const char *version = "0.0.7";
+static const char *version = "0.0.8";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -143,6 +144,10 @@ void IndigoTaxi::protobuf_message(hello message)
 
 void IndigoTaxi::updateTaxiRates()
 {
+	for (int i = 0; i < taxiRates.rates_size(); i++) {
+		qDebug() << "Car In:" << taxiRates.rates().Get(i).car_in() <<
+			"KM_G:" << taxiRates.rates().Get(i).km_g();
+	}
 	TaxiRatePeriod period = getCurrentTaxiRatePeriod();
 	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in(), 0, 'f', 1));
 	ui.km_g_label->setText(QString("%1 руб.").arg(period.km_g(), 0, 'f', 1));
@@ -233,6 +238,7 @@ void IndigoTaxi::freeButtonClick()
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
 		delete iTaxiOrder;
 	}
+	ui.serverMessage->setPlainText("");
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
@@ -244,6 +250,9 @@ void IndigoTaxi::resumeVoyageClick()
 
 void IndigoTaxi::clearMessageClick()
 {
+	//SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
+	//QSound::play("click.wav");
+	QSound::play(qApp->applicationDirPath() + QDir::separator() + "stop.wav");
 	if (iTaxiOrder != NULL) {
 		delete iTaxiOrder;
 		iTaxiOrder = NULL;
@@ -358,7 +367,7 @@ TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 
 void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 {
-	// qDebug() << "Order ID:" << taxiOrder.order_id();
+	qDebug() << "Order ID:" << taxiOrder.order_id();
 	if (iTaxiOrder != NULL)
 		delete iTaxiOrder;
 
@@ -376,7 +385,8 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 
 void IndigoTaxi::newPaymentCalculated(float payment)
 {
-	ui.paymentAmountLabel->setText(QString("%1 руб.").arg(payment, 0, 'f', 1));
+	int value = (int) floor(payment + 0.5);
+	ui.paymentAmountLabel->setText(QString("%1 руб.").arg(value));
 }
 
 void IndigoTaxi::newSpeed(int speed_kmh)
