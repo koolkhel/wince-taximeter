@@ -52,7 +52,7 @@ public slots:
 	void clearMessageClick();
 
 	// page 2
-	void newPaymentCalculated(float);
+	void newPaymentCalculated(int);
 	void newSpeed(int speed_kmh);
 	void newMileage(float mileage);
 	void paytimeClick();
@@ -98,7 +98,8 @@ private:
 
 	ITaxiOrder *iTaxiOrder;
 	TaxiRatePeriod getCurrentTaxiRatePeriod();
-	void handleNewOrder(TaxiOrder order);
+	void handleNewOrder(TaxiOrder order);	
+	ITaxiOrder *createTaxiOrder(int order_id);
 };
 
 #endif // INDIGOTAXI_H

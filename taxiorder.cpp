@@ -27,11 +27,14 @@ int ITaxiOrder::getRegionId()
 	return region_id;
 }
 
-float ITaxiOrder::calculateSum()
+int ITaxiOrder::calculateSum()
 {
 	// стоимость поездки -- это стоимость подачи
-	double value = taxiRate.car_in() + distance_travelled / 1000.0 * taxiRate.km_g();
-	return QString("%1").arg(value, 0, 'f', 1).toFloat();
+	double distance = (distance_travelled / 100) / 10.0;
+	double car_in = taxiRate.car_in();
+	double mileage = distance * taxiRate.km_g();
+	double value = car_in + mileage;
+	return ((int)(value * 10.0)) / 10;
 }
 
 void ITaxiOrder::recalcSum()

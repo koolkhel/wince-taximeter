@@ -20,10 +20,10 @@ public:
 	int getRegionId();
 	int getOrderId();
 	void setOrderId(int _order_id);
-	float calculateSum();
+	int calculateSum();
 
 signals:
-	void paymentChanged(float);
+	void paymentChanged(int);
 	void regionChanged(int regionId);
 	void newMileage(float mileage);
 
