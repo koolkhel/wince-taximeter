@@ -275,7 +275,7 @@ void IndigoTaxi::clearMessageClick()
 	voiceLady->speakMoney(572);
 	voiceLady->speakMoney(331);	
 	voiceLady->speakMoney(30);
-	
+			
 	//SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
 	//QSound::play("click.wav");
 	//QSound::play(qApp->applicationDirPath() + QDir::separator() + "stop.wav");
