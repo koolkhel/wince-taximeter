@@ -62,6 +62,7 @@ QT_END_NAMESPACE
 QTM_BEGIN_NAMESPACE
 
 class QGeoPositionInfo;
+class QGeoSatelliteInfo;
 class QM_AUTOTEST_EXPORT QLocationUtils
 {
 public:

@@ -420,7 +420,7 @@ void QNmeaPositionInfoSourcePrivate::emitPendingUpdate()
 
 void QNmeaPositionInfoSourcePrivate::emitUpdated(const QGeoPositionInfo &update)
 {
-    m_lastUpdate = update;
+	m_lastUpdate = update;
     emit m_source->positionUpdated(update);
 }
 

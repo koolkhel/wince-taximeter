@@ -32,10 +32,11 @@ signals:
 public slots:
 
 	void protobuf_message(hello message);
-	void showHideLog();
 	void connectionStatus(bool status);
-	void driverNameChanged(int driverName);
-	
+// order
+	void destroyCurrentOrder();
+
+// updates
 	void rebootApp();
 
 	void checkVersion();
@@ -62,6 +63,8 @@ public slots:
 	void resumeVoyageClick();
 
 	// page 4
+	void driverNameChanged(int driverName);
+
 	void exitButtonClick();
 	void backToStandByClick();
 	void dutyButtonClicked(bool pressed);

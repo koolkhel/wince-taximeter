@@ -40,6 +40,7 @@
 ****************************************************************************/
 #include "qlocationutils_p.h"
 #include "qgeopositioninfo.h"
+#include "qgeosatelliteinfo.h"
 
 #include <QTime>
 #include <QList>
@@ -227,6 +228,38 @@ static void qlocationutils_readZda(const char *data, int size, QGeoPositionInfo 
     info->setTimestamp(QDateTime(date, time, Qt::UTC));
 }
 
+static void qlocationutils_readGsv(const char *data, int size, QGeoPositionInfo *info, bool *hasFix)
+{
+	if (hasFix)
+		*hasFix = false;
+    
+	QByteArray sentence(data, size);
+    QList<QByteArray> parts = sentence.split(',');
+
+	// $GPGSV,3,1,11,18,71,018,42,21,62,128,45,22,51,285,44,06,37,273,39*73
+	// info->setAttribute(QGeoPositionInfo
+}
+
+// $GPGSA,A,3,22,18,21,06,14,03,09,24,19,15,,,2.1,1.0,1.8*30
+static void qlocationutils_readGsa(const char *data, int size, QGeoPositionInfo *info, bool *hasFix)
+{
+    QByteArray sentence(data, size);
+    QList<QByteArray> parts = sentence.split(',');
+
+	// It includes the numbers of the satellites being used in the current solution 
+	int satellitesUsed = 0;
+	for (int index = 3; index < parts.length() - 3; index++) {
+		//qDebug() << parts[index];
+		if (parts[index] != "")
+			satellitesUsed++;
+	}
+
+	//qDebug() << "readGsa satUsed" << satellitesUsed << "against" << parts.length() - 6;
+	info->setAttribute(QGeoPositionInfo::SatellitesUsed, qreal(satellitesUsed));
+	info->setTimestamp(QDateTime::currentDateTimeUtc());
+	*hasFix = true;
+}
+
 bool QLocationUtils::getPosInfoFromNmea(const char *data, int size, QGeoPositionInfo *info, bool *hasFix)
 {
     if (!info)
@@ -236,6 +269,14 @@ bool QLocationUtils::getPosInfoFromNmea(const char *data, int size, QGeoPosition
         *hasFix = false;
     if (size < 6 || data[0] != '$' || !hasValidNmeaChecksum(data, size))
         return false;
+
+	// indigo
+	if (data[3] == 'G' && data[4] == 'S' && data[5] == 'A') {
+        // "$--GSA" sentence.
+        qlocationutils_readGsa(data, size, info, hasFix);
+        return true;
+    }
+	// end indigo
 
     if (data[3] == 'G' && data[4] == 'G' && data[5] == 'A') {
         // "$--GGA" sentence.

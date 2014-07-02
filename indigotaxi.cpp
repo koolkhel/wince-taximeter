@@ -4,6 +4,7 @@
 
 #include "windows.h"
 #ifdef UNDER_CE
+// для выключения
 #include "Pm.h"
 #endif
 
@@ -11,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.0.8";
+static const char *version = "0.0.9";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -96,20 +97,8 @@ void IndigoTaxi::settingsButtonClick()
 	ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
 }
 
-void IndigoTaxi::showHideLog() 
-{
-}
-
 void IndigoTaxi::moveToClient() 
 {
-	//qDebug() << waveOutSetVolume((HWAVEOUT)WAVE_MAPPER, MAKELONG( 0xFFFFFFFFF, 0xFFFFFFFF));
-//	qDebug() << QFile::exists("alarm.wav");
-	// QSound::play("alarm.wav");
-	//int flags = SND_FILENAME|SND_ASYNC; 
-//	int flags = SND_FILENAME; 
-	//qDebug() << PlaySoundW(L"alarm.wav", 0, flags);
-	
-//	MessageBeep(MB_OK);
 	backend->sendOrderEvent(hello_TaxiEvent_MOVE_TO_CLIENT, iTaxiOrder);
 }
 
@@ -141,13 +130,14 @@ void IndigoTaxi::startClientMove()
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
 }
 
+// с сервера нам что-то пришло, надо реагировать
 void IndigoTaxi::protobuf_message(hello message)
 {
-	// old
+	// старый способ доставки адреса
 	if (message.text_string().length() > 0)
 		ui.serverMessage->setPlainText(QString::fromUtf8(message.text_string().c_str()));
 
-	// new
+	// новый способ доставки адреса
 	if (message.has_taxiorder()) {
 		handleNewOrder(message.taxiorder());		
 	}
@@ -163,17 +153,26 @@ void IndigoTaxi::protobuf_message(hello message)
 	}
 }
 
+
+/**
+ * Обновление на экране текущего тарифа по часам
+ *
+ */
 void IndigoTaxi::updateTaxiRates()
 {
 	for (int i = 0; i < taxiRates.rates_size(); i++) {
-		qDebug() << "Car In:" << taxiRates.rates().Get(i).car_in() <<
-			"KM_G:" << taxiRates.rates().Get(i).km_g();
+		//qDebug() << "Car In:" << taxiRates.rates().Get(i).car_in() <<
+		//	"KM_G:" << taxiRates.rates().Get(i).km_g();
 	}
 	TaxiRatePeriod period = getCurrentTaxiRatePeriod();
 	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in(), 0, 'f', 1));
 	ui.km_g_label->setText(QString("%1 руб.").arg(period.km_g(), 0, 'f', 1));
 }
 
+/**
+ * Пришли новые районы, заполняем ими таблицу с выбором 
+ *
+ */
 void IndigoTaxi::updateTaxiRegionList()
 {
 	ui.regionList->clear();
@@ -194,13 +193,13 @@ void IndigoTaxi::connectionStatus(bool status)
 
 void IndigoTaxi::rebootApp()
 {
+	// работает плохо
 	restartMutex.lock();
-	delete backend;
+	//delete backend;
 	QString filePath = QApplication::applicationFilePath();
 	QStringList args = QApplication::arguments();
 	QString workingDir = QDir::currentPath();
 	bool result = QProcess::startDetached(filePath, args, workingDir);
-	qDebug() << "starting" << filePath << "workingDir:" << workingDir << "result:" << result;
 
 	QApplication::exit(0);
 }
@@ -225,6 +224,7 @@ void IndigoTaxi::checkVersion()
 
 void IndigoTaxi::newVersionDownloaded()
 {
+	// TODO проверить целостность обновления
 	QByteArray data = downloader->downloadedData();
 	QFile currentExePath(QApplication::instance()->applicationFilePath());
 	QFile downloadedFilePath(QApplication::instance()->applicationDirPath() + "/new_exe.exe");
@@ -243,6 +243,11 @@ void IndigoTaxi::newVersionDownloaded()
 	}
 }
 
+
+
+
+
+// расчёт
 void IndigoTaxi::paytimeClick() 
 {
 	// stop accounting
@@ -256,22 +261,25 @@ void IndigoTaxi::paytimeClick()
 	}
 }
 
+// свободен -- сумма оплачивается
 void IndigoTaxi::freeButtonClick()
 {
 	if (iTaxiOrder != NULL) {
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
-		delete iTaxiOrder;
+		destroyCurrentOrder();
 	}
 	ui.serverMessage->setPlainText("");
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
+// продолжаем поездку
 void IndigoTaxi::resumeVoyageClick()
 {
 	iTaxiOrder->startOrder();
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
 }
 
+// очистить
 void IndigoTaxi::clearMessageClick()
 {
 	// reboot
@@ -291,11 +299,28 @@ void IndigoTaxi::exitButtonClick()
 	qApp->quit();
 }
 
+// вернуться
 void IndigoTaxi::backToStandByClick()
 {
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
+
+/*!
+ * \brief
+ * На смену, со смены
+ * 
+ * \param pressed
+ * Нажали -- на смену, отжали -- со смены.
+ * 
+ * Write detailed description for dutyButtonClicked here.
+ * 
+ * \remarks
+ * Write remarks for dutyButtonClicked here.
+ * 
+ * \see
+ * Separate items with the '|' character.
+ */
 void IndigoTaxi::dutyButtonClicked(bool pressed)
 {
 	if (pressed) {
@@ -318,6 +343,7 @@ void IndigoTaxi::dinnerStopClicked()
 	backend->sendEvent(hello_TaxiEvent_BACK_DINNER);
 	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
 }
+
 
 void IndigoTaxi::driverNameChanged(int driverName)
 {
@@ -358,6 +384,23 @@ void IndigoTaxi::fromcarEndButtonClicked()
 	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
 }
 
+
+
+/*!
+ * \brief
+ * Отказ от заказа
+ * 
+ * \throws <exception class>
+ * Description of criteria for throwing this exception.
+ * 
+ * Write detailed description for notToMeButtonClicked here.
+ * 
+ * \remarks
+ * Write remarks for notToMeButtonClicked here.
+ * 
+ * \see
+ * Separate items with the '|' character.
+ */
 void IndigoTaxi::notToMeButtonClicked()
 {
 	if (iTaxiOrder != NULL) {
@@ -366,11 +409,13 @@ void IndigoTaxi::notToMeButtonClicked()
 	}
 }
 
+// реакция на поехали
 void IndigoTaxi::selectRegionClicked() 
 {
 	ui.stackedWidget->setCurrentWidget(ui.regionListPage6);
 }
 
+// какой сейчас тариф
 TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 	int i = 0;
 	QTime currentTime = QTime::currentTime();
@@ -390,6 +435,7 @@ TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 	return TaxiRatePeriod::default_instance();
 }
 
+// новый заказ, с номером или без
 ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id) 
 {
 	ITaxiOrder *iTaxiOrder = new ITaxiOrder(order_id, getCurrentTaxiRatePeriod(), this);
@@ -402,18 +448,32 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 	return iTaxiOrder;
 }
 
-void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
+void IndigoTaxi::destroyCurrentOrder()
 {
-	qDebug() << "Order ID:" << taxiOrder.order_id();
 	if (iTaxiOrder != NULL) {
+		disconnect(iTaxiOrder, 0, 0, 0);
+		disconnect(backend, 0, iTaxiOrder, 0);
 		delete iTaxiOrder;
 		iTaxiOrder = NULL;
 	}
+}
 
-	iTaxiOrder = createTaxiOrder(taxiOrder.order_id());
+// пришёл заказ с сервера, надо реагировать
+void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
+{
+	qDebug() << "Order ID:" << taxiOrder.order_id();
+	// заказ с места
+	if (iTaxiOrder != NULL && iTaxiOrder->getOrderId() == NO_ORDER_ID) {
+		iTaxiOrder->setOrderId(taxiOrder.order_id());
+		// что-то ещё отправить
+	} else if (iTaxiOrder != NULL) {
+		destroyCurrentOrder();
 
-	if (taxiOrder.has_address()) {
-		ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
+		iTaxiOrder = createTaxiOrder(taxiOrder.order_id());
+
+		if (taxiOrder.has_address()) {
+			ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
+		}
 	}
 }
 

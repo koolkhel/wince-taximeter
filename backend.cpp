@@ -310,6 +310,10 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 {
 	// надо будет фильтровать данные, чтобы скорость сохран€лась. ¬ разных сообщени€х еЄ может не быть, так что -- это проблема, что ли?
 	
+	if (update.hasAttribute(QGeoPositionInfo::SatellitesUsed)) {
+		qDebug() << "satellites used:" << update.attribute(QGeoPositionInfo::SatellitesUsed);
+	}
+
 	if (update.isValid()) {
 		qDebug() << "longitude" << update.coordinate().longitude() << "latitude" << update.coordinate().latitude();
 		positionMessage.set_longitude(update.coordinate().longitude());

@@ -65,7 +65,10 @@ public:
         VerticalSpeed,
         MagneticVariation,
         HorizontalAccuracy,
-        VerticalAccuracy
+        VerticalAccuracy,
+		// indigo add
+		SatellitesInView,
+		SatellitesUsed
     };
 
     QGeoPositionInfo();
