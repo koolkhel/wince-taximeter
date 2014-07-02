@@ -38,6 +38,7 @@ signals:
 	void driverNameChanged(int driverName);
 	void newPosition(QGeoCoordinate coordinate);
 	void newSpeed(int speed_kmh);
+	void newSatellitesUsed(int satellitesUsed);
 	
 public slots:
 	// from gps

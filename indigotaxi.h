@@ -35,6 +35,7 @@ public slots:
 	void connectionStatus(bool status);
 // order
 	void destroyCurrentOrder();
+	void newSatellitesUsed(int);
 
 // updates
 	void rebootApp();
@@ -98,6 +99,8 @@ private:
 
 	void updateTaxiRegionList();
 	void updateTaxiRates();
+
+	int satellitesUsed;
 
 	ITaxiOrder *iTaxiOrder;
 	TaxiRatePeriod getCurrentTaxiRatePeriod();

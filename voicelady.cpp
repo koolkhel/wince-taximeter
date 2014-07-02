@@ -147,7 +147,18 @@ void VoiceLady::speakMoney(int amount)
 	//QSound::play(wavPath + QDir::separator() + "3.wav");
 	//QSound::play(wavPath + QDir::separator() + "roubla.wav");
 
-	qDebug() << "123123123";
+	//qDebug() << "123123123";
+}
+
+void VoiceLady::sayPhrase(Phrases id)
+{
+	switch (id) {
+		case NOTHING:
+			break;
+		case NOGPS:
+			emit playSound(":/Sound/Resources/voice/nogps.wav");
+			break;
+	}
 }
 
 VoiceLady::~VoiceLady()

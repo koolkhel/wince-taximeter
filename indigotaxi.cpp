@@ -16,7 +16,7 @@ static const char *version = "0.0.9";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags), iTaxiOrder(NULL)
+	: QMainWindow(parent, flags), iTaxiOrder(NULL), satellitesUsed(0)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -29,19 +29,20 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	backend = new Backend(this);
 	
+	
 	connect(backend, SIGNAL(protobuf_message(hello)), SLOT(protobuf_message(hello)));
 	connect(backend, SIGNAL(connectedToServer(bool)), SLOT(connectionStatus(bool)));
 	connect(backend, SIGNAL(driverNameChanged(int)), SLOT(driverNameChanged(int)));
+	connect(backend, SIGNAL(newSpeed(int)), SLOT(newSpeed(int)));
+	connect(backend, SIGNAL(newSatellitesUsed(int)), SLOT(newSatellitesUsed(int)));
 	//settingsForm->setBackend(backend);
 
 	settingsIniFile = new QSettings("indigotaxi.ini", QSettings::IniFormat, this);
 	settingsIniFile->beginGroup("main");
 	int driverName = settingsIniFile->value("driverName", QVariant(500)).toInt();
 	settingsIniFile->endGroup();
-
 	backend->setDriverName(driverName);
-
-	connect(backend, SIGNAL(newSpeed(int)), SLOT(newSpeed(int)));
+	
 
 	ui.versionLabel->setText(version);
 
@@ -412,6 +413,12 @@ void IndigoTaxi::notToMeButtonClicked()
 // реакция на поехали
 void IndigoTaxi::selectRegionClicked() 
 {
+	if (satellitesUsed < 5) {
+		voiceLady->sayPhrase(VoiceLady::NOGPS);
+		QMessageBox::critical(this, "Невозможно начать поездку", "Число спутников должно быть больше 5");
+		return;
+	}
+
 	ui.stackedWidget->setCurrentWidget(ui.regionListPage6);
 }
 
@@ -492,4 +499,8 @@ void IndigoTaxi::newMileage(float mileage)
 {
 	qDebug() << "newMileage" << mileage;
 	ui.distanceValueLabel->setText(QString("%1 км").arg(mileage, 0, 'f', 1));
+}
+void IndigoTaxi::newSatellitesUsed(int _satellitesUsed)
+{
+	satellitesUsed = _satellitesUsed;
 }

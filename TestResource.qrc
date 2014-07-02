@@ -47,5 +47,6 @@
         <file>Resources/voice/roubles.wav</file>
 		<file>Resources/voice/roubl.wav</file>
         <file>Resources/voice/start.wav</file>
+		<file>Resources/voice/nogps.wav</file>
     </qresource>
 </RCC>

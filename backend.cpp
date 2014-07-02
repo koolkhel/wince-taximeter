@@ -312,6 +312,8 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 	
 	if (update.hasAttribute(QGeoPositionInfo::SatellitesUsed)) {
 		qDebug() << "satellites used:" << update.attribute(QGeoPositionInfo::SatellitesUsed);
+
+		emit newSatellitesUsed((int) update.attribute(QGeoPositionInfo::SatellitesUsed));
 	}
 
 	if (update.isValid()) {
