@@ -150,15 +150,10 @@ void VoiceLady::speakMoney(int amount)
 	//qDebug() << "123123123";
 }
 
-void VoiceLady::sayPhrase(Phrases id)
+void VoiceLady::sayPhrase(QString name)
 {
-	switch (id) {
-		case NOTHING:
-			break;
-		case NOGPS:
-			emit playSound(":/Sound/Resources/voice/nogps.wav");
-			break;
-	}
+	QString resourceName = ":/Sound/" + name;
+	emit playSound(resourceName);	
 }
 
 VoiceLady::~VoiceLady()

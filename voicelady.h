@@ -7,17 +7,13 @@ class VoiceLady : public QObject
 {
 	Q_OBJECT
 	
-public:
-	enum Phrases {
-		NOTHING = 0,
-		NOGPS
-	};
+public:	
 
 	VoiceLady(QObject *parent = 0);
 	~VoiceLady();
 public slots:
 	void speakMoney(int amount);
-	void sayPhrase(Phrases id);
+	void sayPhrase(QString name);
 signals:
 	void playSound(QString);
 private:

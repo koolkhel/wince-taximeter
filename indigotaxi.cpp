@@ -414,7 +414,7 @@ void IndigoTaxi::notToMeButtonClicked()
 void IndigoTaxi::selectRegionClicked() 
 {
 	if (satellitesUsed < 5) {
-		voiceLady->sayPhrase(VoiceLady::NOGPS);
+		voiceLady->sayPhrase("NOGPS");
 		QMessageBox::critical(this, "Невозможно начать поездку", "Число спутников должно быть больше 5");
 		return;
 	}

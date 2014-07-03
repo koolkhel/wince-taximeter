@@ -1,4 +1,4 @@
-rcc -no-compress -binary -o my.rcc TestResource.qrc
+rcc -no-compress -binary -o sound.rcc Sound.qrc
 
 
-copy my.rcc c:\
+copy Sound.rcc c:\

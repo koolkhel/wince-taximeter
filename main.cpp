@@ -45,11 +45,13 @@ Logger *logger = NULL;
 int main(int argc, char *argv[])
 {	
 	int retcode = 0;
+	bool result = 
 #ifdef UNDER_CE	
-	QResource::registerResource("\\ResidentFlash\\IndigoTaxi\\my.rcc");	
+	QResource::registerResource("\\ResidentFlash\\IndigoTaxi\\sound.rcc");	
 #else
-	QResource::registerResource("C:\\my.rcc");
+	QResource::registerResource("C:\\sound.rcc");
 #endif
+	qDebug() << "sounds loaded:" << result;
 		
 	qInstallMsgHandler(myMessageOutput);
 	
