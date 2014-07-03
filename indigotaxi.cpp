@@ -129,6 +129,7 @@ void IndigoTaxi::startClientMove()
 		QString::fromUtf8(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_name().c_str()));
 	// экран заказа
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
+	voiceLady->sayPhrase("GREETING");
 }
 
 // с сервера нам что-то пришло, надо реагировать
@@ -186,8 +187,10 @@ void IndigoTaxi::updateTaxiRegionList()
 void IndigoTaxi::connectionStatus(bool status)
 {
 	if (status) {
+		voiceLady->sayPhrase("CONNECTIONOK");
 		ui.connectionLabel->setText("Соединён");
 	} else {
+		voiceLady->sayPhrase("NOCONNECTION");
 		ui.connectionLabel->setText("Нет соединения");
 	}
 }
@@ -266,6 +269,7 @@ void IndigoTaxi::paytimeClick()
 void IndigoTaxi::freeButtonClick()
 {
 	if (iTaxiOrder != NULL) {
+		voiceLady->sayPhrase("BYE");
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
 		destroyCurrentOrder();
 	}
