@@ -42,22 +42,42 @@ void myMessageOutput(QtMsgType type, const char *msg)
 
 Logger *logger = NULL;
 
+void LoadFont(QString name)
+{
+	QByteArray segoe;
+	QResource r(name);
+	if (r.isValid()) {
+		QByteArray b( reinterpret_cast< const char* >( r.data() ), r.size() );
+		qDebug() << "font" << name;
+		QFontDatabase::addApplicationFontFromData(b);
+	}
+}
+
 int main(int argc, char *argv[])
 {	
 	int retcode = 0;
 	bool result = 
 #ifdef UNDER_CE	
 	QResource::registerResource("\\ResidentFlash\\IndigoTaxi\\sound.rcc");	
+	QResource::registerResource("\\ResidentFlash\\IndigoTaxi\\UI.rcc");	
 #else
 	QResource::registerResource("C:\\sound.rcc");
+	QResource::registerResource("C:\\UI.rcc");
 #endif
 	qDebug() << "sounds loaded:" << result;
+	qDebug() << "font status:" << QResource(":/IndigoTaxi/segoeui.ttf").isValid();
+	qDebug() << "font bold status:" << QResource(":/IndigoTaxi/segoeuib.ttf").isValid();
+	
 		
 	qInstallMsgHandler(myMessageOutput);
 	
 	QApplication a(argc, argv);
 	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("CP1251"));
+
+		
+	LoadFont(":/IndigoTaxi/segoeui.ttf");
+	LoadFont(":/IndigoTaxi/segoeuib.ttf");
 
 	// for virtual keyboard
 	InputDevice inputdevice;
@@ -88,8 +108,8 @@ Debug: "WindowsMobile"
 		w.show();
 		w.showFullScreen();
 #else
-		w.setProperty("_q_customDpiX", QVariant(180));
-		w.setProperty("_q_customDpiY", QVariant(180));
+		w.setProperty("_q_customDpiX", QVariant(122));
+		w.setProperty("_q_customDpiY", QVariant(122));
 		w.show();
 #endif
 

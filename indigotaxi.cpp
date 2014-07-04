@@ -46,7 +46,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	backend->setDriverName(driverName);
 	
 
-	ui.versionLabel->setText(version);
+	//ui.versionLabel->setText(version);
 
 	connect(this, SIGNAL(reboot_application()), SLOT(rebootApp()));
 
@@ -87,7 +87,7 @@ IndigoTaxi::~IndigoTaxi()
 void IndigoTaxi::updateTime()
 {
 	QTime time = QTime::currentTime();    
-    QString text = time.toString("hh:mm:ss");
+    QString text = time.toString("hh:mm");
     ui.timeLabel->setText(text);
 
 	updateTaxiRates();

@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="UI">
+    <file>images/gps.png</file>
+    <file>segoeuib.ttf</file>
+    <file>segoeui.ttf</file>
+  </qresource>
+</RCC>
