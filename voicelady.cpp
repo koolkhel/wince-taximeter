@@ -26,7 +26,7 @@ void VoiceLady::speakMoney(int amount)
 		tmp /= 10;
 		max_order++;
 	}
-
+	
 	max_order -= 1;
 
 	sayPhrase("COSTANNOUNCE");
