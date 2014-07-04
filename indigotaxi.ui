@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>713</width>
-    <height>461</height>
+    <width>480</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -862,7 +862,7 @@ QTabBar::tab { height: 40px; width: 120px; }
       </widget>
       <widget class="QWidget" name="settingsPage4">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -876,6 +876,12 @@ QTabBar::tab { height: 40px; width: 120px; }
         </property>
         <item>
          <widget class="QTabWidget" name="settingsTabWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -893,14 +899,14 @@ QTabBar::tab { height: 40px; width: 120px; }
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
           </property>
           <widget class="QWidget" name="orderSettingsTab1">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -925,11 +931,14 @@ QTabBar::tab { height: 40px; width: 120px; }
                 </sizepolicy>
                </property>
                <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
+                <property name="horizontalSpacing">
+                 <number>10</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>3</number>
+                </property>
                 <property name="margin">
                  <number>0</number>
-                </property>
-                <property name="spacing">
-                 <number>15</number>
                 </property>
                 <item row="0" column="0">
                  <layout class="QVBoxLayout" name="verticalLayout_17">
