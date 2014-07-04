@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>742</width>
-    <height>391</height>
+    <width>713</width>
+    <height>461</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="baseSize">
    <size>
-    <width>800</width>
-    <height>480</height>
+    <width>480</width>
+    <height>272</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -69,6 +69,8 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
 #regionList QScrollBar:vertical {
       width: 80px;
 }
+
+QTabBar::tab { height: 40px; width: 120px; }
 </string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
@@ -199,6 +201,12 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
        </font>
       </property>
       <widget class="QWidget" name="standByPage1">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0">
         <property name="spacing">
          <number>0</number>
@@ -517,6 +525,12 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
        </layout>
       </widget>
       <widget class="QWidget" name="orderPage2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,3,2">
         <property name="spacing">
          <number>0</number>
@@ -562,22 +576,22 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="directionLabel">
+             <widget class="QPushButton" name="directionValueButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>94</width>
+                <height>80</height>
+               </size>
+              </property>
               <property name="text">
-               <string>Направление</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="directionValueLabel">
-              <property name="text">
-               <string>Центр</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <string>Направление
+Центр</string>
               </property>
              </widget>
             </item>
@@ -688,6 +702,9 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
           </item>
           <item>
            <widget class="QPushButton" name="trainCrossButton">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -705,10 +722,13 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
             <property name="checkable">
              <bool>true</bool>
             </property>
+            <property name="default">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="luggageButton">
+           <widget class="QPushButton" name="overloadButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -721,7 +741,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
              </font>
             </property>
             <property name="text">
-             <string>Багаж</string>
+             <string>Перегруз</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -755,6 +775,12 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
        </layout>
       </widget>
       <widget class="QWidget" name="paytimePage3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <layout class="QVBoxLayout" name="verticalLayout_16" stretch="2,5,2">
         <item>
          <widget class="QLabel" name="finalPaymentLabel">
@@ -835,306 +861,411 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
        </layout>
       </widget>
       <widget class="QWidget" name="settingsPage4">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <layout class="QVBoxLayout" name="verticalLayout_18">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QStackedWidget" name="settingsStackedWidget">
-          <widget class="QWidget" name="mainSettingsPage1">
-           <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
-            <property name="margin">
-             <number>0</number>
-            </property>
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="dutyStart">
+         <widget class="QTabWidget" name="settingsTabWidget">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="tabShape">
+           <enum>QTabWidget::Rounded</enum>
+          </property>
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <property name="elideMode">
+           <enum>Qt::ElideNone</enum>
+          </property>
+          <widget class="QWidget" name="orderSettingsTab1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <attribute name="title">
+            <string>Рейс</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QStackedWidget" name="settingsStackedWidget">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Начало смены</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-              <property name="autoDefault">
-               <bool>false</bool>
-              </property>
-              <property name="default">
-               <bool>false</bool>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="dinnerButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Обед</string>
-              </property>
-              <property name="checkable">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="awayButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Отлучился</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <layout class="QVBoxLayout" name="verticalLayout_17">
-              <item>
-               <widget class="QLabel" name="label_12">
-                <property name="font">
-                 <font>
-                  <pointsize>8</pointsize>
-                 </font>
+              <widget class="QWidget" name="mainSettingsPage1">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
+                <property name="margin">
+                 <number>0</number>
                 </property>
-                <property name="text">
-                 <string>Позывной:</string>
+                <property name="spacing">
+                 <number>15</number>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="driverNameLineEdit">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+                <item row="0" column="0">
+                 <layout class="QVBoxLayout" name="verticalLayout_17">
+                  <item>
+                   <widget class="QLabel" name="label_12">
+                    <property name="font">
+                     <font>
+                      <pointsize>8</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Позывной:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="driverNameLineEdit">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>14</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="keyboard" stdset="0">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QPushButton" name="techhelpButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Техпомощь</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="dutyStart">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Начало смены</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoDefault">
+                   <bool>false</bool>
+                  </property>
+                  <property name="default">
+                   <bool>false</bool>
+                  </property>
+                  <property name="flat">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="pushButton_3">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Ремонт</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="dinnerButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Обед</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QPushButton" name="backToStandByButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Вернуться</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="awayButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Отлучился</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QPushButton" name="fromCarButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Вышел из машины</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="refuseButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Отказ от заказа</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QPushButton" name="exitButton_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Выход</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="dinnerPage2">
+               <layout class="QVBoxLayout" name="verticalLayout_19">
+                <property name="spacing">
+                 <number>40</number>
                 </property>
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
+                <property name="margin">
+                 <number>40</number>
                 </property>
-                <property name="keyboard" stdset="0">
-                 <bool>true</bool>
+                <item>
+                 <widget class="QPushButton" name="pushButton_4">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Вернулся с обеда</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="awayPage3">
+               <layout class="QVBoxLayout" name="verticalLayout_20">
+                <property name="margin">
+                 <number>40</number>
                 </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="4" column="0">
-             <widget class="QPushButton" name="backToStandByButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Вернуться</string>
-              </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_5">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>18</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Вернулся в машину</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="fromcarPage4">
+               <layout class="QVBoxLayout" name="verticalLayout_21">
+                <property name="margin">
+                 <number>40</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_6">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>18</pointsize>
+                    <weight>50</weight>
+                    <bold>false</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Вернулся</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QPushButton" name="fromCarButton">
+           </layout>
+          </widget>
+          <widget class="QWidget" name="driverCabinetSettingsTab2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <attribute name="title">
+            <string>Кабинет</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="systemSettingsTab3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <attribute name="title">
+            <string>Система</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="QPushButton" name="rebootButton">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
               <property name="text">
-               <string>Вышел из машины</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="pushButton_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Ремонт</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="refuseButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Отказ от заказа</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QPushButton" name="techhelpButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Техпомощь</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <widget class="QPushButton" name="exitButton_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Выход</string>
+               <string>Перезагрузка</string>
               </property>
              </widget>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="dinnerPage2">
-           <layout class="QVBoxLayout" name="verticalLayout_19">
-            <property name="spacing">
-             <number>40</number>
-            </property>
-            <property name="margin">
-             <number>40</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="pushButton_4">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Вернулся с обеда</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="awayPage3">
-           <layout class="QVBoxLayout" name="verticalLayout_20">
-            <property name="margin">
-             <number>40</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="pushButton_5">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>18</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Вернулся в машину</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="fromcarPage4">
-           <layout class="QVBoxLayout" name="verticalLayout_21">
-            <property name="margin">
-             <number>40</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="pushButton_6">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>18</pointsize>
-                <weight>50</weight>
-                <bold>false</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Вернулся</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <widget class="QWidget" name="regionsSettingsTab4">
+           <attribute name="title">
+            <string>Районы</string>
+           </attribute>
           </widget>
          </widget>
         </item>
@@ -1201,6 +1332,7 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
  <layoutfunction spacing="0" margin="0"/>
  <resources>
   <include location="indigotaxi.qrc"/>
+  <include location="TestResource.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -1287,11 +1419,11 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
    <sender>freeButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>freeButtonClick()</slot>
+   <slot>cancelRegionSelectClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>722</x>
-     <y>329</y>
+     <x>718</x>
+     <y>353</y>
     </hint>
     <hint type="destinationlabel">
      <x>329</x>
@@ -1332,18 +1464,98 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
    </hints>
   </connection>
   <connection>
-   <sender>dutyStart</sender>
-   <signal>clicked(bool)</signal>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>dutyButtonClicked(bool)</slot>
+   <slot>backToStandByClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>476</x>
-     <y>72</y>
+     <x>262</x>
+     <y>364</y>
     </hint>
     <hint type="destinationlabel">
-     <x>500</x>
-     <y>8</y>
+     <x>321</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>startClientMove()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>499</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startClientMoveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>selectRegionClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>601</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>616</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>trainCrossButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>trainCrossButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>overloadButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>overloadButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>477</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>directionValueButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>newDirectionClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>330</x>
+     <y>-16</y>
     </hint>
    </hints>
   </connection>
@@ -1359,6 +1571,54 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
     </hint>
     <hint type="destinationlabel">
      <x>442</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dutyStart</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>dutyButtonClicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>478</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>500</x>
+     <y>8</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exitButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>exitButtonClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>awayButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>awayButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>108</x>
      <y>0</y>
     </hint>
    </hints>
@@ -1380,98 +1640,18 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
    </hints>
   </connection>
   <connection>
-   <sender>exitButton_2</sender>
+   <sender>refuseButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>exitButtonClick()</slot>
+   <slot>notToMeButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>412</x>
-     <y>350</y>
+     <x>466</x>
+     <y>215</y>
     </hint>
     <hint type="destinationlabel">
-     <x>397</x>
+     <x>396</x>
      <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>backToStandByButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>backToStandByClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>264</x>
-     <y>339</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>driverNameLineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>driverNameEdited(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>89</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>205</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>awayButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>awayButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>103</x>
-     <y>140</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>108</x>
-     <y>-14</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fromCarButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>fromcarButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>57</x>
-     <y>302</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>81</x>
-     <y>-33</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_5</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>awayEndButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>231</x>
-     <y>148</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>238</x>
-     <y>-30</y>
     </hint>
    </hints>
   </connection>
@@ -1487,71 +1667,87 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
     </hint>
     <hint type="destinationlabel">
      <x>326</x>
-     <y>-12</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>refuseButton</sender>
+   <sender>fromCarButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>notToMeButtonClicked()</slot>
+   <slot>fromcarButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>466</x>
-     <y>215</y>
+     <x>57</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
-     <x>396</x>
-     <y>-26</y>
+     <x>81</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_8</sender>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>awayEndButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>231</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>238</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>backToStandByButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
    <slot>backToStandByClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
-     <y>364</y>
+     <x>264</x>
+     <y>363</y>
     </hint>
     <hint type="destinationlabel">
-     <x>321</x>
-     <y>-17</y>
+     <x>258</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_7</sender>
-   <signal>clicked()</signal>
+   <sender>driverNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>startClientMove()</slot>
+   <slot>driverNameEdited(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>499</x>
-     <y>358</y>
+     <x>198</x>
+     <y>124</y>
     </hint>
     <hint type="destinationlabel">
-     <x>506</x>
-     <y>-14</y>
+     <x>205</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>startClientMoveButton</sender>
+   <sender>rebootButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>selectRegionClicked()</slot>
+   <slot>rebootSystem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>276</y>
+     <x>243</x>
+     <y>180</y>
     </hint>
     <hint type="destinationlabel">
-     <x>616</x>
-     <y>-7</y>
+     <x>304</x>
+     <y>-20</y>
     </hint>
    </hints>
   </connection>
@@ -1578,5 +1774,10 @@ radius: 1.35, stop: 0 #ddd, stop: 1 #fff);
   <slot>fromcarEndButtonClicked()</slot>
   <slot>notToMeButtonClicked()</slot>
   <slot>selectRegionClicked()</slot>
+  <slot>trainCrossButtonClicked()</slot>
+  <slot>overloadButtonClicked()</slot>
+  <slot>newDirectionClicked()</slot>
+  <slot>cancelRegionSelectClicked()</slot>
+  <slot>rebootSystem()</slot>
  </slots>
 </ui>

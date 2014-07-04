@@ -182,6 +182,7 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 			pbOrder->set_money((int) floor(order->calculateSum() + 0.5));
 			break;
 		case hello_TaxiEvent_START_CLIENT_MOVE:
+		case hello_TaxiEvent_MOVED:
 			pbOrder->set_destination_region_id(order->getRegionId());
 			break;
 		default:
@@ -320,10 +321,12 @@ void Backend::positionUpdated(const QGeoPositionInfo &update)
 		qDebug() << "longitude" << update.coordinate().longitude() << "latitude" << update.coordinate().latitude();
 		positionMessage.set_longitude(update.coordinate().longitude());
 		positionMessage.set_latitude(update.coordinate().latitude());
+		
 		if (update.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
-			positionMessage.set_speed_kmh((int) (update.attribute(QGeoPositionInfo::GroundSpeed) * 3.6));
-
-			emit newSpeed((int) (update.attribute(QGeoPositionInfo::GroundSpeed) * 3.6));
+			int speed = (int) (update.attribute(QGeoPositionInfo::GroundSpeed) * 3.6);
+			positionMessage.set_speed_kmh(speed);
+			emit newSpeed(speed);
+			detectStartStop(speed);
 		}
 
 		emit newPosition(update.coordinate());
@@ -334,4 +337,29 @@ void Backend::sendLocationData()
 {
 	// нет связи -- не доставлено
 	send_message(positionMessage);	
+}
+
+void Backend::detectStartStop(int speed)
+{
+	// FIXME нужно чуть дольше их фильтровать, вдруг выбросы
+
+	static int startThreshold = 0;
+	static int stopThreshold = 0;
+	
+	if (speed > 5) {
+		if (startThreshold >= 3) {			
+			emit movementStart(1);
+		} else {
+			startThreshold++;
+		}
+		stopThreshold = 0;
+	} else {
+		if (stopThreshold >= 3) {
+			emit movementStart(0);
+		} else {			
+			stopThreshold++;
+		}
+		startThreshold = 0;
+		
+	}
 }

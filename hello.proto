@@ -48,6 +48,14 @@ message hello
 		NOT_TO_ME		=	17	;
     // Расчёт	
     END_CLIENT_MOVE = 18 ; 
+    // Смена целевого района
+    MOVED = 19;
+    // Не заплатили
+    NOT_PAY = 20;
+    // Не вышли
+    NOT_EXIT = 21;
+    // Пустая поездка
+    EMPTY_TRIP = 22;
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];

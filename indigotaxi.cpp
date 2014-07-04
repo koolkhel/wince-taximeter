@@ -16,7 +16,8 @@ static const char *version = "0.0.9";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags), iTaxiOrder(NULL), satellitesUsed(0)
+	: QMainWindow(parent, flags), iTaxiOrder(NULL), satellitesUsed(0), movementStarted(false),
+	newDirection(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -35,6 +36,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	connect(backend, SIGNAL(driverNameChanged(int)), SLOT(driverNameChanged(int)));
 	connect(backend, SIGNAL(newSpeed(int)), SLOT(newSpeed(int)));
 	connect(backend, SIGNAL(newSatellitesUsed(int)), SLOT(newSatellitesUsed(int)));
+	connect(backend, SIGNAL(movementStart(int)), SLOT(movementStart(int)));
 	//settingsForm->setBackend(backend);
 
 	settingsIniFile = new QSettings("indigotaxi.ini", QSettings::IniFormat, this);
@@ -119,17 +121,28 @@ void IndigoTaxi::startClientMove()
 	// целевой регион
 	iTaxiOrder->setRegionId(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
 	// сообщаем серверу
-	backend->sendOrderEvent(hello_TaxiEvent_START_CLIENT_MOVE, iTaxiOrder);
-	// пошёл счёт
-	iTaxiOrder->startOrder();
+	if (newDirection) {
+		backend->sendOrderEvent(hello_TaxiEvent_MOVED, iTaxiOrder);
+	} else {
+		backend->sendOrderEvent(hello_TaxiEvent_START_CLIENT_MOVE, iTaxiOrder);
+		
+		// пошёл счёт
+		iTaxiOrder->startOrder();
+	}
+	
 	// обновляем цифры
 	iTaxiOrder->recalcSum();
 	// на экране заказа пишем район, куда едем
-	ui.directionValueLabel->setText(
+	ui.directionValueButton->setText("Направление\n" +
 		QString::fromUtf8(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_name().c_str()));
 	// экран заказа
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
-	voiceLady->sayPhrase("GREETING");
+
+	if (!newDirection) {
+		voiceLady->sayPhrase("GREETING");
+	}
+
+	newDirection = false;
 }
 
 // с сервера нам что-то пришло, надо реагировать
@@ -286,9 +299,7 @@ void IndigoTaxi::resumeVoyageClick()
 
 // очистить
 void IndigoTaxi::clearMessageClick()
-{
-	// reboot
-	//SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
+{	
 	//QSound::play("click.wav");
 	//QSound::play(qApp->applicationDirPath() + QDir::separator() + "stop.wav");
 	if (iTaxiOrder != NULL) {
@@ -408,16 +419,14 @@ void IndigoTaxi::fromcarEndButtonClicked()
  */
 void IndigoTaxi::notToMeButtonClicked()
 {
-	if (iTaxiOrder != NULL) {
-		backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);		
-		ui.serverMessage->setPlainText("");
-	}
+	backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);		
+	ui.serverMessage->setPlainText("");
 }
 
 // реакция на поехали
 void IndigoTaxi::selectRegionClicked() 
 {
-	if (satellitesUsed < 5) {
+	if (!newDirection && satellitesUsed < 5) {
 		voiceLady->sayPhrase("NOGPS");
 		QMessageBox::critical(this, "Невозможно начать поездку", "Число спутников должно быть больше 5");
 		return;
@@ -507,4 +516,58 @@ void IndigoTaxi::newMileage(float mileage)
 void IndigoTaxi::newSatellitesUsed(int _satellitesUsed)
 {
 	satellitesUsed = _satellitesUsed;
+}
+
+void IndigoTaxi::movementStart(int start)
+{
+	qDebug() << (start ? "movement START" : "movement STOP");
+	movementStarted = start == 1;
+
+	if (movementStarted) {
+		// FIXME выключить режим переезда
+		ui.trainCrossButton->setEnabled(false);
+		ui.trainCrossButton->setChecked(false);
+	} else {
+		ui.trainCrossButton->setEnabled(true);
+	}
+}
+
+
+// нажат переезд, отжимается он сам
+void IndigoTaxi::trainCrossButtonClicked()
+{
+	voiceLady->sayPhrase("TRAINCROSS");
+	ui.trainCrossButton->setEnabled(false);
+}
+
+void IndigoTaxi::overloadButtonClicked()
+{
+	voiceLady->sayPhrase("OVERLOAD");
+	// fixme some messages, maybe
+}
+
+void IndigoTaxi::newDirectionClicked()
+{
+	newDirection = true;
+
+	selectRegionClicked();
+}
+
+void IndigoTaxi::cancelRegionSelectClicked()
+{
+	// если выбирали новый район следования, возвращаемся к заказу. Иначе, к режиму ожидания
+	if (!newDirection) {
+		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+	} else {
+		ui.stackedWidget->setCurrentWidget(ui.orderPage2);
+		newDirection = false;
+	}
+}
+
+void IndigoTaxi::rebootSystem()
+{
+	// reboot
+#ifdef UNDER_CE
+	SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
+#endif
 }

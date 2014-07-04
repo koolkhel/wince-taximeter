@@ -57,7 +57,11 @@ public slots:
 	void newPaymentCalculated(int);
 	void newSpeed(int speed_kmh);
 	void newMileage(float mileage);
+	void movementStart(int start);
 	void paytimeClick();
+	void trainCrossButtonClicked();
+	void overloadButtonClicked();
+	void newDirectionClicked();
 
 	// page 3
 	void freeButtonClick();
@@ -79,6 +83,10 @@ public slots:
 	void dinnerStopClicked();
 
 	void driverNameEdited(QString newValue);
+	void rebootSystem();
+
+	// page 6
+	void cancelRegionSelectClicked();
 
 private:
 	TaxiRegionList taxiRegionList;
@@ -106,6 +114,10 @@ private:
 	TaxiRatePeriod getCurrentTaxiRatePeriod();
 	void handleNewOrder(TaxiOrder order);	
 	ITaxiOrder *createTaxiOrder(int order_id);
+
+	bool movementStarted;
+
+	bool newDirection;
 };
 
 #endif // INDIGOTAXI_H

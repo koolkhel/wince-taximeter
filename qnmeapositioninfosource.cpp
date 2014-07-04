@@ -393,7 +393,12 @@ void QNmeaPositionInfoSourcePrivate::notifyNewUpdate(QGeoPositionInfo *update, b
             }
         }
         m_lastUpdate = *update;
-    }
+	} 
+	// indigo start; we need those satellites ;-)
+	else if (update->hasAttribute(QGeoPositionInfo::SatellitesUsed)) {
+		emitUpdated(*update);
+	}
+	// indigo end
 }
 
 void QNmeaPositionInfoSourcePrivate::timerEvent(QTimerEvent *)

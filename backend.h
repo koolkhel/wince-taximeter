@@ -39,6 +39,8 @@ signals:
 	void newPosition(QGeoCoordinate coordinate);
 	void newSpeed(int speed_kmh);
 	void newSatellitesUsed(int satellitesUsed);
+	// 0 == stop, 1 == start
+	void movementStart(int start);
 	
 public slots:
 	// from gps
@@ -90,6 +92,8 @@ private:
 	hello positionMessage;
 
 	QSerialPort *gpsSerialPort;
+	
+	void detectStartStop(int speed);
 };
 
 #endif // BACKEND_H

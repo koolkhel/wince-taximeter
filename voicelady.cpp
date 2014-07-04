@@ -104,7 +104,7 @@ void VoiceLady::speakMoney(int amount)
 	case 8:
 	case 9:
 		emit playSound(QString(":/Sound/roubles"));
-		break;
+		break;		
 	case 2:
 	case 3:
 	case 4:
@@ -120,7 +120,10 @@ void VoiceLady::speakMoney(int amount)
 void VoiceLady::sayPhrase(QString name)
 {
 	QString resourceName = ":/Sound/" + name;
+	// FIXME temporary sound disable
+#ifdef UNDER_CE
 	emit playSound(resourceName);	
+#endif
 }
 
 VoiceLady::~VoiceLady()
