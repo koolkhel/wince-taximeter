@@ -201,10 +201,12 @@ void IndigoTaxi::connectionStatus(bool status)
 {
 	if (status) {
 		voiceLady->sayPhrase("CONNECTIONOK");
-		ui.connectionLabel->setText("Соединён");
+		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));
+		//ui.connectionLabel->setText("Соединён");
 	} else {
-		voiceLady->sayPhrase("NOCONNECTION");
-		ui.connectionLabel->setText("Нет соединения");
+		voiceLady->sayPhrase("NOCONNECTION");		
+		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-bad.png"));
+		//ui.connectionLabel->setText("Нет соединения");
 	}
 }
 

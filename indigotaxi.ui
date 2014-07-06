@@ -40,13 +40,20 @@
       width: 80px;
 }
 
-QTabBar::tab { height: 40px; width: 120px; }
+QTabBar::tab {
+ 	height: 40px; width: 120px; 
+}
 
+QTabBar::tab:selected {
+	background: #63a400;
+}
+
+QTabBar::tab:!selected {
+	background: #034900;
+}
 
 * {
 	font: 8pt 75 &quot;Segoe UI&quot;;
-/*	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
-	text-transform: uppercase;*/
 	background: #1d1d1d;
 	color: white;
 }
@@ -58,9 +65,24 @@ QPushButton {
 	font-weight: bold;
 }
 
+
+
 #moveToClientButton{
 	background: #ea6b00;
 }
+
+#moveToClientButton:pressed, #inPlaceButton:pressed,
+#startClientMoveButton:pressed
+{
+	background: black;
+}
+
+#menuButton:pressed, #clearButton:pressed 
+{
+	background: black;
+	color: #FDFDFD;
+}
+
 
 #inPlaceButton {
 	background: #4ca2a6;
@@ -77,6 +99,9 @@ QPushButton {
 
 #driverNumberButton {
 	background: #1d1d1d;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	color: #909090;
 }
 
 #menuButton,#clearButton {
@@ -84,10 +109,14 @@ QPushButton {
 	color: #1d1d1d;
 }
 
-#centralWidget,#connectionLabel,#horizontalSpacer,#timeLabel,#gpsIconLabel,#gpsSatelliteCountLabel,#taxiNameLabel,#taxiRegionOrdinalNumberLabel,#currentRegionLabel {
+#statusRowFrame * {
 	background: #000000;
 	color: #ffffff;
 	font: 6pt &quot;Segoe UI&quot;;
+}
+
+#statusRowFrame {
+	background: #000000;
 }
 
 
@@ -124,7 +153,81 @@ QPushButton {
 	padding-top: 5px;
 	background: #000000;
 	border-top: 1px solid #101010;
-}</string>
+}
+
+
+/* settibns */
+
+#driverNameLineEdit {
+	background: #fdfdfd;
+}
+
+/* order page */
+#paytimeButton {
+	background: #c23c00;
+}
+
+#overloadButton {
+	background: #4c66b0;
+}
+
+#farawayButton {
+	background: #724b22;
+}
+
+#trainCrossButton {
+	background: #275883;
+}
+
+#directionValueButton {
+	background: #6c0144;
+}
+
+#paymentAmountLabel {
+	font-weight: bold;
+	font: 32pt &quot;Segoe UI&quot;;
+}
+
+#finalPaymentLabel {
+	font-weight: bold;
+	font: 16pt &quot;Segoe UI&quot;;
+}
+
+#finalPaymentAmountLabel {
+	font-weight: bold;
+	font: 40pt &quot;Segoe UI&quot;;
+}
+
+#resumeVoyageButton {
+	background: #ea6b00;
+}
+
+#freeButton {
+	background: #fdfdfd;
+	color: #1d1d1d;
+}
+
+#freeButton:pressed {
+	color: #fdfdfd;
+	background: #1d1d1d;
+	
+}
+
+#resumeVoyageButton:pressed, #farawayButton:pressed, #paytimeButton:pressed,
+#overloadButton:pressed, #trainCrossButton:pressed
+{
+	background: black;
+}
+
+#settingsTabWidget QPushButton {
+	background: #4ca2a6;
+}
+
+#settingsTabWidget QPushButton:pressed {
+	/*background: #ff6401;*/
+	background: black;
+}
+</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_10" stretch="0,100">
     <property name="spacing">
@@ -137,103 +240,116 @@ QPushButton {
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1,1,1,5,1,2">
-      <property name="spacing">
-       <number>5</number>
+     <widget class="QFrame" name="statusRowFrame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
       </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <property name="leftMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>5</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="gpsSatelliteCountLabel">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="gpsIconLabel">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="UI.qrc">:/UI/images/gps.png</pixmap>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="connectionLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Нет соединения</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="taxiNameLabel">
-        <property name="text">
-         <string>Люкс</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentRegionLabel">
-        <property name="text">
-         <string>По городу</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="taxiRegionOrdinalNumberLabel">
-        <property name="text">
-         <string>1</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="timeLabel">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>00:00</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1,1,5,1,2">
+       <property name="spacing">
+        <number>5</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="gpsSatelliteCountLabel">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="gpsIconLabel">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="UI.qrc">:/UI/images/gps.png</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="connectionLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>12</width>
+           <height>12</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="UI.qrc">:/UI/images/connection-bad.png</pixmap>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="taxiNameLabel">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Такси Люкс</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="currentRegionLabel">
+         <property name="text">
+          <string>По городу</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="taxiRegionOrdinalNumberLabel">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="timeLabel">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>00:00</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
@@ -474,7 +590,7 @@ QPushButton {
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>5</height>
+              <height>13</height>
              </size>
             </property>
            </spacer>
@@ -487,7 +603,7 @@ QPushButton {
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,1">
             <property name="spacing">
              <number>0</number>
             </property>
@@ -532,6 +648,49 @@ QPushButton {
               </item>
              </layout>
             </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,5">
+              <item>
+               <widget class="QPushButton" name="driverNumberButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>8</pointsize>
+                  <weight>75</weight>
+                  <italic>false</italic>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>ПОЗЫВНОЙ:
+100</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
            </layout>
           </item>
           <item>
@@ -557,6 +716,9 @@ QPushButton {
                <string>ПРИНЯЛ
 ЗАКАЗ</string>
               </property>
+              <property name="class" stdset="0">
+               <string>button</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -574,6 +736,9 @@ QPushButton {
                <string>ПОДЪЕХАЛ
 ПРИГЛАШАЙТЕ</string>
               </property>
+              <property name="class" stdset="0">
+               <string>button</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -587,12 +752,15 @@ QPushButton {
               <property name="text">
                <string>ПОЕХАЛИ!</string>
               </property>
+              <property name="class" stdset="0">
+               <string>button</string>
+              </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="2,2,2">
+           <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="2,2">
             <property name="spacing">
              <number>5</number>
             </property>
@@ -619,30 +787,8 @@ QPushButton {
               <property name="text">
                <string>МЕНЮ</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="driverNumberButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>8</pointsize>
-                <weight>75</weight>
-                <italic>false</italic>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>ПОЗЫВНОЙ: 100</string>
-              </property>
-              <property name="flat">
-               <bool>true</bool>
+              <property name="class" stdset="0">
+               <string>button</string>
               </property>
              </widget>
             </item>
@@ -656,6 +802,9 @@ QPushButton {
               </property>
               <property name="text">
                <string>ОЧИСТИТЬ</string>
+              </property>
+              <property name="class" stdset="0">
+               <string>button</string>
               </property>
              </widget>
             </item>
@@ -672,7 +821,7 @@ QPushButton {
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,3,2">
+       <layout class="QVBoxLayout" name="verticalLayout_11" stretch="2,5,2">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -680,97 +829,132 @@ QPushButton {
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <widget class="QFrame" name="orderPageTopFrame">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>60</height>
+           </size>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,1,1">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_12" stretch="1,2">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="speedLabel">
+               <property name="text">
+                <string>Скорость</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="speedValueLabel">
+               <property name="text">
+                <string>0 км/ч</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_13" stretch="0">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="directionValueButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>НАПРАВЛЕНИЕ
+ЦЕНТР</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_14" stretch="1,2">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="distanceLabel">
+               <property name="text">
+                <string>Расстояние</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="distanceValueLabel">
+               <property name="text">
+                <string>0,0 км</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_15" stretch="1,1,1">
           <property name="spacing">
            <number>0</number>
           </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_12">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="speedLabel">
-              <property name="text">
-               <string>Скорость</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="speedValueLabel">
-              <property name="text">
-               <string>0 км/ч</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_13">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="directionValueButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>НАПРАВЛЕНИЕ
-ЦЕНТР</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_14">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="distanceLabel">
-              <property name="text">
-               <string>Расстояние</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="distanceValueLabel">
-              <property name="text">
-               <string>0,0 км</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_15">
-          <item>
            <widget class="QLabel" name="paymentLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <family>75 Segoe UI</family>
@@ -786,21 +970,24 @@ QPushButton {
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
+            <property name="buddy">
+             <cstring>orderPageTopFrame</cstring>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="paymentAmountLabel">
             <property name="font">
              <font>
-              <family>75 Segoe UI</family>
-              <pointsize>8</pointsize>
+              <family>Segoe UI</family>
+              <pointsize>32</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
             </property>
             <property name="text">
-             <string>35,0 руб</string>
+             <string>35 руб</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -828,7 +1015,10 @@ QPushButton {
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,1,1,1">
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item>
            <widget class="QPushButton" name="paytimeButton">
             <property name="sizePolicy">
@@ -944,13 +1134,19 @@ QPushButton {
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_16" stretch="2,5,2">
+       <layout class="QVBoxLayout" name="verticalLayout_16" stretch="2,5,3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="finalPaymentLabel">
           <property name="font">
            <font>
-            <family>75 Segoe UI</family>
-            <pointsize>8</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -968,8 +1164,8 @@ QPushButton {
          <widget class="QLabel" name="finalPaymentAmountLabel">
           <property name="font">
            <font>
-            <family>75 Segoe UI</family>
-            <pointsize>8</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>40</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -986,10 +1182,10 @@ QPushButton {
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <property name="spacing">
-           <number>10</number>
+           <number>5</number>
           </property>
           <property name="margin">
-           <number>10</number>
+           <number>0</number>
           </property>
           <item>
            <widget class="QPushButton" name="resumeVoyageButton">
@@ -1117,147 +1313,152 @@ QPushButton {
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <widget class="QPushButton" name="backToStandByButton">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>220</y>
-                  <width>171</width>
-                  <height>56</height>
-                 </rect>
+               <layout class="QGridLayout" name="gridLayout">
+                <property name="leftMargin">
+                 <number>0</number>
                 </property>
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+                <property name="topMargin">
+                 <number>5</number>
                 </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>8</pointsize>
-                  <weight>75</weight>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                 </font>
+                <property name="rightMargin">
+                 <number>0</number>
                 </property>
-                <property name="text">
-                 <string>Вернуться</string>
+                <property name="bottomMargin">
+                 <number>0</number>
                 </property>
-               </widget>
-               <widget class="QPushButton" name="refuseButton">
-                <property name="geometry">
-                 <rect>
-                  <x>310</x>
-                  <y>0</y>
-                  <width>116</width>
-                  <height>96</height>
-                 </rect>
+                <property name="spacing">
+                 <number>5</number>
                 </property>
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>8</pointsize>
-                  <weight>75</weight>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Отказ
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="pushButton_9">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Отказ оплаты</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="refuseButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Отказ
 от
 заказа</string>
-                </property>
-               </widget>
-               <widget class="QPushButton" name="pushButton_9">
-                <property name="geometry">
-                 <rect>
-                  <x>55</x>
-                  <y>35</y>
-                  <width>148</width>
-                  <height>39</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Отказ оплаты</string>
-                </property>
-               </widget>
-               <widget class="QPushButton" name="pushButton_10">
-                <property name="geometry">
-                 <rect>
-                  <x>240</x>
-                  <y>95</y>
-                  <width>151</width>
-                  <height>71</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Сообщение
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QPushButton" name="pushButton_10">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Сообщение
 диспетчеру</string>
-                </property>
-               </widget>
-               <widget class="QPushButton" name="pushButton_11">
-                <property name="geometry">
-                 <rect>
-                  <x>220</x>
-                  <y>190</y>
-                  <width>171</width>
-                  <height>86</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Свой
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="pushButton_14">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Помощь</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QPushButton" name="backToStandByButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Вернуться</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QPushButton" name="pushButton_12">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Выбор
+района</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QPushButton" name="pushButton_11">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Свой
 клиент
 (персоналка)</string>
-                </property>
-               </widget>
-               <widget class="QPushButton" name="pushButton_12">
-                <property name="geometry">
-                 <rect>
-                  <x>55</x>
-                  <y>90</y>
-                  <width>121</width>
-                  <height>66</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Выбор
-района</string>
-                </property>
-               </widget>
-               <widget class="QPushButton" name="pushButton_13">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>165</y>
-                  <width>131</width>
-                  <height>61</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Забрать
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="pushButton_13">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Забрать
 заказ</string>
-                </property>
-               </widget>
-               <widget class="QPushButton" name="pushButton_14">
-                <property name="geometry">
-                 <rect>
-                  <x>350</x>
-                  <y>160</y>
-                  <width>115</width>
-                  <height>33</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Помощь</string>
-                </property>
-               </widget>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
               <widget class="QWidget" name="dinnerPage2">
                <layout class="QVBoxLayout" name="verticalLayout_19">
@@ -1354,279 +1555,255 @@ QPushButton {
            <attribute name="title">
             <string>Кабинет</string>
            </attribute>
-           <widget class="QPushButton" name="dutyStart">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>55</y>
-              <width>223</width>
-              <height>53</height>
-             </rect>
+           <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1,1,1,1" columnstretch="1,1">
+            <property name="leftMargin">
+             <number>0</number>
             </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+            <property name="topMargin">
+             <number>5</number>
             </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI</family>
-              <pointsize>8</pointsize>
-              <weight>75</weight>
-              <italic>false</italic>
-              <bold>true</bold>
-             </font>
+            <property name="rightMargin">
+             <number>0</number>
             </property>
-            <property name="text">
-             <string>Начало смены</string>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
-            <property name="checkable">
-             <bool>true</bool>
+            <property name="spacing">
+             <number>5</number>
             </property>
-            <property name="autoDefault">
-             <bool>false</bool>
-            </property>
-            <property name="default">
-             <bool>false</bool>
-            </property>
-            <property name="flat">
-             <bool>false</bool>
-            </property>
-           </widget>
-           <widget class="QWidget" name="layoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>50</x>
-              <y>140</y>
-              <width>407</width>
-              <height>82</height>
-             </rect>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_17">
-             <item>
-              <widget class="QLabel" name="label_12">
-               <property name="font">
-                <font>
-                 <family>75 Segoe UI</family>
-                 <pointsize>8</pointsize>
-                 <weight>50</weight>
-                 <italic>false</italic>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>Позывной:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="driverNameLineEdit">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="font">
-                <font>
-                 <family>75 Segoe UI</family>
-                 <pointsize>8</pointsize>
-                 <weight>50</weight>
-                 <italic>false</italic>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="keyboard" stdset="0">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QPushButton" name="dinnerButton">
-            <property name="geometry">
-             <rect>
-              <x>165</x>
-              <y>15</y>
-              <width>275</width>
-              <height>67</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI</family>
-              <pointsize>8</pointsize>
-              <weight>75</weight>
-              <italic>false</italic>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Обед</string>
-            </property>
-            <property name="checkable">
-             <bool>false</bool>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pushButton_3">
-            <property name="geometry">
-             <rect>
-              <x>325</x>
-              <y>120</y>
-              <width>171</width>
-              <height>67</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI</family>
-              <pointsize>8</pointsize>
-              <weight>75</weight>
-              <italic>false</italic>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Ремонт</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="techhelpButton">
-            <property name="geometry">
-             <rect>
-              <x>115</x>
-              <y>95</y>
-              <width>275</width>
-              <height>66</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI</family>
-              <pointsize>8</pointsize>
-              <weight>75</weight>
-              <italic>false</italic>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Техпомощь</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="awayButton">
-            <property name="geometry">
-             <rect>
-              <x>90</x>
-              <y>230</y>
-              <width>171</width>
-              <height>67</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI</family>
-              <pointsize>8</pointsize>
-              <weight>75</weight>
-              <italic>false</italic>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Отлучился</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="fromCarButton">
-            <property name="geometry">
-             <rect>
-              <x>295</x>
-              <y>240</y>
-              <width>171</width>
-              <height>90</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI</family>
-              <pointsize>8</pointsize>
-              <weight>75</weight>
-              <italic>false</italic>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Вышел из машины</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pushButton_15">
-            <property name="geometry">
-             <rect>
-              <x>25</x>
-              <y>5</y>
-              <width>115</width>
-              <height>33</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>История</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pushButton_16">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>115</y>
-              <width>115</width>
-              <height>33</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Заказы</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pushButton_17">
-            <property name="geometry">
-             <rect>
-              <x>5</x>
-              <y>200</y>
-              <width>115</width>
-              <height>33</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Блокировка
+            <item row="0" column="0">
+             <widget class="QPushButton" name="dutyStart">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Начало смены</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <layout class="QVBoxLayout" name="verticalLayout_24" stretch="1,1">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_12">
+                <property name="font">
+                 <font>
+                  <family>75 Segoe UI</family>
+                  <pointsize>8</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Позывной:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="driverNameLineEdit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>75 Segoe UI</family>
+                  <pointsize>8</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="keyboard" stdset="0">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="messageHistoryButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>История</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="repairButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Ремонт</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="orderHistoryButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Заказы</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="dinnerButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Обед</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="techhelpButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Техпомощь</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="awayButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Отлучился</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QPushButton" name="screenLockButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Блокировка
 экрана</string>
-            </property>
-           </widget>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QPushButton" name="fromCarButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Вышел из машины</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="systemSettingsTab3">
            <property name="sizePolicy">
@@ -1638,93 +1815,89 @@ QPushButton {
            <attribute name="title">
             <string>Система</string>
            </attribute>
-           <widget class="QPushButton" name="rebootButton">
-            <property name="geometry">
-             <rect>
-              <x>9</x>
-              <y>9</y>
-              <width>145</width>
-              <height>39</height>
-             </rect>
+           <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,1">
+            <property name="margin">
+             <number>0</number>
             </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+            <property name="spacing">
+             <number>5</number>
             </property>
-            <property name="text">
-             <string>Перезагрузка</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="exitButton_2">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>90</y>
-              <width>223</width>
-              <height>53</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI</family>
-              <pointsize>8</pointsize>
-              <weight>75</weight>
-              <italic>false</italic>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Выход</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pushButton_18">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>85</y>
-              <width>146</width>
-              <height>33</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Выключить</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pushButton_19">
-            <property name="geometry">
-             <rect>
-              <x>35</x>
-              <y>150</y>
-              <width>141</width>
-              <height>61</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Тарифный
+            <item row="0" column="0">
+             <widget class="QPushButton" name="rebootButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Перезагрузка</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="taxiRateShowButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Тарифный
 план</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pushButton_20">
-            <property name="geometry">
-             <rect>
-              <x>210</x>
-              <y>160</y>
-              <width>115</width>
-              <height>33</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Инфо</string>
-            </property>
-           </widget>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="turnOffButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Выключить</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="softInfoButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Инфо</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="exitButton_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>8</pointsize>
+                <weight>75</weight>
+                <italic>false</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Выход</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="regionsSettingsTab4">
            <attribute name="title">
@@ -1847,8 +2020,8 @@ QPushButton {
    <slot>inPlace()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>488</x>
-     <y>297</y>
+     <x>317</x>
+     <y>228</y>
     </hint>
     <hint type="destinationlabel">
      <x>292</x>
@@ -1863,8 +2036,8 @@ QPushButton {
    <slot>moveToClient()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>104</x>
-     <y>297</y>
+     <x>106</x>
+     <y>228</y>
     </hint>
     <hint type="destinationlabel">
      <x>175</x>
@@ -1879,8 +2052,8 @@ QPushButton {
    <slot>paytimeClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>57</x>
-     <y>347</y>
+     <x>58</x>
+     <y>268</y>
     </hint>
     <hint type="destinationlabel">
      <x>132</x>
@@ -1895,8 +2068,8 @@ QPushButton {
    <slot>resumeVoyageClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>177</x>
-     <y>329</y>
+     <x>178</x>
+     <y>268</y>
     </hint>
     <hint type="destinationlabel">
      <x>177</x>
@@ -1911,8 +2084,8 @@ QPushButton {
    <slot>cancelRegionSelectClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>718</x>
-     <y>353</y>
+     <x>478</x>
+     <y>268</y>
     </hint>
     <hint type="destinationlabel">
      <x>329</x>
@@ -1927,8 +2100,8 @@ QPushButton {
    <slot>settingsButtonClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>64</x>
-     <y>346</y>
+     <x>66</x>
+     <y>267</y>
     </hint>
     <hint type="destinationlabel">
      <x>79</x>
@@ -1943,8 +2116,8 @@ QPushButton {
    <slot>clearMessageClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>730</x>
-     <y>346</y>
+     <x>477</x>
+     <y>267</y>
     </hint>
     <hint type="destinationlabel">
      <x>353</x>
@@ -1959,8 +2132,8 @@ QPushButton {
    <slot>backToStandByClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
-     <y>364</y>
+     <x>236</x>
+     <y>259</y>
     </hint>
     <hint type="destinationlabel">
      <x>321</x>
@@ -1975,11 +2148,11 @@ QPushButton {
    <slot>startClientMove()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>499</x>
-     <y>358</y>
+     <x>469</x>
+     <y>259</y>
     </hint>
     <hint type="destinationlabel">
-     <x>506</x>
+     <x>479</x>
      <y>0</y>
     </hint>
    </hints>
@@ -1991,11 +2164,11 @@ QPushButton {
    <slot>selectRegionClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>276</y>
+     <x>477</x>
+     <y>228</y>
     </hint>
     <hint type="destinationlabel">
-     <x>616</x>
+     <x>479</x>
      <y>0</y>
     </hint>
    </hints>
@@ -2007,8 +2180,8 @@ QPushButton {
    <slot>trainCrossButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>303</y>
+     <x>237</x>
+     <y>268</y>
     </hint>
     <hint type="destinationlabel">
      <x>274</x>
@@ -2023,28 +2196,12 @@ QPushButton {
    <slot>overloadButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>465</x>
-     <y>306</y>
+     <x>357</x>
+     <y>268</y>
     </hint>
     <hint type="destinationlabel">
      <x>477</x>
      <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>directionValueButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>newDirectionClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>326</x>
-     <y>47</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>330</x>
-     <y>-16</y>
     </hint>
    </hints>
   </connection>
@@ -2055,8 +2212,8 @@ QPushButton {
    <slot>dinnerStopClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>277</x>
-     <y>118</y>
+     <x>61</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -2071,8 +2228,8 @@ QPushButton {
    <slot>notToMeButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>466</x>
-     <y>215</y>
+     <x>317</x>
+     <y>129</y>
     </hint>
     <hint type="destinationlabel">
      <x>396</x>
@@ -2087,8 +2244,8 @@ QPushButton {
    <slot>fromcarEndButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>306</x>
-     <y>139</y>
+     <x>61</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>326</x>
@@ -2103,8 +2260,8 @@ QPushButton {
    <slot>awayEndButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>231</x>
-     <y>148</y>
+     <x>61</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>238</x>
@@ -2119,8 +2276,8 @@ QPushButton {
    <slot>backToStandByClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>264</x>
-     <y>363</y>
+     <x>156</x>
+     <y>269</y>
     </hint>
     <hint type="destinationlabel">
      <x>258</x>
@@ -2135,12 +2292,12 @@ QPushButton {
    <slot>rebootSystem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>243</x>
-     <y>180</y>
+     <x>236</x>
+     <y>126</y>
     </hint>
     <hint type="destinationlabel">
      <x>304</x>
-     <y>-20</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
