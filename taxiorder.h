@@ -32,6 +32,8 @@ public slots:
 	void newPosition(QGeoCoordinate);
 	void startOrder();
 	void stopOrder();
+	void measureTimes();
+	void movementStart(int startStop);
 
 private:
 	TaxiRatePeriod taxiRate;
@@ -52,6 +54,9 @@ private:
 	
 	QGeoCoordinate currentPosition;
 	bool gotPosition;
+
+	int seconds_moving;
+	int seconds_stops;
 };
 
 #endif // TAXIORDER_H

@@ -6,14 +6,20 @@ ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent)
 {
 	qDebug() << "newOrder id:" << order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
 	paymentTimer = new QTimer(this);
+	
+	connect(paymentTimer, SIGNAL(timeout()), SLOT(measureTimes()));
 	connect(paymentTimer, SIGNAL(timeout()), SLOT(recalcSum()));
 	paymentTimer->setInterval(1000);
-	//paymentTimer->start();
+	paymentTimer->start();
 }
 
 ITaxiOrder::~ITaxiOrder()
 {
 
+}
+
+void ITaxiOrder::measureTimes()
+{
 }
 
 void ITaxiOrder::setRegionId(int _region_id)
@@ -27,6 +33,7 @@ int ITaxiOrder::getRegionId()
 	return region_id;
 }
 
+/* ============================================================= */
 int ITaxiOrder::calculateSum()
 {
 	// стоимость поездки -- это стоимость подачи
@@ -36,11 +43,21 @@ int ITaxiOrder::calculateSum()
 	double value = car_in + mileage;
 	return ((int)(value * 10.0)) / 10;
 }
+/* ============================================================= */
 
 void ITaxiOrder::recalcSum()
 {
 	float payment = calculateSum();
 	emit paymentChanged(payment);
+}
+
+void ITaxiOrder::movementStart(int startStop)
+{
+	if (startStop) {
+		// начали ехать
+	} else {
+		// остановка
+	}
 }
 
 void ITaxiOrder::newPosition(QGeoCoordinate newPosition)

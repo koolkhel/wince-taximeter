@@ -27,7 +27,8 @@ public:
 	~IndigoTaxi();
 	static int const EXIT_CODE_REBOOT;
 signals:
-		void reboot_application();
+	void reboot_application();
+	void orderMovementStart(int startStop);
 	
 public slots:
 

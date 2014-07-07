@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>272</height>
+    <width>478</width>
+    <height>271</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -198,6 +198,10 @@ QPushButton {
 	background: #275883;
 }
 
+#trainCrossButton:checked {
+	background: #1d1d1d;
+}
+
 #directionValueButton {
 	background: #6c0144;
 }
@@ -245,6 +249,10 @@ QPushButton {
 #settingsTabWidget QPushButton:pressed {
 	/*background: #ff6401;*/
 	background: black;
+}
+
+#driverNameLineEdit {
+	color: black;
 }
 </string>
    </property>
@@ -403,7 +411,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1301,7 +1309,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1668,6 +1676,9 @@ QPushButton {
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="text">
+                 <string/>
+                </property>
                 <property name="keyboard" stdset="0">
                  <bool>true</bool>
                 </property>
@@ -1977,6 +1988,36 @@ QPushButton {
             <bold>true</bold>
            </font>
           </property>
+          <item>
+           <property name="text">
+            <string>Выбор 1</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Выбор 2</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Выбор 3</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Выбор 4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Выбор 5</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Выбор 6</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>

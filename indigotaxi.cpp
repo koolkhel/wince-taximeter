@@ -15,6 +15,8 @@
 static const char *version = "0.0.9";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
+#define DEBUG
+
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), satellitesUsed(0), movementStarted(false),
 	newDirection(false)
@@ -365,7 +367,7 @@ void IndigoTaxi::dinnerStopClicked()
 
 void IndigoTaxi::driverNameChanged(int driverName)
 {
-	ui.driverNumberButton->setText(QString::number(driverName));
+	ui.driverNumberButton->setText("Позывной\n" + QString::number(driverName));
 	ui.driverNameLineEdit->setText(QString::number(driverName));
 	settingsIniFile->beginGroup("main");
 	settingsIniFile->setValue("driverName", QVariant(driverName));
@@ -428,7 +430,7 @@ void IndigoTaxi::notToMeButtonClicked()
 // реакция на поехали
 void IndigoTaxi::selectRegionClicked() 
 {
-#if 0
+#ifndef DEBUG
 	if (!newDirection && satellitesUsed < 5) {
 		voiceLady->sayPhrase("NOGPS");
 		QMessageBox::critical(this, "Невозможно начать поездку", "Число спутников должно быть больше 5");
@@ -465,6 +467,7 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 	connect(backend, SIGNAL(newPosition(QGeoCoordinate)), iTaxiOrder, SLOT(newPosition(QGeoCoordinate)));
 	connect(iTaxiOrder, SIGNAL(newMileage(float)), SLOT(newMileage(float)));
 	connect(iTaxiOrder, SIGNAL(paymentChanged(int)), SLOT(newPaymentCalculated(int)));
+	connect(this, SIGNAL(orderMovementStart(int)), iTaxiOrder, SLOT(movementStart(int)));
 
 	iTaxiOrder->recalcSum();
 
@@ -525,6 +528,12 @@ void IndigoTaxi::newSatellitesUsed(int _satellitesUsed)
 void IndigoTaxi::movementStart(int start)
 {
 	qDebug() << (start ? "movement START" : "movement STOP");
+	
+	if (start && !movementStarted) {
+		emit orderMovementStart(start);
+	} else if (!start && movementStarted) {
+		emit orderMovementStart(start);
+	}
 	movementStarted = start == 1;
 
 	if (movementStarted) {
