@@ -428,12 +428,13 @@ void IndigoTaxi::notToMeButtonClicked()
 // реакция на поехали
 void IndigoTaxi::selectRegionClicked() 
 {
+#if 0
 	if (!newDirection && satellitesUsed < 5) {
 		voiceLady->sayPhrase("NOGPS");
 		QMessageBox::critical(this, "Невозможно начать поездку", "Число спутников должно быть больше 5");
 		return;
 	}
-
+#endif
 	ui.stackedWidget->setCurrentWidget(ui.regionListPage6);
 }
 
@@ -518,6 +519,7 @@ void IndigoTaxi::newMileage(float mileage)
 void IndigoTaxi::newSatellitesUsed(int _satellitesUsed)
 {
 	satellitesUsed = _satellitesUsed;
+	ui.gpsSatelliteCountLabel->setText(QString::number(satellitesUsed));
 }
 
 void IndigoTaxi::movementStart(int start)
