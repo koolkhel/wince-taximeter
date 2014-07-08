@@ -64,6 +64,10 @@ public slots:
 	void overloadButtonClicked();
 	void newDirectionClicked();
 
+	void newTimeMovement(int _seconds);
+	void newTimeStops(int _seconds);
+	void newTimeTotal(int _seconds);
+
 	// page 3
 	void freeButtonClick();
 	void resumeVoyageClick();

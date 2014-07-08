@@ -120,6 +120,17 @@ void IndigoTaxi::startClientMove()
 		iTaxiOrder = createTaxiOrder(NO_ORDER_ID);
 	}
 
+	float stopsTaxiRate = (floor((iTaxiOrder->orderTaxiRate().car_min() / 2.0) * 10)) / 10.0;
+
+	ui.stopsTaxiRateLabel->setText(QString("%1").arg(stopsTaxiRate, 0, 'f', 1));
+
+	float kmgTaxiRate = iTaxiOrder->orderTaxiRate().km_g();
+	ui.kmgTaxiRateLabel->setText(QString("%1").arg(kmgTaxiRate, 0, 'f', 1));
+
+	float carInRate = iTaxiOrder->orderTaxiRate().car_in();
+	ui.finalCarInLabel ->setText(QString("%1").arg(carInRate, 0, 'f', 1));
+
+
 	// целевой регион
 	iTaxiOrder->setRegionId(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
 	// сообщаем серверу
@@ -184,6 +195,9 @@ void IndigoTaxi::updateTaxiRates()
 	TaxiRatePeriod period = getCurrentTaxiRatePeriod();
 	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in(), 0, 'f', 1));
 	ui.km_g_label->setText(QString("%1 руб.").arg(period.km_g(), 0, 'f', 1));
+	
+	float stopsTaxiRate = (floor((period.car_min() / 2.0) * 10)) / 10.0;
+	ui.car_min_label->setText(QString("%1 руб.").arg(stopsTaxiRate, 0, 'f', 1));
 }
 
 /**
@@ -272,14 +286,21 @@ void IndigoTaxi::newVersionDownloaded()
 void IndigoTaxi::paytimeClick() 
 {
 	// stop accounting
-	if (iTaxiOrder != NULL) {
-		iTaxiOrder->stopOrder();
-		int payment = iTaxiOrder->calculateSum();
+	if (iTaxiOrder == NULL)
+		return;
+		
+	iTaxiOrder->stopOrder();
+	int payment = iTaxiOrder->calculateSum();
 
-		ui.finalPaymentAmountLabel->setText(QString("%1 руб.").arg(payment));
-		voiceLady->speakMoney(payment);
-		ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
-	}
+	ui.finalPaymentAmountLabel->setText(QString("%1 руб.").arg(payment));
+	ui.finalMileageLabel->setText(QString("%1").arg(iTaxiOrder->mileage(), 0, 'f', 1));
+	ui.finalStopsTimeLabel->setText(QString("%1").arg(iTaxiOrder->minutesStops()));
+	ui.finalTotalTimeTravelledLabel->setText(QString("%1").arg(iTaxiOrder->minutesTotal()));
+
+
+	voiceLady->speakMoney(payment);
+	ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
+
 }
 
 // свободен -- сумма оплачивается
@@ -355,19 +376,19 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 void IndigoTaxi::dinnerStartClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_GO_DINNER);
-	ui.settingsStackedWidget->setCurrentWidget(ui.dinnerPage2);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage2);
 }
 
 void IndigoTaxi::dinnerStopClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_DINNER);
-	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
 
 void IndigoTaxi::driverNameChanged(int driverName)
 {
-	ui.driverNumberButton->setText("Позывной\n" + QString::number(driverName));
+	ui.driverNumberButton->setText("ПОЗЫВНОЙ\n" + QString::number(driverName));
 	ui.driverNameLineEdit->setText(QString::number(driverName));
 	settingsIniFile->beginGroup("main");
 	settingsIniFile->setValue("driverName", QVariant(driverName));
@@ -383,25 +404,25 @@ void IndigoTaxi::driverNameEdited(QString newValue)
 void IndigoTaxi::awayButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_MOVE_OUT);
-	ui.settingsStackedWidget->setCurrentWidget(ui.awayPage3);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage4);
 }
 
 void IndigoTaxi::awayEndButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_MOVE_OUT);
-	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
 void IndigoTaxi::fromcarButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_GO_FROM_CAR);
-	ui.settingsStackedWidget->setCurrentWidget(ui.fromcarPage4);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage3);
 }
 
 void IndigoTaxi::fromcarEndButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_TO_CAR);
-	ui.settingsStackedWidget->setCurrentWidget(ui.mainSettingsPage1);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
 
@@ -467,6 +488,11 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 	connect(backend, SIGNAL(newPosition(QGeoCoordinate)), iTaxiOrder, SLOT(newPosition(QGeoCoordinate)));
 	connect(iTaxiOrder, SIGNAL(newMileage(float)), SLOT(newMileage(float)));
 	connect(iTaxiOrder, SIGNAL(paymentChanged(int)), SLOT(newPaymentCalculated(int)));
+
+	connect(iTaxiOrder, SIGNAL(newTimeTotal(int)), SLOT(newTimeTotal(int)));
+	connect(iTaxiOrder, SIGNAL(newTimeStops(int)), SLOT(newTimeStops(int)));
+	connect(iTaxiOrder, SIGNAL(newTimeMovement(int)), SLOT(newTimeMovement(int)));
+
 	connect(this, SIGNAL(orderMovementStart(int)), iTaxiOrder, SLOT(movementStart(int)));
 
 	iTaxiOrder->recalcSum();
@@ -525,23 +551,42 @@ void IndigoTaxi::newSatellitesUsed(int _satellitesUsed)
 	ui.gpsSatelliteCountLabel->setText(QString::number(satellitesUsed));
 }
 
+void IndigoTaxi::newTimeMovement(int _seconds)
+{
+}
+
+void IndigoTaxi::newTimeStops(int _seconds)
+{
+	int hours = _seconds / 3600;
+	int minutes = (_seconds % 3600) / 60;
+	int seconds = _seconds % 60;	
+	
+	ui.timeStopsLabel->setText(QString("%1:%2:%3")
+		.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
+}
+
+void IndigoTaxi::newTimeTotal(int _seconds)
+{
+	int hours = _seconds / 3600;
+	int minutes = (_seconds % 3600) / 60;
+	int seconds = _seconds % 60;	
+	
+	ui.timeTotalLabel->setText(QString("%1:%2:%3")
+		.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
+
+}
+
 void IndigoTaxi::movementStart(int start)
 {
 	qDebug() << (start ? "movement START" : "movement STOP");
 	
-	if (start && !movementStarted) {
-		emit orderMovementStart(start);
-	} else if (!start && movementStarted) {
-		emit orderMovementStart(start);
-	}
+	emit orderMovementStart(start);
 	movementStarted = start == 1;
 
 	if (movementStarted) {
 		// FIXME выключить режим переезда
-		ui.trainCrossButton->setEnabled(false);
-		ui.trainCrossButton->setChecked(false);
-	} else {
 		ui.trainCrossButton->setEnabled(true);
+		ui.trainCrossButton->setChecked(false);
 	}
 }
 
@@ -549,8 +594,12 @@ void IndigoTaxi::movementStart(int start)
 // нажат переезд, отжимается он сам
 void IndigoTaxi::trainCrossButtonClicked()
 {
-	voiceLady->sayPhrase("TRAINCROSS");
-	ui.trainCrossButton->setEnabled(false);
+	if (!movementStarted) {
+		voiceLady->sayPhrase("TRAINCROSS");
+		ui.trainCrossButton->setEnabled(false);
+	} else {
+		ui.trainCrossButton->setChecked(false);
+	}
 }
 
 void IndigoTaxi::overloadButtonClicked()

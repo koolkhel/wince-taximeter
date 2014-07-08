@@ -21,11 +21,19 @@ public:
 	int getOrderId();
 	void setOrderId(int _order_id);
 	int calculateSum();
+	TaxiRatePeriod orderTaxiRate() { return taxiRate; }
+	double mileage();
+	int minutesStops() { return (seconds_stops + 30) / 60; }
+	int minutesTotal() { return (seconds_travelled + 30) / 60; }
+	int minutesMoving() { return (seconds_moving + 30) / 60; }
 
 signals:
 	void paymentChanged(int);
 	void regionChanged(int regionId);
 	void newMileage(float mileage);
+	void newTimeMovement(int seconds);
+	void newTimeStops(int seconds);
+	void newTimeTotal(int seconds);
 
 public slots:
 	void recalcSum();
@@ -40,8 +48,8 @@ private:
 	
 	// meters
 	float distance_travelled;
-	// seconds
-	float seconds_travelled;
+	// seconds, общее время поездки
+	int seconds_travelled;
 	// наш id для базы
 	int order_id;
 	// куда едем, id
@@ -57,6 +65,10 @@ private:
 
 	int seconds_moving;
 	int seconds_stops;
+
+	int current_stop;
+
+	bool movementStarted;
 };
 
 #endif // TAXIORDER_H

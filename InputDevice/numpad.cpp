@@ -13,7 +13,7 @@ Numpad::Numpad(QWidget *parent) :
             this, SLOT(saveFocusWidget(QWidget*,QWidget*)));
 
     this->setFixedSize(this->width(),this->height());
-    keyList=ui->keyholder->children();
+	keyList=ui->keyholder->children();
 
 
      orgPalette = ui->edValue->palette(); //save the original palette

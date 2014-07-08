@@ -2,7 +2,7 @@
 
 ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent)
 	: QObject(parent), order_id(_order_id), distance_travelled(0), seconds_travelled(0), region_id(0),
-	taxiRate(_taxiRate), gotPosition(false), started(false)
+	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), current_stop(0), seconds_stops(0), seconds_moving(0)
 {
 	qDebug() << "newOrder id:" << order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
 	paymentTimer = new QTimer(this);
@@ -20,6 +20,29 @@ ITaxiOrder::~ITaxiOrder()
 
 void ITaxiOrder::measureTimes()
 {
+	// заказ либо на паузе, либо не начался
+	if (!started)
+		return;
+
+	seconds_travelled++;
+
+	if (!movementStarted) {
+		// остановка считается, если больше 30 секунд
+		if (current_stop < 5) {
+			current_stop++;
+		} else {
+			if (seconds_stops < 5)
+				seconds_stops = 5;
+			seconds_stops++;
+		}
+	} else {
+		current_stop = 0;
+		seconds_moving++;
+	}
+
+	emit newTimeMovement(seconds_moving);
+	emit newTimeStops(seconds_stops);
+	emit newTimeTotal(seconds_travelled);
 }
 
 void ITaxiOrder::setRegionId(int _region_id)
@@ -33,15 +56,26 @@ int ITaxiOrder::getRegionId()
 	return region_id;
 }
 
+double ITaxiOrder::mileage()
+{
+	return (((int)distance_travelled + 50) / 100) / 10.0;
+}
+
 /* ============================================================= */
 int ITaxiOrder::calculateSum()
 {
 	// стоимость поездки -- это стоимость подачи
-	double distance = (distance_travelled / 100) / 10.0;
+	double distance = mileage();
+	
 	double car_in = taxiRate.car_in();
-	double mileage = distance * taxiRate.km_g();
-	double value = car_in + mileage;
-	return ((int)(value * 10.0)) / 10;
+	double mileage_cost = distance * taxiRate.km_g();	
+
+	// округление вверх на полминуте
+	double stops = taxiRate.car_min() * 0.5 * minutesStops();
+
+	double value = car_in + mileage_cost + stops;
+	
+	return ((int)((value + 0.5) * 10.0)) / 10;
 }
 /* ============================================================= */
 
@@ -55,8 +89,10 @@ void ITaxiOrder::movementStart(int startStop)
 {
 	if (startStop) {
 		// начали ехать
+		movementStarted = true;
 	} else {
 		// остановка
+		movementStarted = false;
 	}
 }
 
