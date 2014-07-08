@@ -113,6 +113,10 @@ private:
 	void updateTaxiRegionList();
 	void updateTaxiRates();
 
+
+	TaxiInfo taxiInfo;
+	void updateTaxiInfo();
+
 	int satellitesUsed;
 
 	ITaxiOrder *iTaxiOrder;

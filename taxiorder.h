@@ -42,12 +42,18 @@ public slots:
 	void stopOrder();
 	void measureTimes();
 	void movementStart(int startStop);
+	void setOutOfCity(bool _outOfCity) {
+		outOfCity = _outOfCity;
+	}
 
 private:
 	TaxiRatePeriod taxiRate;
 	
-	// meters
+	// meters in da city
 	float distance_travelled;
+
+	// meters out of city
+	float distance_mg_travelled;
 	// seconds, общее время поездки
 	int seconds_travelled;
 	// наш id для базы
@@ -67,6 +73,8 @@ private:
 	int seconds_stops;
 
 	int current_stop;
+
+	bool outOfCity;
 
 	bool movementStarted;
 };

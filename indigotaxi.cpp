@@ -179,8 +179,23 @@ void IndigoTaxi::protobuf_message(hello message)
 		taxiRegionList = message.taxiregionlist();
 		updateTaxiRegionList();
 	}
+
+	if (message.has_taxiinfo()) {
+		taxiInfo = message.taxiinfo();
+		updateTaxiInfo();
+	}
 }
 
+void IndigoTaxi::updateTaxiInfo()
+{
+	qDebug() << "entered or left base" << taxiInfo.city_name().c_str();
+	qDebug() << taxiInfo.out_of_city();
+
+	if (iTaxiOrder == NULL)
+		return;
+
+	iTaxiOrder->setOutOfCity(taxiInfo.out_of_city());
+}
 
 /**
  * Обновление на экране текущего тарифа по часам

@@ -75,6 +75,22 @@ message hello
   optional TaxiRegionList taxiRegionList = 9;
   
   optional TaxiOrder taxiOrder = 10;
+  
+  optional TaxiInfo taxiInfo = 11;
+}
+
+message TaxiInfo {
+  // не межгород ли
+  optional bool out_of_city = 1 [ default = false ];
+  
+  // если в городе, то название (для отладки)
+  optional string city_name = 2 [ default = "" ];
+  
+  optional bool inside_parking = 3 [ default = false ];
+  
+  optional float parking_price = 4 [ default = 0.0 ];
+  
+  optional bool parking_is_commercial = 5 [ default = false ];
 }
 
 message TaxiOrder {
@@ -83,10 +99,13 @@ message TaxiOrder {
   // 
   optional int32 order_id = 2               [ default = 0 ];
   
-  optional float distance_travelled = 3                [ default = 0.0 ];
+  // пройденное по городу расстояние
+  optional float distance_travelled = 3     [ default = 0.0 ];
   
+  // общее время поездки
   optional int32 seconds_travelled = 4      [ default = 0 ];
   
+  // куда
   optional int32 destination_region_id = 5 [ default = 0 ];
   
   optional string address = 6 [ default = "" ];
@@ -99,6 +118,29 @@ message TaxiOrder {
   }
   optional OrderStatus status = 7 [ default = NOTHING ];
   
+  // времени с багажом
+  optional int32 seconds_baggage = 8 [ default = 0 ];
+  
+  // пройденное по межгороду расстояние
+  optional float distance_mg_travelled = 9 [ default = 0.0 ];
+  
+  // id стоянки, из которой выехали
+  optional int32 parking_id = 10 [ default = 0 ];
+  
+  optional float km_tuda = 11 [ default = 0.0 ];
+  
+  optional float km_obratno = 12 [ default = 0.0 ];
+  
+  optional int32 client_stops_seconds = 13 [ default = 0 ];
+  
+  optional int32 driver_stops_seconds = 14 [ default = 0 ];
+  
+  // cумма по городу 
+  optional int32 money_city = 15 [ default = 0];
+  
+  // сумма по межгороду
+  optional int32 money_mg = 16 [ default = 0];
+  
   // потом сюда пойдёт перегруз, всякие стоянки и т.д.
 }
 
@@ -109,6 +151,12 @@ message TaxiOrder {
 // тариф
 message TaxiRateAll {
   repeated TaxiRatePeriod rates = 1;
+  
+  // межгород
+  optional float mg = 2 [ default = 0.0 ];
+  
+  optional float bonus = 3 [ default = 0.0 ];
+  
 }
 
 message TaxiRatePeriod {

@@ -2,7 +2,8 @@
 
 ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent)
 	: QObject(parent), order_id(_order_id), distance_travelled(0), seconds_travelled(0), region_id(0),
-	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), current_stop(0), seconds_stops(0), seconds_moving(0)
+	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), current_stop(0), seconds_stops(0), seconds_moving(0),
+	outOfCity(false)
 {
 	qDebug() << "newOrder id:" << order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
 	paymentTimer = new QTimer(this);
@@ -98,16 +99,22 @@ void ITaxiOrder::movementStart(int startStop)
 
 void ITaxiOrder::newPosition(QGeoCoordinate newPosition)
 {
-	qDebug() << "ITaxiOrder::newPosition";
-	if (started) {
-		if (gotPosition) {
+	if (!started)
+		return;
+	
+	if (gotPosition) {
+		if (outOfCity) {
+			distance_mg_travelled += newPosition.distanceTo(currentPosition);
+		} else {
 			distance_travelled += newPosition.distanceTo(currentPosition);
-			emit newMileage(distance_travelled / 1000.0);
-			recalcSum();
 		}
-		currentPosition = newPosition;
-		gotPosition = true;
+		emit newMileage((distance_mg_travelled + distance_travelled) / 1000.0);
+		recalcSum();
 	}
+	
+	currentPosition = newPosition;
+	gotPosition = true;
+
 }
 
 void ITaxiOrder::startOrder()
