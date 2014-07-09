@@ -1,12 +1,12 @@
 #include "taxiorder.h"
 
 ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent)
-	: QObject(parent), order_id(_order_id), mileage_city(0), seconds_travelled(0), destination_region_id(0),
+	: QObject(parent), _order_id(_order_id), _mileage_city(0), _total_travel_time_seconds(0), _destination_region_id(0),
 	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), 
 	current_stop(0), seconds_stops(0), seconds_moving(0),
-	outOfCity(false), mileage_out_of_city(0)
+	outOfCity(false), _mileage_out_of_city(0)
 {
-	qDebug() << "newOrder id:" << order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
+	qDebug() << "newOrder id:" << _order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
 	paymentTimer = new QTimer(this);
 	
 	connect(paymentTimer, SIGNAL(timeout()), SLOT(measureTimes()));
@@ -26,10 +26,10 @@ void ITaxiOrder::measureTimes()
 	if (!started)
 		return;
 
-	seconds_travelled++;
+	_total_travel_time_seconds++;
 
 	if (!movementStarted) {
-		// остановка считается, если больше 30 секунд
+		// остановка считается, если больше 5 секунд
 		if (current_stop < 5) {
 			current_stop++;
 		} else {
@@ -44,23 +44,23 @@ void ITaxiOrder::measureTimes()
 
 	emit newTimeMovement(seconds_moving);
 	emit newTimeStops(seconds_stops);
-	emit newTimeTotal(seconds_travelled);
+	emit newTimeTotal(_total_travel_time_seconds);
 }
 
 void ITaxiOrder::setRegionId(int _region_id)
 {
-	destination_region_id = _region_id;
-	emit regionChanged(destination_region_id);
+	_destination_region_id = _region_id;
+	emit regionChanged(_destination_region_id);
 }
 
 int ITaxiOrder::getRegionId()
 {
-	return destination_region_id;
+	return _destination_region_id;
 }
 
 double ITaxiOrder::mileage()
 {
-	return (((int)mileage_city + 50) / 100) / 10.0;
+	return (((int)_mileage_city + 50) / 100) / 10.0;
 }
 
 /* ============================================================= */
@@ -106,11 +106,11 @@ void ITaxiOrder::newPosition(QGeoCoordinate newPosition)
 	
 	if (gotPosition) {
 		if (outOfCity) {
-			mileage_out_of_city += newPosition.distanceTo(currentPosition);
+			_mileage_out_of_city += newPosition.distanceTo(currentPosition);
 		} else {
-			mileage_city += newPosition.distanceTo(currentPosition);
+			_mileage_city += newPosition.distanceTo(currentPosition);
 		}
-		emit newMileage((mileage_out_of_city + mileage_city) / 1000.0);
+		emit newMileage((_mileage_out_of_city + _mileage_city) / 1000.0);
 		recalcSum();
 	}
 	
@@ -131,10 +131,10 @@ void ITaxiOrder::stopOrder()
 
 int ITaxiOrder::getOrderId()
 {
-	return order_id;
+	return _order_id;
 }
 
 void ITaxiOrder::setOrderId(int _order_id)
 {
-	order_id = _order_id;
+	_order_id = _order_id;
 }

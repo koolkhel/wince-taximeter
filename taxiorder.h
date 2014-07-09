@@ -24,7 +24,7 @@ public:
 	TaxiRatePeriod orderTaxiRate() { return taxiRate; }
 	double mileage();
 	int minutesStops() { return (seconds_stops + 30) / 60; }
-	int minutesTotal() { return (seconds_travelled + 30) / 60; }
+	int minutesTotal() { return (_total_travel_time_seconds + 30) / 60; }
 	int minutesMoving() { return (seconds_moving + 30) / 60; }
 
 signals:
@@ -51,18 +51,18 @@ private:
 	
 	// IMPORTANT ORDER VARIABLES (USED FOR MONEY COMPUATION)
 	// meters in da city
-	float mileage_city;
+	float _mileage_city;
 
 	// meters out of city
-	float mileage_out_of_city;
+	float _mileage_out_of_city;
 	
 	// seconds, общее время поездки
-	int seconds_travelled;
+	int _total_travel_time_seconds;
 
 	// наш id для базы
-	int order_id;
+	int _order_id;
 	// куда едем, id
-	int destination_region_id;
+	int _destination_region_id;
 	
 	// true -- идёт счёт, false -- не идёт
 	bool started;
