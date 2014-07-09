@@ -130,15 +130,19 @@ void Backend::readyRead()
 
 void Backend::connected()
 {
-	qDebug() << "connected";
-	emit connectedToServer(true);
+	if (socket->state() == QAbstractSocket::ConnectedState) {
+		qDebug() << "connected";
+		emit connectedToServer(true);
+	}
 }
 
 void Backend::disconnected()
 {
-	qDebug() << "disconnected";
-	emit connectedToServer(false);
-	QTimer::singleShot(5000, this, SLOT(reconnect()));
+	if (socket->state() != QAbstractSocket::ConnectedState) {
+		qDebug() << "disconnected";
+		emit connectedToServer(false);
+		QTimer::singleShot(5000, this, SLOT(reconnect()));
+	}
 }
 
 void Backend::error(QAbstractSocket::SocketError &error)
@@ -156,7 +160,7 @@ void Backend::sendEvent(hello_TaxiEvent event)
 	hello var;
 	var.set_drivername(driverName);
 	var.set_taxiid(taxiId);
-	var.set_event(event);
+	var.set_event(event);	
 
 	orderEventsQueue.push(var);
 	flushOrderEvents();
@@ -178,8 +182,9 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 	pbOrder->set_order_id(order->getOrderId());
 
 	switch (event) {
+		case hello_TaxiEvent_NOT_PAY:
 		case hello_TaxiEvent_END_CLIENT_MOVE:
-			pbOrder->set_money((int) floor(order->calculateSum() + 0.5));
+			pbOrder->set_money(order->calculateSum());
 			break;
 		case hello_TaxiEvent_START_CLIENT_MOVE:
 		case hello_TaxiEvent_MOVED:

@@ -121,9 +121,9 @@ void VoiceLady::sayPhrase(QString name)
 {
 	QString resourceName = ":/Sound/" + name;
 	// FIXME temporary sound disable
-#ifdef UNDER_CE
+//#ifdef UNDER_CE
 	emit playSound(resourceName);	
-#endif
+//#endif
 }
 
 VoiceLady::~VoiceLady()

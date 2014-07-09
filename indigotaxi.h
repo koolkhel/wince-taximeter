@@ -30,7 +30,10 @@ signals:
 	void reboot_application();
 	void orderMovementStart(int startStop);
 	
+	
 public slots:
+	// 1 -- межгород, 0 -- нет
+	void intercity(int intercity);
 
 	void protobuf_message(hello message);
 	void connectionStatus(bool status);
@@ -90,12 +93,16 @@ public slots:
 	void driverNameEdited(QString newValue);
 	void rebootSystem();
 
+	void notPayClicked();
+
 	// page 6
 	void cancelRegionSelectClicked();
 
 private:
 	TaxiRegionList taxiRegionList;
 	TaxiRateAll taxiRates;
+	double currentParkingCost;
+	int currentParkingId;
 
 	QThread *soundThread;
 	ISoundPlayer *iSoundPlayer;
@@ -127,6 +134,8 @@ private:
 	bool movementStarted;
 
 	bool newDirection;
+
+	bool online;
 };
 
 #endif // INDIGOTAXI_H

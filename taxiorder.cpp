@@ -2,8 +2,9 @@
 
 ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent)
 	: QObject(parent), order_id(_order_id), distance_travelled(0), seconds_travelled(0), region_id(0),
-	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), current_stop(0), seconds_stops(0), seconds_moving(0),
-	outOfCity(false)
+	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), 
+	current_stop(0), seconds_stops(0), seconds_moving(0),
+	outOfCity(false), distance_mg_travelled(0)
 {
 	qDebug() << "newOrder id:" << order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
 	paymentTimer = new QTimer(this);
@@ -76,6 +77,7 @@ int ITaxiOrder::calculateSum()
 
 	double value = car_in + mileage_cost + stops;
 	
+	// округляем рубли к ближайшему
 	return ((int)((value + 0.5) * 10.0)) / 10;
 }
 /* ============================================================= */

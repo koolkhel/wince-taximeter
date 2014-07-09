@@ -18,8 +18,8 @@ int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 #define DEBUG
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags), iTaxiOrder(NULL), satellitesUsed(0), movementStarted(false),
-	newDirection(false)
+	: QMainWindow(parent, flags), iTaxiOrder(NULL), satellitesUsed(0), movementStarted(false), currentParkingCost(0),
+	newDirection(false), online(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -146,8 +146,8 @@ void IndigoTaxi::startClientMove()
 	// обновляем цифры
 	iTaxiOrder->recalcSum();
 	// на экране заказа пишем район, куда едем
-	ui.directionValueButton->setText("Направление\n" +
-		QString::fromUtf8(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_name().c_str()));
+	ui.directionValueButton->setText("НАПРАВЛЕНИЕ\n" +
+		QString::fromUtf8(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_name().c_str()).toUpper());
 	// экран заказа
 	ui.stackedWidget->setCurrentWidget(ui.orderPage2);
 
@@ -185,16 +185,46 @@ void IndigoTaxi::protobuf_message(hello message)
 		updateTaxiInfo();
 	}
 }
+	
+void IndigoTaxi::intercity(int intercity)
+{
+	if (intercity) {
+		ui.intercityLabel->setText("МЕЖГОРОД");
+	} else {
+		ui.intercityLabel->setText("ГОРОД");
+	}
+}
 
 void IndigoTaxi::updateTaxiInfo()
 {
-	qDebug() << "entered or left base" << taxiInfo.city_name().c_str();
-	qDebug() << taxiInfo.out_of_city();
+	if (taxiInfo.out_of_city()) {
+		intercity(1);
+	
+		qDebug() << "out of town";
+	} else {
+		intercity(0);
+	
+		qDebug() << "inside town" << taxiInfo.city_name().c_str();
+	}
+	
+	if (taxiInfo.inside_parking()) {
+		currentParkingCost = taxiInfo.parking_price();
+		currentParkingId = taxiInfo.parking_id();
+
+		qDebug() << "inside parking" << currentParkingId << "cost" << currentParkingCost;
+	} else {
+		currentParkingCost = 0;
+		currentParkingId = 0;
+
+		qDebug() << "outside parking";
+	}
+	
 
 	if (iTaxiOrder == NULL)
 		return;
 
 	iTaxiOrder->setOutOfCity(taxiInfo.out_of_city());
+
 }
 
 /**
@@ -230,14 +260,16 @@ void IndigoTaxi::updateTaxiRegionList()
 
 void IndigoTaxi::connectionStatus(bool status)
 {
-	if (status) {
+	if (status && !online) {
 		voiceLady->sayPhrase("CONNECTIONOK");
 		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));
 		//ui.connectionLabel->setText("Соединён");
-	} else {
+		online = true;
+	} else if (!status && online) {
 		voiceLady->sayPhrase("NOCONNECTION");		
 		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-bad.png"));
 		//ui.connectionLabel->setText("Нет соединения");
+		online = false;
 	}
 }
 
@@ -307,7 +339,7 @@ void IndigoTaxi::paytimeClick()
 	iTaxiOrder->stopOrder();
 	int payment = iTaxiOrder->calculateSum();
 
-	ui.finalPaymentAmountLabel->setText(QString("%1 руб.").arg(payment));
+	ui.finalPaymentAmountLabel->setText(QString("%1р.").arg(payment));
 	ui.finalMileageLabel->setText(QString("%1").arg(iTaxiOrder->mileage(), 0, 'f', 1));
 	ui.finalStopsTimeLabel->setText(QString("%1").arg(iTaxiOrder->minutesStops()));
 	ui.finalTotalTimeTravelledLabel->setText(QString("%1").arg(iTaxiOrder->minutesTotal()));
@@ -386,6 +418,11 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 		backend->sendEvent(hello_TaxiEvent_DAY_END);
 		ui.dutyStart->setText("Начало смены");
 	}
+}
+
+void IndigoTaxi::notPayClicked()
+{
+	backend->sendOrderEvent(hello_TaxiEvent_NOT_PAY, iTaxiOrder);
 }
 
 void IndigoTaxi::dinnerStartClicked()

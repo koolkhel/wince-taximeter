@@ -91,6 +91,8 @@ message TaxiInfo {
   optional float parking_price = 4 [ default = 0.0 ];
   
   optional bool parking_is_commercial = 5 [ default = false ];
+  
+  optional int32 parking_id = 6 [ default = 0 ];
 }
 
 message TaxiOrder {

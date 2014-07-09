@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>Numpad</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton, #edValue {
+	font: 12pt &quot;Segoe UI&quot;;
+	font-weight: bold;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>5</number>
@@ -299,7 +305,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string notr="true">Очистить</string>
+         <string notr="true">CLR</string>
         </property>
         <property name="btnMode" stdset="0">
          <number>2</number>
@@ -490,8 +496,10 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>10</pointsize>
+          <family>Segoe UI</family>
+          <pointsize>12</pointsize>
           <weight>75</weight>
+          <italic>false</italic>
           <bold>true</bold>
          </font>
         </property>
