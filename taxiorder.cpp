@@ -1,10 +1,10 @@
 #include "taxiorder.h"
 
 ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent)
-	: QObject(parent), order_id(_order_id), distance_travelled(0), seconds_travelled(0), region_id(0),
+	: QObject(parent), order_id(_order_id), mileage_city(0), seconds_travelled(0), destination_region_id(0),
 	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), 
 	current_stop(0), seconds_stops(0), seconds_moving(0),
-	outOfCity(false), distance_mg_travelled(0)
+	outOfCity(false), mileage_out_of_city(0)
 {
 	qDebug() << "newOrder id:" << order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
 	paymentTimer = new QTimer(this);
@@ -49,18 +49,18 @@ void ITaxiOrder::measureTimes()
 
 void ITaxiOrder::setRegionId(int _region_id)
 {
-	region_id = _region_id;
-	emit regionChanged(region_id);
+	destination_region_id = _region_id;
+	emit regionChanged(destination_region_id);
 }
 
 int ITaxiOrder::getRegionId()
 {
-	return region_id;
+	return destination_region_id;
 }
 
 double ITaxiOrder::mileage()
 {
-	return (((int)distance_travelled + 50) / 100) / 10.0;
+	return (((int)mileage_city + 50) / 100) / 10.0;
 }
 
 /* ============================================================= */
@@ -106,11 +106,11 @@ void ITaxiOrder::newPosition(QGeoCoordinate newPosition)
 	
 	if (gotPosition) {
 		if (outOfCity) {
-			distance_mg_travelled += newPosition.distanceTo(currentPosition);
+			mileage_out_of_city += newPosition.distanceTo(currentPosition);
 		} else {
-			distance_travelled += newPosition.distanceTo(currentPosition);
+			mileage_city += newPosition.distanceTo(currentPosition);
 		}
-		emit newMileage((distance_mg_travelled + distance_travelled) / 1000.0);
+		emit newMileage((mileage_out_of_city + mileage_city) / 1000.0);
 		recalcSum();
 	}
 	

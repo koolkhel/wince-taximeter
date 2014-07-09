@@ -49,18 +49,26 @@ public slots:
 private:
 	TaxiRatePeriod taxiRate;
 	
+	// IMPORTANT ORDER VARIABLES (USED FOR MONEY COMPUATION)
 	// meters in da city
-	float distance_travelled;
+	float mileage_city;
 
 	// meters out of city
-	float distance_mg_travelled;
+	float mileage_out_of_city;
+	
 	// seconds, общее время поездки
 	int seconds_travelled;
+
 	// наш id для базы
 	int order_id;
 	// куда едем, id
-	int region_id;
+	int destination_region_id;
+	
+	// true -- идёт счёт, false -- не идёт
 	bool started;
+
+	// END IMPORTANT ORDER VARIABLES
+	
 
 	QString addressText;
 	
