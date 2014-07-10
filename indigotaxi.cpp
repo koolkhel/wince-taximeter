@@ -240,6 +240,7 @@ void IndigoTaxi::updateTaxiRates()
 	TaxiRatePeriod period = getCurrentTaxiRatePeriod();
 	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in(), 0, 'f', 1));
 	ui.km_g_label->setText(QString("%1 руб.").arg(period.km_g(), 0, 'f', 1));
+	ui.km_mg_label->setText(QString("%1 руб.").arg(taxiRates.mg(), 0, 'f', 1));
 	
 	float stopsTaxiRate = (floor((period.car_min() / 2.0) * 10)) / 10.0;
 	ui.car_min_label->setText(QString("%1 руб.").arg(stopsTaxiRate, 0, 'f', 1));
@@ -393,6 +394,15 @@ void IndigoTaxi::backToStandByClick()
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
+void IndigoTaxi::enableMainButtons(bool enable)
+{
+	ui.moveToClientButton->setEnabled(enable);
+	ui.startClientMoveButton->setEnabled(enable);
+
+	ui.centralWidget->style()->unpolish(ui.moveToClientButton);
+	ui.centralWidget->style()->unpolish(ui.startClientMoveButton);
+	ui.centralWidget->update();
+}
 
 /*!
  * \brief
@@ -414,9 +424,11 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 	if (pressed) {
 		backend->sendEvent(hello_TaxiEvent_ARRIVED);
 		ui.dutyStart->setText("Конец смены");
+		enableMainButtons(true);
 	} else {
 		backend->sendEvent(hello_TaxiEvent_DAY_END);
 		ui.dutyStart->setText("Начало смены");
+		enableMainButtons(false);
 	}
 }
 

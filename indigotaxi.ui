@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>489</width>
-    <height>272</height>
+    <width>491</width>
+    <height>273</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -109,7 +109,9 @@ QPushButton {
 	background: #4ca2a6;
 }
 
-#inPlaceButton[enabled=&quot;false&quot;] {
+#inPlaceButton[enabled=&quot;false&quot;],
+#moveToClientButton[enabled=&quot;false&quot;],
+#startClientMoveButton[enabled=&quot;false&quot;] {
 	background: #426063;
 	color: #364c4e;
 }
@@ -577,7 +579,7 @@ QPushButton {
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_8">
+                <widget class="QLabel" name="km_mg_label">
                  <property name="text">
                   <string>14 руб</string>
                  </property>
@@ -696,7 +698,7 @@ QPushButton {
                  <bool>true</bool>
                 </property>
                 <property name="plainText">
-                 <string>ул. Котлостроительная, дом.6, подъезд 1 (въезд со двора)</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -760,6 +762,9 @@ QPushButton {
             </property>
             <item>
              <widget class="QPushButton" name="moveToClientButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -803,6 +808,9 @@ QPushButton {
             </item>
             <item>
              <widget class="QPushButton" name="startClientMoveButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>

@@ -136,6 +136,8 @@ private:
 	bool newDirection;
 
 	bool online;
+
+	void enableMainButtons(bool enable);
 };
 
 #endif // INDIGOTAXI_H
