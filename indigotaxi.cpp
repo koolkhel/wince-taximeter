@@ -32,7 +32,6 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	backend = new Backend(this);
 	
-	
 	connect(backend, SIGNAL(protobuf_message(hello)), SLOT(protobuf_message(hello)));
 	connect(backend, SIGNAL(connectedToServer(bool)), SLOT(connectionStatus(bool)));
 	connect(backend, SIGNAL(driverNameChanged(int)), SLOT(driverNameChanged(int)));
@@ -124,8 +123,11 @@ void IndigoTaxi::startClientMove()
 
 	ui.stopsTaxiRateLabel->setText(QString("%1").arg(stopsTaxiRate, 0, 'f', 1));
 
-	float kmgTaxiRate = iTaxiOrder->orderTaxiRate().km_g();
-	ui.kmgTaxiRateLabel->setText(QString("%1").arg(kmgTaxiRate, 0, 'f', 1));
+	float kmTaxiRate = iTaxiOrder->orderTaxiRate().km_g();
+	float kmgTaxiRate = iTaxiOrder->mgRate();
+	ui.kmgTaxiRateLabel->setText(QString("%1/%2")
+		.arg(kmTaxiRate, 0, 'f', 1)
+		.arg(kmgTaxiRate, 0, 'f', 1));
 
 	float carInRate = iTaxiOrder->orderTaxiRate().car_in();
 	ui.finalCarInLabel ->setText(QString("%1").arg(carInRate, 0, 'f', 1));
@@ -263,13 +265,11 @@ void IndigoTaxi::connectionStatus(bool status)
 {
 	if (status && !online) {
 		voiceLady->sayPhrase("CONNECTIONOK");
-		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));
-		//ui.connectionLabel->setText("Соединён");
+		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));		
 		online = true;
 	} else if (!status && online) {
 		voiceLady->sayPhrase("NOCONNECTION");		
 		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-bad.png"));
-		//ui.connectionLabel->setText("Нет соединения");
 		online = false;
 	}
 }
@@ -341,10 +341,14 @@ void IndigoTaxi::paytimeClick()
 	int payment = iTaxiOrder->calculateSum();
 
 	ui.finalPaymentAmountLabel->setText(QString("%1р.").arg(payment));
-	ui.finalMileageLabel->setText(QString("%1").arg(iTaxiOrder->mileage(), 0, 'f', 1));
+	
+	// километры
+	ui.finalMileageLabel->setText(QString("%1/%2")
+		.arg(iTaxiOrder->cityMileage(), 0, 'f', 1)
+		.arg(iTaxiOrder->outOfCityMileage(), 0, 'f', 1));
+	
 	ui.finalStopsTimeLabel->setText(QString("%1").arg(iTaxiOrder->minutesStops()));
 	ui.finalTotalTimeTravelledLabel->setText(QString("%1").arg(iTaxiOrder->minutesTotal()));
-
 
 	voiceLady->speakMoney(payment);
 	ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
@@ -354,8 +358,8 @@ void IndigoTaxi::paytimeClick()
 // свободен -- сумма оплачивается
 void IndigoTaxi::freeButtonClick()
 {
+	voiceLady->sayPhrase("BYE");
 	if (iTaxiOrder != NULL) {
-		voiceLady->sayPhrase("BYE");
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
 		destroyCurrentOrder();
 	}
@@ -549,6 +553,9 @@ TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id) 
 {
 	ITaxiOrder *iTaxiOrder = new ITaxiOrder(order_id, getCurrentTaxiRatePeriod(), this);
+
+	iTaxiOrder->setMg(taxiRates.mg());
+
 	connect(backend, SIGNAL(newPosition(QGeoCoordinate)), iTaxiOrder, SLOT(newPosition(QGeoCoordinate)));
 	connect(iTaxiOrder, SIGNAL(newMileage(float)), SLOT(newMileage(float)));
 	connect(iTaxiOrder, SIGNAL(paymentChanged(int)), SLOT(newPaymentCalculated(int)));

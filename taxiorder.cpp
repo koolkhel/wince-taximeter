@@ -58,24 +58,23 @@ int ITaxiOrder::getRegionId()
 	return _destination_region_id;
 }
 
-double ITaxiOrder::mileage()
+double ITaxiOrder::totalMileage()
 {
-	return (((int)_mileage_city + 50) / 100) / 10.0;
+	return cityMileage() + outOfCityMileage();
 }
 
 /* ============================================================= */
 int ITaxiOrder::calculateSum()
 {
 	// стоимость поездки -- это стоимость подачи
-	double distance = mileage();
-	
 	double car_in = taxiRate.car_in();
-	double mileage_cost = distance * taxiRate.km_g();	
+	double mileage_city_cost = cityMileage() * taxiRate.km_g();
+	double mileage_out_of_city_cost = outOfCityMileage() * mgRate();
 
 	// округление вверх на полминуте
 	double stops = taxiRate.car_min() * 0.5 * minutesStops();
 
-	double value = car_in + mileage_cost + stops;
+	double value = car_in + mileage_city_cost + mileage_out_of_city_cost + stops;
 	
 	// округляем рубли к ближайшему
 	return ((int)((value + 0.5) * 10.0)) / 10;

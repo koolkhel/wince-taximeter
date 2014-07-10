@@ -56,5 +56,6 @@
 <file alias="2e">Resources/voice/2e.wav</file>
 <file alias="roubles">Resources/voice/roubles.wav</file>
 <file alias="roubla">Resources/voice/roubla.wav</file>
+<file alias="roubl">Resources/voice/roubl.wav</file>
 </qresource>
 </RCC>

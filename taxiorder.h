@@ -22,7 +22,11 @@ public:
 	void setOrderId(int _order_id);
 	int calculateSum();
 	TaxiRatePeriod orderTaxiRate() { return taxiRate; }
-	double mileage();
+	double totalMileage();
+	// километражи округляются до сотен метров
+	float cityMileage() { return (((int)_mileage_city + 50) / 100) / 10.0; }
+	float outOfCityMileage() { return (((int)_mileage_out_of_city + 50) / 100) / 10.0; }
+	float mgRate() { return out_of_city_rate;}
 	int minutesStops() { return (seconds_stops + 30) / 60; }
 	int minutesTotal() { return (_total_travel_time_seconds + 30) / 60; }
 	int minutesMoving() { return (seconds_moving + 30) / 60; }
@@ -45,11 +49,17 @@ public slots:
 	void setOutOfCity(bool _outOfCity) {
 		outOfCity = _outOfCity;
 	}
+	void setMg(float _out_of_city_rate)
+	{
+		out_of_city_rate = _out_of_city_rate;
+	}
 
-private:
+private:	
+	// IMPORTANT ORDER VARIABLES (USED FOR MONEY COMPUATION)	
 	TaxiRatePeriod taxiRate;
 	
-	// IMPORTANT ORDER VARIABLES (USED FOR MONEY COMPUATION)
+	// стоимость километра в межгороде
+	float out_of_city_rate;
 	// meters in da city
 	float _mileage_city;
 

@@ -434,7 +434,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -500,7 +500,7 @@ QPushButton {
                   <enum>QFrame::Plain</enum>
                  </property>
                  <property name="text">
-                  <string>35 р.</string>
+                  <string>0 р.</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -527,7 +527,7 @@ QPushButton {
                <item>
                 <widget class="QLabel" name="car_min_label">
                  <property name="text">
-                  <string>10 р.</string>
+                  <string>0 р.</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -581,7 +581,7 @@ QPushButton {
                <item>
                 <widget class="QLabel" name="km_mg_label">
                  <property name="text">
-                  <string>14 руб</string>
+                  <string>0 р.</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -623,7 +623,7 @@ QPushButton {
                   <enum>QFrame::Plain</enum>
                  </property>
                  <property name="text">
-                  <string>15 р.</string>
+                  <string>0 р.</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1334,7 +1334,7 @@ QPushButton {
           <item row="4" column="1">
            <widget class="QLabel" name="kmgTaxiRateLabel">
             <property name="text">
-             <string>0</string>
+             <string>0/0</string>
             </property>
            </widget>
           </item>
@@ -1376,7 +1376,7 @@ QPushButton {
           <item row="4" column="2">
            <widget class="QLabel" name="finalMileageLabel">
             <property name="text">
-             <string>0</string>
+             <string>0/0</string>
             </property>
            </widget>
           </item>
@@ -1390,7 +1390,7 @@ QPushButton {
           <item row="4" column="0">
            <widget class="QLabel" name="label_14">
             <property name="text">
-             <string>ПУТЬ, КМ</string>
+             <string>ПУТЬ/МГ, КМ</string>
             </property>
            </widget>
           </item>

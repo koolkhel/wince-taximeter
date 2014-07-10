@@ -138,6 +138,8 @@ private:
 	bool online;
 
 	void enableMainButtons(bool enable);
+
+	QList<ITaxiOrder *> ordersHistory;
 };
 
 #endif // INDIGOTAXI_H
