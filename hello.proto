@@ -159,6 +159,8 @@ message TaxiRateAll {
   
   optional float bonus = 3 [ default = 0.0 ];
   
+  optional float client_stop = 4 [ default = 0.0 ];
+  
 }
 
 message TaxiRatePeriod {
@@ -175,6 +177,9 @@ message TaxiRatePeriod {
   optional float km_g = 7         [ default = 0.0 ];
   // стоимость минуты
   optional float car_min = 8      [ default = 0.0 ];
+  
+  // остановка по просьбе клиента
+  optional float client_stop = 9 [ default = 0.0 ];
 } 
 
 message TaxiRegionList {

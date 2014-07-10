@@ -120,8 +120,10 @@ void IndigoTaxi::startClientMove()
 	}
 
 	float stopsTaxiRate = (floor((iTaxiOrder->orderTaxiRate().car_min() / 2.0) * 10)) / 10.0;
-
-	ui.stopsTaxiRateLabel->setText(QString("%1").arg(stopsTaxiRate, 0, 'f', 1));
+	float clientStopsTaxiRate = (floor((iTaxiOrder->orderTaxiRate().client_stop()) * 10)) / 10.0;
+	ui.stopsTaxiRateLabel->setText(QString("%1/%2")
+		.arg(clientStopsTaxiRate, 0, 'f', 1)
+		.arg(stopsTaxiRate, 0, 'f', 1));
 
 	float kmTaxiRate = iTaxiOrder->orderTaxiRate().km_g();
 	float kmgTaxiRate = iTaxiOrder->mgRate();
@@ -129,7 +131,7 @@ void IndigoTaxi::startClientMove()
 		.arg(kmTaxiRate, 0, 'f', 1)
 		.arg(kmgTaxiRate, 0, 'f', 1));
 
-	float carInRate = iTaxiOrder->orderTaxiRate().car_in();
+	float carInRate = iTaxiOrder->orderTaxiRate().car_in() + currentParkingCost;
 	ui.finalCarInLabel ->setText(QString("%1").arg(carInRate, 0, 'f', 1));
 
 
@@ -240,12 +242,15 @@ void IndigoTaxi::updateTaxiRates()
 		//	"KM_G:" << taxiRates.rates().Get(i).km_g();
 	}
 	TaxiRatePeriod period = getCurrentTaxiRatePeriod();
-	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in(), 0, 'f', 1));
+	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in() + currentParkingCost, 0, 'f', 1));
 	ui.km_g_label->setText(QString("%1 руб.").arg(period.km_g(), 0, 'f', 1));
 	ui.km_mg_label->setText(QString("%1 руб.").arg(taxiRates.mg(), 0, 'f', 1));
 	
-	float stopsTaxiRate = (floor((period.car_min() / 2.0) * 10)) / 10.0;
-	ui.car_min_label->setText(QString("%1 руб.").arg(stopsTaxiRate, 0, 'f', 1));
+	float clientStopsTaxiRate = (floor((period.client_stop()) * 10)) / 10.0;
+	float stopsTaxiRate = (floor((period.car_in() * 0.5) * 10)) / 10.0;
+	ui.client_stop_label->setText(QString("%1/%2руб.")
+		.arg(clientStopsTaxiRate, 0, 'f', 1)
+		.arg(stopsTaxiRate, 0, 'f', 1));
 }
 
 /**
@@ -552,7 +557,8 @@ TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 // новый заказ, с номером или без
 ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id) 
 {
-	ITaxiOrder *iTaxiOrder = new ITaxiOrder(order_id, getCurrentTaxiRatePeriod(), this);
+	ITaxiOrder *iTaxiOrder = new ITaxiOrder(order_id, getCurrentTaxiRatePeriod(), 
+		currentParkingCost, currentParkingId, this);
 
 	iTaxiOrder->setMg(taxiRates.mg());
 

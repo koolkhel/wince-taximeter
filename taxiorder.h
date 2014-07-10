@@ -13,7 +13,7 @@ class ITaxiOrder : public QObject
 	Q_OBJECT
 
 public:
-	ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent);
+	ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCost, int _parkingId, QObject *parent);
 	~ITaxiOrder();
 
 	void setRegionId(int _region_id);
@@ -26,7 +26,16 @@ public:
 	// километражи округл€ютс€ до сотен метров
 	float cityMileage() { return (((int)_mileage_city + 50) / 100) / 10.0; }
 	float outOfCityMileage() { return (((int)_mileage_out_of_city + 50) / 100) / 10.0; }
+	float cityMileageOverload() { return (((int)_mileage_city_overload + 50) / 100) / 10.0; }
+	float outOfCityMileageOverload() { return (((int)_mileage_out_of_city_overload + 50) / 100) / 10.0; }
+	void setOverload(bool overload) { _overload = overload; }
+	void setClientStop(bool clientStop) { _clientStop = clientStop; }
+	
+	
 	float mgRate() { return out_of_city_rate;}
+	int getParkingId() { return parkingId; }
+	float getParkingCost() { return parkingCost; }
+	int minutesClientStops() {return (seconds_client_stops + 30) / 60;}
 	int minutesStops() { return (seconds_stops + 30) / 60; }
 	int minutesTotal() { return (_total_travel_time_seconds + 30) / 60; }
 	int minutesMoving() { return (seconds_moving + 30) / 60; }
@@ -62,9 +71,11 @@ private:
 	float out_of_city_rate;
 	// meters in da city
 	float _mileage_city;
-
 	// meters out of city
 	float _mileage_out_of_city;
+
+	float _mileage_city_overload;
+	float _mileage_out_of_city_overload;
 	
 	// seconds, общее врем€ поездки
 	int _total_travel_time_seconds;
@@ -77,6 +88,14 @@ private:
 	// true -- идЄт счЄт, false -- не идЄт
 	bool started;
 
+	// общее врем€ в движении
+	int seconds_moving;
+
+	// врем€ в пробках
+	int seconds_stops;
+
+	int seconds_client_stops;
+
 	// END IMPORTANT ORDER VARIABLES
 	
 
@@ -87,14 +106,20 @@ private:
 	QGeoCoordinate currentPosition;
 	bool gotPosition;
 
-	int seconds_moving;
-	int seconds_stops;
 
 	int current_stop;
 
 	bool outOfCity;
 
 	bool movementStarted;
+
+	float parkingCost; 
+	
+	int parkingId;
+
+	bool _overload;
+
+	bool _clientStop;
 };
 
 #endif // TAXIORDER_H

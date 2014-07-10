@@ -1,9 +1,9 @@
 #include "taxiorder.h"
 
-ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, QObject *parent)
+ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCost, int _parkingId, QObject *parent)
 	: QObject(parent), _order_id(_order_id), _mileage_city(0), _total_travel_time_seconds(0), _destination_region_id(0),
-	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), 
-	current_stop(0), seconds_stops(0), seconds_moving(0),
+	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), parkingCost(_parkingCost), parkingId(_parkingId),
+	current_stop(0), seconds_stops(0), seconds_moving(0), seconds_client_stops(0), out_of_city_rate(0),
 	outOfCity(false), _mileage_out_of_city(0)
 {
 	qDebug() << "newOrder id:" << _order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
@@ -42,6 +42,11 @@ void ITaxiOrder::measureTimes()
 		seconds_moving++;
 	}
 
+	if (_clientStop)
+	{
+		seconds_client_stops++;
+	}
+
 	emit newTimeMovement(seconds_moving);
 	emit newTimeStops(seconds_stops);
 	emit newTimeTotal(_total_travel_time_seconds);
@@ -66,15 +71,27 @@ double ITaxiOrder::totalMileage()
 /* ============================================================= */
 int ITaxiOrder::calculateSum()
 {
-	// стоимость поездки -- это стоимость подачи
-	double car_in = taxiRate.car_in();
+	// подача машины -- с платной стоянки
+	double car_in = taxiRate.car_in() + parkingCost;
+	
+	// километраж по городу и за городом
 	double mileage_city_cost = cityMileage() * taxiRate.km_g();
 	double mileage_out_of_city_cost = outOfCityMileage() * mgRate();
 
-	// округление вверх на полминуте
+	// километраж с перегрузом
+	double mileage_city_overload_cost = cityMileageOverload() * taxiRate.km_g() * 1.5;
+	double mileage_out_of_city_overload_cost = outOfCityMileageOverload() * mgRate() * 1.5;
+	
+	// остановки по просьбе клиента
+	double client_stops = minutesClientStops() * taxiRate.client_stop();
+
+	// пробки
 	double stops = taxiRate.car_min() * 0.5 * minutesStops();
 
-	double value = car_in + mileage_city_cost + mileage_out_of_city_cost + stops;
+	double value = car_in 
+		+ mileage_city_cost + mileage_out_of_city_cost 
+		+ mileage_city_overload_cost + mileage_out_of_city_overload_cost 
+		+ stops + client_stops;
 	
 	// округляем рубли к ближайшему
 	return ((int)((value + 0.5) * 10.0)) / 10;
