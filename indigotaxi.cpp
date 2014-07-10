@@ -18,8 +18,9 @@ int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 #define DEBUG
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags), iTaxiOrder(NULL), satellitesUsed(0), movementStarted(false), currentParkingCost(0),
-	newDirection(false), online(false)
+	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
+	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
+	newDirection(false), online(false), downloader(NULL) 
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -113,6 +114,11 @@ void IndigoTaxi::inPlace()
 
 void IndigoTaxi::startClientMove()
 {
+#ifndef DEBUG
+	if (movementStarted)
+		return;
+#endif
+	
 	// если заказ инииирован на месте
 	if (iTaxiOrder == NULL) {
 		// заказ инициирован водителем
@@ -133,7 +139,6 @@ void IndigoTaxi::startClientMove()
 
 	float carInRate = iTaxiOrder->orderTaxiRate().car_in() + currentParkingCost;
 	ui.finalCarInLabel ->setText(QString("%1").arg(carInRate, 0, 'f', 1));
-
 
 	// целевой регион
 	iTaxiOrder->setRegionId(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
@@ -341,6 +346,11 @@ void IndigoTaxi::paytimeClick()
 	// stop accounting
 	if (iTaxiOrder == NULL)
 		return;
+
+#ifndef DEBUG
+	if (movementStarted)
+		return;
+#endif
 		
 	iTaxiOrder->stopOrder();
 	int payment = iTaxiOrder->calculateSum();
@@ -519,7 +529,8 @@ void IndigoTaxi::fromcarEndButtonClicked()
  */
 void IndigoTaxi::notToMeButtonClicked()
 {
-	backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);		
+	// может быть только для прошлого заказа
+	backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, lastTaxiOrder);		
 	ui.serverMessage->setPlainText("");
 }
 
@@ -585,7 +596,14 @@ void IndigoTaxi::destroyCurrentOrder()
 	if (iTaxiOrder != NULL) {
 		disconnect(iTaxiOrder, 0, 0, 0);
 		disconnect(backend, 0, iTaxiOrder, 0);
-		delete iTaxiOrder;
+		//delete iTaxiOrder;
+		if (lastTaxiOrder != NULL)
+		{
+			delete lastTaxiOrder;
+			lastTaxiOrder = NULL;
+		}
+
+		lastTaxiOrder = iTaxiOrder;
 		iTaxiOrder = NULL;
 	}
 }
@@ -672,16 +690,19 @@ void IndigoTaxi::clientStopClicked(bool on)
 	if (iTaxiOrder == NULL)
 		return;
 
-	if (on)
-	{
-		voiceLady->sayPhrase("CLIENTSTOP");
-	} else
-	{
-		voiceLady->sayPhrase("CLIENTSTOPOFF");
-	}
+
 
 	if (!movementStarted) {
 		iTaxiOrder->setClientStop(on);
+
+		if (on)
+		{
+			voiceLady->sayPhrase("CLIENTSTOP");
+		} else
+		{
+			voiceLady->sayPhrase("CLIENTSTOPOFF");
+		}
+
 	}
 }
 
@@ -694,6 +715,10 @@ void IndigoTaxi::movementStart(int start)
 
 	if (movementStarted) {
 		// FIXME выключить режим переезда
+		if (iTaxiOrder != NULL)
+		{
+			iTaxiOrder->setTrainCross(false);
+		}
 		ui.trainCrossButton->setEnabled(true);
 		ui.trainCrossButton->setChecked(false);
 	}
@@ -706,6 +731,10 @@ void IndigoTaxi::trainCrossButtonClicked()
 	if (!movementStarted) {
 		voiceLady->sayPhrase("TRAINCROSS");
 		ui.trainCrossButton->setEnabled(false);
+		if (iTaxiOrder != NULL)
+		{
+			iTaxiOrder->setTrainCross(true);
+		}
 	} else {
 		// отжимаем обратно
 		ui.trainCrossButton->setChecked(false);

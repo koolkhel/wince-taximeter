@@ -8,7 +8,9 @@ ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCo
 	_mileage_city(0), 
 	
 	_total_travel_time_seconds(0), 
-	seconds_stops(0), seconds_moving(0), seconds_client_stops(0), _out_of_city_rate(0),
+	seconds_stops(0), seconds_moving(0), seconds_client_stops(0), seconds_traincross_stops(0),
+	
+	_out_of_city_rate(0),
 	
 	_destination_region_id(0),
 	taxiRate(_taxiRate), 
@@ -21,6 +23,8 @@ ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCo
 	current_stop_seconds(0), 
 	
 	outOfCity(false),
+
+	_clientStop(false),_overload(false),_trainCross(false),
 	
 	_mileage_out_of_city(0), _mileage_city_overload(0), _mileage_out_of_city_overload(0)
 {
@@ -46,13 +50,11 @@ void ITaxiOrder::measureTimes()
 
 	_total_travel_time_seconds++;
 
-	if (!movementStarted) {
-		// остановка считается, если больше 5 секунд
-		if (current_stop_seconds < 5) {
+	if (!movementStarted && !_clientStop) {
+		// остановка считается, если больше 30 секунд
+		if (current_stop_seconds < 30) {
 			current_stop_seconds++;
 		} else {
-			if (seconds_stops < 5)
-				seconds_stops = 5;
 			seconds_stops++;
 		}
 	} else {
@@ -87,20 +89,29 @@ double ITaxiOrder::totalMileage()
 	return cityMileage() + outOfCityMileage();
 }
 
+double ITaxiOrder::moneyCity()
+{	
+	double mileage_city_cost = cityMileage() * taxiRate.km_g();	
+	double mileage_city_overload_cost = cityMileageOverload() * taxiRate.km_g() * 1.5;
+
+	return mileage_city_cost + mileage_city_overload_cost;
+}
+
+double ITaxiOrder::moneyMg()
+{
+	double mileage_out_of_city_cost = outOfCityMileage() * mgRate();
+	double mileage_out_of_city_overload_cost = outOfCityMileageOverload() * mgRate() * 1.5;
+
+	return mileage_out_of_city_cost + mileage_out_of_city_overload_cost;
+}
+
 /* ============================================================= */
 int ITaxiOrder::calculateSum()
 {
 	// подача машины -- с платной стоянки
-	double car_in = taxiRate.car_in() + parkingCost;
-	
-	// километраж по городу и за городом
-	double mileage_city_cost = cityMileage() * taxiRate.km_g();
-	double mileage_out_of_city_cost = outOfCityMileage() * mgRate();
-
-	// километраж с перегрузом
-	double mileage_city_overload_cost = cityMileageOverload() * taxiRate.km_g() * 1.5;
-	double mileage_out_of_city_overload_cost = outOfCityMileageOverload() * mgRate() * 1.5;
-	
+	//double car_in = taxiRate.car_in() + parkingCost;
+	double car_in = taxiRate.car_in();
+		
 	// остановки по просьбе клиента
 	double client_stops = minutesClientStops() * taxiRate.client_stop();
 
@@ -108,8 +119,7 @@ int ITaxiOrder::calculateSum()
 	double stops = taxiRate.car_min() * 0.5 * minutesStops();
 
 	double value = car_in 
-		+ mileage_city_cost + mileage_out_of_city_cost 
-		+ mileage_city_overload_cost + mileage_out_of_city_overload_cost 
+		+ moneyCity() + moneyMg()
 		+ stops + client_stops;
 	
 	// округляем рубли к ближайшему
@@ -145,7 +155,9 @@ void ITaxiOrder::newPosition(QGeoCoordinate newPosition)
 		} else {
 			_mileage_city += newPosition.distanceTo(currentPosition);
 		}
-		emit newMileage((_mileage_out_of_city + _mileage_city) / 1000.0);
+		//emit newMileage((_mileage_out_of_city + _mileage_city + _mileage_city_overload + _mileage_out_of_city_overload) / 1000.0);
+		// все округлены по 100 метров и сложены
+		emit newMileage(cityMileage() + outOfCityMileage() + cityMileageOverload() + outOfCityMileageOverload());
 		recalcSum();
 	}
 	

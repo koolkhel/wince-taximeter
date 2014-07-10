@@ -194,8 +194,17 @@ QPushButton {
 	background: #4c66b0;
 }
 
+#overloadButton:checked {
+	background: #1d1d1d;
+}
+
+
 #farawayButton {
 	background: #724b22;
+}
+
+#farawayButton {
+	background: #1d1d1d;
 }
 
 #trainCrossButton {
@@ -434,7 +443,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1319,7 +1328,7 @@ QPushButton {
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_4" rowstretch="1,1,1,1,0,0" columnstretch="2,1,1,4">
+         <layout class="QGridLayout" name="gridLayout_4" rowstretch="1,1,1,1,1" columnstretch="2,1,1,4">
           <property name="leftMargin">
            <number>5</number>
           </property>
@@ -1360,7 +1369,7 @@ QPushButton {
           <item row="4" column="1">
            <widget class="QLabel" name="kmgTaxiRateLabel">
             <property name="text">
-             <string>0/0</string>
+             <string>17.0/17.0</string>
             </property>
            </widget>
           </item>
@@ -1381,7 +1390,7 @@ QPushButton {
           <item row="2" column="1">
            <widget class="QLabel" name="finalCarInLabel">
             <property name="text">
-             <string>0</string>
+             <string>42.0</string>
             </property>
            </widget>
           </item>
@@ -1409,7 +1418,7 @@ QPushButton {
           <item row="3" column="1">
            <widget class="QLabel" name="stopsTaxiRateLabel">
             <property name="text">
-             <string>0</string>
+             <string>5.0/3.7</string>
             </property>
            </widget>
           </item>
@@ -1430,32 +1439,11 @@ QPushButton {
           <item row="3" column="0">
            <widget class="QLabel" name="label_10">
             <property name="text">
-             <string>ПРОБКИ, МИН</string>
+             <string>ПРОБКИ/ОСТ, МИН</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>ОСТ./ПРОБКИ</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLabel" name="finalClientStopRateLabel">
-            <property name="text">
-             <string>0/0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="QLabel" name="finalClientStopLabel">
-            <property name="text">
-             <string>0/0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3" rowspan="6">
+          <item row="0" column="3" rowspan="5">
            <widget class="QLabel" name="finalPaymentAmountLabel">
             <property name="font">
              <font>
@@ -2497,7 +2485,7 @@ QPushButton {
    <sender>freeButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>cancelRegionSelectClicked()</slot>
+   <slot>freeButtonClick()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>342</x>
@@ -2601,22 +2589,6 @@ QPushButton {
     </hint>
     <hint type="destinationlabel">
      <x>274</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>overloadButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>overloadButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>342</x>
-     <y>242</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>477</x>
      <y>0</y>
     </hint>
    </hints>
@@ -2845,6 +2817,22 @@ QPushButton {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>overloadButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>overloadButtonClicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>292</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>282</x>
+     <y>-55</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -2869,11 +2857,11 @@ QPushButton {
   <slot>notToMeButtonClicked()</slot>
   <slot>selectRegionClicked()</slot>
   <slot>trainCrossButtonClicked()</slot>
-  <slot>overloadButtonClicked()</slot>
   <slot>newDirectionClicked()</slot>
   <slot>cancelRegionSelectClicked()</slot>
   <slot>rebootSystem()</slot>
   <slot>notPayClicked()</slot>
   <slot>clientStopClicked(bool)</slot>
+  <slot>overloadButtonClicked(bool)</slot>
  </slots>
 </ui>

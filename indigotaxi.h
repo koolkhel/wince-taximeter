@@ -128,7 +128,7 @@ private:
 
 	int satellitesUsed;
 
-	ITaxiOrder *iTaxiOrder;
+	ITaxiOrder *iTaxiOrder, *lastTaxiOrder;
 	TaxiRatePeriod getCurrentTaxiRatePeriod();
 	void handleNewOrder(TaxiOrder order);	
 	ITaxiOrder *createTaxiOrder(int order_id);

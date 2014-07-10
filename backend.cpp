@@ -1,8 +1,8 @@
 #include "backend.h"
 #include "logger.h"
 
-//#define SERVER_ADDRESS "87.117.17.221"
-#define SERVER_ADDRESS "192.168.91.1"
+#define SERVER_ADDRESS "87.117.17.221"
+//#define SERVER_ADDRESS "192.168.91.1"
 // #define SERVER_ADDRESS "indigosystem.ru"
 #define SERVER_PORT 9099
 #define GPS_SEND_INTERVAL (5 * 1000)
@@ -183,10 +183,38 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 
 	switch (event) {
 		case hello_TaxiEvent_NOT_PAY:
-		case hello_TaxiEvent_END_CLIENT_MOVE:
 			pbOrder->set_money(order->calculateSum());
 			break;
+		case hello_TaxiEvent_END_CLIENT_MOVE:
+			/*
+			ты мне должен будешь передать еще ряд параметров, а именно
+			1. кол-во минут движения с багажом
+			2. кол-во минут остановок по просьбе клиента
+			3. кол-во минут остановок по просьбе водителя
+			4. сумма общая - уже есть
+			5. сумма по межгороду
+			6. отдельно сумма по городу
+			7. время поездки - кол-во минут
+			8. километраж по межгороду в одну сторону
+			9. километраж по межгороду в другую сторону (пока еще не определились с этим) - поэтому передвай пока весь километраж по межгороду в пункте 8, сюда пока пиши 0, как разберемся - будешь правильную цифру писать
+			10. километржа по городу
+				возможно появится что-то еще... эти все данные нужны для статистики, для разборок с клиентами и для статистики
+
+				END_CLIENT_MOVE;SUMMA;SUMMA_GOROD;SUMMA_MG;TIME_TRIP;KM_GOROD;KM_TUDA;KM_OBRATNO;TIME_BAGAGE;TIME_CLIENT;TIME_DRIVER
+			*/
+			pbOrder->set_money(order->calculateSum());
+			pbOrder->set_parking_id(order->getParkingId());
+			pbOrder->set_seconds_baggage(0);
+			pbOrder->set_driver_stops_seconds(order->secondsTraincrossStops());
+			pbOrder->set_distance_travelled(order->cityMileage() + order->cityMileageOverload());
+			pbOrder->set_distance_mg_travelled(order->outOfCityMileage() + order->outOfCityMileageOverload());
+			pbOrder->set_seconds_travelled(order->secondsTotal());
+			pbOrder->set_client_stops_seconds(order->secondsClientStops());
+			pbOrder->set_money_city(order->moneyCity());
+			pbOrder->set_money_mg(order->moneyMg());
+			break;
 		case hello_TaxiEvent_START_CLIENT_MOVE:
+			
 		case hello_TaxiEvent_MOVED:
 			pbOrder->set_destination_region_id(order->getRegionId());
 			break;

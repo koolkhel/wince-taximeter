@@ -23,22 +23,37 @@ public:
 	int calculateSum();
 	TaxiRatePeriod orderTaxiRate() { return taxiRate; }
 	double totalMileage();
+	
 	// километражи округляются до сотен метров
 	float cityMileage() { return (((int)_mileage_city + 50) / 100) / 10.0; }
 	float outOfCityMileage() { return (((int)_mileage_out_of_city + 50) / 100) / 10.0; }
 	float cityMileageOverload() { return (((int)_mileage_city_overload + 50) / 100) / 10.0; }
 	float outOfCityMileageOverload() { return (((int)_mileage_out_of_city_overload + 50) / 100) / 10.0; }
+
+	double moneyCity();
+
+	double moneyMg();
+	
 	void setOverload(bool overload) { _overload = overload; }
 	void setClientStop(bool clientStop) { _clientStop = clientStop; }
+	void setTrainCross(bool on) { _trainCross = on; }
 	
 	
 	float mgRate() { return _out_of_city_rate;}
 	int getParkingId() { return parkingId; }
 	float getParkingCost() { return parkingCost; }
+	
+	// время округляется до минут
+	int minutesTraincrossStops() {return (seconds_traincross_stops + 30) / 60;}
+	int secondsTraincrossStops() { return seconds_traincross_stops; }
 	int minutesClientStops() {return (seconds_client_stops + 30) / 60;}
+	int secondsClientStops() { return seconds_client_stops; }
 	int minutesStops() { return (seconds_stops + 30) / 60; }
+	int secondsStops() { return seconds_stops; }
 	int minutesTotal() { return (_total_travel_time_seconds + 30) / 60; }
+	int secondsTotal() { return _total_travel_time_seconds; }
 	int minutesMoving() { return (seconds_moving + 30) / 60; }
+	int secondsMoving() { return seconds_moving; }
 
 signals:
 	void paymentChanged(int);
@@ -59,9 +74,9 @@ public slots:
 	void setOutOfCity(bool _outOfCity) {
 		outOfCity = _outOfCity;
 	}
-	void setMg(float _out_of_city_rate)
+	void setMg(float out_of_city_rate)
 	{
-		_out_of_city_rate = _out_of_city_rate;
+		_out_of_city_rate = out_of_city_rate;
 	}
 
 private:	
@@ -95,6 +110,9 @@ private:
 	// время в пробках
 	int seconds_stops;
 
+	// остановка по просьбе водителей
+	int seconds_traincross_stops;
+
 	int seconds_client_stops;
 	
 	float parkingCost; 
@@ -121,6 +139,8 @@ private:
 	bool _overload;
 
 	bool _clientStop;
+
+	bool _trainCross;
 };
 
 #endif // TAXIORDER_H
