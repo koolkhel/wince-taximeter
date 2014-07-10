@@ -32,7 +32,7 @@ public:
 	void setClientStop(bool clientStop) { _clientStop = clientStop; }
 	
 	
-	float mgRate() { return out_of_city_rate;}
+	float mgRate() { return _out_of_city_rate;}
 	int getParkingId() { return parkingId; }
 	float getParkingCost() { return parkingCost; }
 	int minutesClientStops() {return (seconds_client_stops + 30) / 60;}
@@ -46,6 +46,7 @@ signals:
 	void newMileage(float mileage);
 	void newTimeMovement(int seconds);
 	void newTimeStops(int seconds);
+	void newTimeClientStops(int seconds);
 	void newTimeTotal(int seconds);
 
 public slots:
@@ -60,7 +61,7 @@ public slots:
 	}
 	void setMg(float _out_of_city_rate)
 	{
-		out_of_city_rate = _out_of_city_rate;
+		_out_of_city_rate = _out_of_city_rate;
 	}
 
 private:	
@@ -68,7 +69,7 @@ private:
 	TaxiRatePeriod taxiRate;
 	
 	// стоимость километра в межгороде
-	float out_of_city_rate;
+	float _out_of_city_rate;
 	// meters in da city
 	float _mileage_city;
 	// meters out of city
@@ -95,6 +96,10 @@ private:
 	int seconds_stops;
 
 	int seconds_client_stops;
+	
+	float parkingCost; 
+	
+	int parkingId;
 
 	// END IMPORTANT ORDER VARIABLES
 	
@@ -107,15 +112,11 @@ private:
 	bool gotPosition;
 
 
-	int current_stop;
+	int current_stop_seconds;
 
 	bool outOfCity;
 
 	bool movementStarted;
-
-	float parkingCost; 
-	
-	int parkingId;
 
 	bool _overload;
 

@@ -1,10 +1,28 @@
 #include "taxiorder.h"
 
 ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCost, int _parkingId, QObject *parent)
-	: QObject(parent), _order_id(_order_id), _mileage_city(0), _total_travel_time_seconds(0), _destination_region_id(0),
-	taxiRate(_taxiRate), gotPosition(false), started(false), movementStarted(false), parkingCost(_parkingCost), parkingId(_parkingId),
-	current_stop(0), seconds_stops(0), seconds_moving(0), seconds_client_stops(0), out_of_city_rate(0),
-	outOfCity(false), _mileage_out_of_city(0)
+	: QObject(parent), 
+	
+	_order_id(_order_id), 
+	
+	_mileage_city(0), 
+	
+	_total_travel_time_seconds(0), 
+	seconds_stops(0), seconds_moving(0), seconds_client_stops(0), _out_of_city_rate(0),
+	
+	_destination_region_id(0),
+	taxiRate(_taxiRate), 
+	
+	gotPosition(false), 
+	
+	started(false), movementStarted(false), 
+	
+	parkingCost(_parkingCost), parkingId(_parkingId),
+	current_stop_seconds(0), 
+	
+	outOfCity(false),
+	
+	_mileage_out_of_city(0), _mileage_city_overload(0), _mileage_out_of_city_overload(0)
 {
 	qDebug() << "newOrder id:" << _order_id << "rate:" << taxiRate.car_in() << " " << taxiRate.km_g();
 	paymentTimer = new QTimer(this);
@@ -30,15 +48,15 @@ void ITaxiOrder::measureTimes()
 
 	if (!movementStarted) {
 		// остановка считается, если больше 5 секунд
-		if (current_stop < 5) {
-			current_stop++;
+		if (current_stop_seconds < 5) {
+			current_stop_seconds++;
 		} else {
 			if (seconds_stops < 5)
 				seconds_stops = 5;
 			seconds_stops++;
 		}
 	} else {
-		current_stop = 0;
+		current_stop_seconds = 0;
 		seconds_moving++;
 	}
 
@@ -49,6 +67,7 @@ void ITaxiOrder::measureTimes()
 
 	emit newTimeMovement(seconds_moving);
 	emit newTimeStops(seconds_stops);
+	emit newTimeClientStops(seconds_client_stops);
 	emit newTimeTotal(_total_travel_time_seconds);
 }
 

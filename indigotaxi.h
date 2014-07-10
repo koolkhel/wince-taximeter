@@ -64,12 +64,14 @@ public slots:
 	void movementStart(int start);
 	void paytimeClick();
 	void trainCrossButtonClicked();
-	void overloadButtonClicked();
+	void overloadButtonClicked(bool on);
 	void newDirectionClicked();
+	void clientStopClicked(bool on);
 
 	void newTimeMovement(int _seconds);
 	void newTimeStops(int _seconds);
 	void newTimeTotal(int _seconds);
+	void newTimeClientStops(int _seconds);
 
 	// page 3
 	void freeButtonClick();

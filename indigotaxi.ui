@@ -434,7 +434,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1008,12 +1008,15 @@ QPushButton {
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_15" stretch="0,1">
+         <layout class="QVBoxLayout" name="verticalLayout_15" stretch="1,1,1">
           <property name="spacing">
            <number>0</number>
           </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="2,5,2">
+            <property name="spacing">
+             <number>5</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_15">
               <property name="text">
@@ -1075,7 +1078,7 @@ QPushButton {
                  </font>
                 </property>
                 <property name="text">
-                 <string>35 руб</string>
+                 <string>0 руб</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -1097,16 +1100,17 @@ QPushButton {
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="2,1,2,1">
+            <property name="spacing">
+             <number>5</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_20">
               <property name="text">
-               <string>ВРЕМЯ
-В
-ПУТИ</string>
+               <string>ВРЕМЯ В ПУТИ</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
@@ -1116,19 +1120,17 @@ QPushButton {
                <string>00:00</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_21">
               <property name="text">
-               <string>ВРЕМЯ
-В
-ПРОБКАХ</string>
+               <string>ВРЕМЯ В ПРОБКАХ</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
@@ -1138,7 +1140,31 @@ QPushButton {
                <string>00:00</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,1">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>ВРЕМЯ ОСТАНОВКИ КЛИЕНТА</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="timeClientStopsLabel">
+              <property name="text">
+               <string>00:00</string>
               </property>
              </widget>
             </item>
@@ -1348,7 +1374,7 @@ QPushButton {
           <item row="1" column="2">
            <widget class="QLabel" name="finalTotalTimeTravelledLabel">
             <property name="text">
-             <string/>
+             <string>0</string>
             </property>
            </widget>
           </item>
@@ -2783,7 +2809,7 @@ QPushButton {
     </hint>
     <hint type="destinationlabel">
      <x>168</x>
-     <y>-23</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -2799,7 +2825,23 @@ QPushButton {
     </hint>
     <hint type="destinationlabel">
      <x>320</x>
-     <y>-73</y>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>farawayButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>clientStopClicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>434</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>-16</y>
     </hint>
    </hints>
   </connection>
@@ -2832,5 +2874,6 @@ QPushButton {
   <slot>cancelRegionSelectClicked()</slot>
   <slot>rebootSystem()</slot>
   <slot>notPayClicked()</slot>
+  <slot>clientStopClicked(bool)</slot>
  </slots>
 </ui>

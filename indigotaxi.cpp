@@ -247,8 +247,8 @@ void IndigoTaxi::updateTaxiRates()
 	ui.km_mg_label->setText(QString("%1 руб.").arg(taxiRates.mg(), 0, 'f', 1));
 	
 	float clientStopsTaxiRate = (floor((period.client_stop()) * 10)) / 10.0;
-	float stopsTaxiRate = (floor((period.car_in() * 0.5) * 10)) / 10.0;
-	ui.client_stop_label->setText(QString("%1/%2руб.")
+	float stopsTaxiRate = (floor((period.car_min() * 0.5) * 10)) / 10.0;
+	ui.client_stop_label->setText(QString("%1/%2 руб.")
 		.arg(clientStopsTaxiRate, 0, 'f', 1)
 		.arg(stopsTaxiRate, 0, 'f', 1));
 }
@@ -352,7 +352,9 @@ void IndigoTaxi::paytimeClick()
 		.arg(iTaxiOrder->cityMileage(), 0, 'f', 1)
 		.arg(iTaxiOrder->outOfCityMileage(), 0, 'f', 1));
 	
-	ui.finalStopsTimeLabel->setText(QString("%1").arg(iTaxiOrder->minutesStops()));
+	ui.finalStopsTimeLabel->setText(QString("%1/%2")
+		.arg(iTaxiOrder->minutesClientStops())
+		.arg(iTaxiOrder->minutesStops()));
 	ui.finalTotalTimeTravelledLabel->setText(QString("%1").arg(iTaxiOrder->minutesTotal()));
 
 	voiceLady->speakMoney(payment);
@@ -569,6 +571,7 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 	connect(iTaxiOrder, SIGNAL(newTimeTotal(int)), SLOT(newTimeTotal(int)));
 	connect(iTaxiOrder, SIGNAL(newTimeStops(int)), SLOT(newTimeStops(int)));
 	connect(iTaxiOrder, SIGNAL(newTimeMovement(int)), SLOT(newTimeMovement(int)));
+	connect(iTaxiOrder, SIGNAL(newTimeClientStops(int)), SLOT(newTimeClientStops(int)));
 
 	connect(this, SIGNAL(orderMovementStart(int)), iTaxiOrder, SLOT(movementStart(int)));
 
@@ -642,6 +645,17 @@ void IndigoTaxi::newTimeStops(int _seconds)
 		.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
 }
 
+void IndigoTaxi::newTimeClientStops(int _seconds)
+{
+	int hours = _seconds / 3600;
+	int minutes = (_seconds % 3600) / 60;
+	int seconds = _seconds % 60;	
+	
+	ui.timeClientStopsLabel->setText(QString("%1:%2:%3")
+		.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
+	
+}
+
 void IndigoTaxi::newTimeTotal(int _seconds)
 {
 	int hours = _seconds / 3600;
@@ -651,6 +665,24 @@ void IndigoTaxi::newTimeTotal(int _seconds)
 	ui.timeTotalLabel->setText(QString("%1:%2:%3")
 		.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
 
+}
+
+void IndigoTaxi::clientStopClicked(bool on)
+{
+	if (iTaxiOrder == NULL)
+		return;
+
+	if (on)
+	{
+		voiceLady->sayPhrase("CLIENTSTOP");
+	} else
+	{
+		voiceLady->sayPhrase("CLIENTSTOPOFF");
+	}
+
+	if (!movementStarted) {
+		iTaxiOrder->setClientStop(on);
+	}
 }
 
 void IndigoTaxi::movementStart(int start)
@@ -675,13 +707,23 @@ void IndigoTaxi::trainCrossButtonClicked()
 		voiceLady->sayPhrase("TRAINCROSS");
 		ui.trainCrossButton->setEnabled(false);
 	} else {
+		// отжимаем обратно
 		ui.trainCrossButton->setChecked(false);
 	}
 }
 
-void IndigoTaxi::overloadButtonClicked()
+void IndigoTaxi::overloadButtonClicked(bool on)
 {
-	voiceLady->sayPhrase("OVERLOAD");
+	if (on) {
+		voiceLady->sayPhrase("OVERLOAD");
+	} else {
+		voiceLady->sayPhrase("OVERLOADOFF");
+	}
+
+	if (iTaxiOrder == NULL)
+		return;
+
+	iTaxiOrder->setOverload(on);
 	// fixme some messages, maybe
 }
 
