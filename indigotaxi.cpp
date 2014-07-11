@@ -20,7 +20,7 @@ int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
-	newDirection(false), online(false), downloader(NULL) 
+	newDirection(false), online(false), downloader(NULL), changeRegion(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -493,7 +493,7 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 
 void IndigoTaxi::notPayClicked()
 {
-	backend->sendOrderEvent(hello_TaxiEvent_NOT_PAY, iTaxiOrder);
+	backend->sendOrderEvent(hello_TaxiEvent_NOT_PAY, lastTaxiOrder);
 }
 
 void IndigoTaxi::dinnerStartClicked()
