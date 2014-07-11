@@ -112,13 +112,33 @@ void IndigoTaxi::inPlace()
 	backend->sendOrderEvent(hello_TaxiEvent_IN_PLACE, iTaxiOrder);
 }
 
+void IndigoTaxi::driverRegionSelectClicked()
+{
+	changeRegion = true;
+
+	ui.stackedWidget->setCurrentWidget(ui.regionListPage6);
+}
+
 void IndigoTaxi::startClientMove()
 {
 #ifndef DEBUG
 	if (movementStarted)
 		return;
 #endif
-	
+	// смена района таксиста
+	if (iTaxiOrder == NULL && changeRegion)
+	{
+		hello var;
+		TaxiOrder *pbOrder = var.mutable_taxiorder();
+		pbOrder->set_order_id(NO_ORDER_ID);
+		pbOrder->set_destination_region_id(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
+		var.set_event(hello_TaxiEvent_MOVED);
+		backend->sendMessageQueued(var);
+		changeRegion = false;
+		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+		return;
+	}
+
 	// если заказ инииирован на месте
 	if (iTaxiOrder == NULL) {
 		// заказ инициирован водителем
@@ -792,8 +812,11 @@ void IndigoTaxi::cancelRegionSelectClicked()
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 	} else {
 		ui.stackedWidget->setCurrentWidget(ui.orderPage2);
-		newDirection = false;
+		
 	}
+
+	newDirection = false;
+	changeRegion = false;
 }
 
 void IndigoTaxi::rebootSystem()

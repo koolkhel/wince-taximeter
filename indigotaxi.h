@@ -79,6 +79,7 @@ public slots:
 
 	// page 4
 	void driverNameChanged(int driverName);
+	void driverRegionSelectClicked();
 
 	void exitButtonClick();
 	void backToStandByClick();
@@ -136,6 +137,8 @@ private:
 	bool movementStarted;
 
 	bool newDirection;
+
+	bool changeRegion;
 
 	bool online;
 

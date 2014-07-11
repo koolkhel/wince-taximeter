@@ -443,7 +443,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1564,7 +1564,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -2533,7 +2533,7 @@ QPushButton {
    <sender>backToStandbyButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
-   <slot>backToStandByClick()</slot>
+   <slot>cancelRegionSelectClicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>104</x>
@@ -2833,6 +2833,22 @@ QPushButton {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_12</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>driverRegionSelectClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>244</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>247</x>
+     <y>-32</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -2863,5 +2879,6 @@ QPushButton {
   <slot>notPayClicked()</slot>
   <slot>clientStopClicked(bool)</slot>
   <slot>overloadButtonClicked(bool)</slot>
+  <slot>driverRegionSelectClicked()</slot>
  </slots>
 </ui>

@@ -46,6 +46,7 @@ public slots:
 	// from gps
 	void positionUpdated(const QGeoPositionInfo &update);
 
+	void sendMessageQueued(hello var);
 	void sendEvent(hello_TaxiEvent event);
 	void sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order);
 

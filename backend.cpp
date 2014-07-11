@@ -166,6 +166,15 @@ void Backend::sendEvent(hello_TaxiEvent event)
 	flushOrderEvents();
 }
 
+void Backend::sendMessageQueued(hello var)
+{
+	var.set_drivername(driverName);
+	var.set_taxiid(taxiId);
+	
+	orderEventsQueue.push(var);
+	flushOrderEvents();
+}
+
 void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 {
 	hello var;
