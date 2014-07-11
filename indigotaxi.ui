@@ -1694,19 +1694,6 @@ QPushButton {
                  </property>
                 </widget>
                </item>
-               <item row="3" column="1">
-                <widget class="QPushButton" name="pushButton_14">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Помощь</string>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="0" rowspan="4">
                 <widget class="QPushButton" name="backToStandByButton">
                  <property name="sizePolicy">
@@ -1726,6 +1713,32 @@ QPushButton {
                  </property>
                  <property name="text">
                   <string>Вернуться</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2">
+                <widget class="QPushButton" name="pushButton_14">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Помощь</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Клиент не вышел</string>
                  </property>
                 </widget>
                </item>
@@ -2849,6 +2862,22 @@ QPushButton {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>clientNotExit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>153</x>
+     <y>228</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>172</x>
+     <y>-24</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -2880,5 +2909,6 @@ QPushButton {
   <slot>clientStopClicked(bool)</slot>
   <slot>overloadButtonClicked(bool)</slot>
   <slot>driverRegionSelectClicked()</slot>
+  <slot>clientNotExit()</slot>
  </slots>
 </ui>

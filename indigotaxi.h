@@ -86,6 +86,7 @@ public slots:
 	void dutyButtonClicked(bool pressed);
 	void awayButtonClicked();
 	void awayEndButtonClicked();
+	void clientNotExit();
 	void fromcarButtonClicked();
 	void fromcarEndButtonClicked();
 	void notToMeButtonClicked();

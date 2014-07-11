@@ -20,3 +20,8 @@ void ISoundPlayer::playResourceSound(QString url)
 {
 	PlaySoundW((LPCWSTR)QResource(url).data(), 0, SND_MEMORY | SND_SYNC);
 }
+
+void ISoundPlayer::playFileSystemSound(QString filename)
+{
+	PlaySoundW((LPCWSTR)filename.utf16(), 0, SND_FILENAME | SND_SYNC);
+}

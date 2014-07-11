@@ -14,8 +14,10 @@ public:
 public slots:
 	void speakMoney(int amount);
 	void sayPhrase(QString name);
+	void alarm();
 signals:
 	void playSound(QString);
+	void playSoundFile(QString);
 private:
 	
 };

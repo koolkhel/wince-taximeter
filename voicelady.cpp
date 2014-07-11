@@ -116,6 +116,12 @@ void VoiceLady::speakMoney(int amount)
 		}
 	}
 }
+void VoiceLady::alarm() {
+	emit playSoundFile("click.wav");
+	emit playSoundFile("click.wav");
+	emit playSoundFile("click.wav");
+	emit playSoundFile("click.wav");
+}
 
 void VoiceLady::sayPhrase(QString name)
 {

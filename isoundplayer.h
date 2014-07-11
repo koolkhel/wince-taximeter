@@ -11,6 +11,7 @@ public:
 	ISoundPlayer(QObject *parent = 0);
 	~ISoundPlayer();
 public slots:
+	void playFileSystemSound(QString);
 	void playResourceSound(QString);
 
 private:

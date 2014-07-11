@@ -75,6 +75,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	iSoundPlayer->moveToThread(soundThread);
 
 	connect(voiceLady, SIGNAL(playSound(QString)), iSoundPlayer, SLOT(playResourceSound(QString)));
+	connect(voiceLady, SIGNAL(playSoundFile(QString)), iSoundPlayer, SLOT(playFileSystemSound(QString)));
+
 
 
 	//ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
@@ -426,7 +428,7 @@ void IndigoTaxi::clearMessageClick()
 	//QSound::play("click.wav");
 	//QSound::play(qApp->applicationDirPath() + QDir::separator() + "stop.wav");
 	if (iTaxiOrder != NULL) {
-		delete iTaxiOrder;
+		destroyCurrentOrder();
 		iTaxiOrder = NULL;
 	}
 	
@@ -659,6 +661,7 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 		destroyCurrentOrder();
 
 		iTaxiOrder = createTaxiOrder(taxiOrder.order_id());
+		voiceLady->alarm();
 
 		if (taxiOrder.has_address()) {
 			ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
@@ -725,6 +728,11 @@ void IndigoTaxi::newTimeTotal(int _seconds)
 	ui.timeTotalLabel->setText(QString("%1:%2:%3")
 		.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
 
+}
+
+void IndigoTaxi::clientNotExit()
+{
+	backend->sendOrderEvent(hello_TaxiEvent_NOT_EXIT, iTaxiOrder);
 }
 
 void IndigoTaxi::clientStopClicked(bool on)
