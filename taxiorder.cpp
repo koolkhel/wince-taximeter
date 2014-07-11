@@ -181,7 +181,7 @@ int ITaxiOrder::getOrderId()
 	return _order_id;
 }
 
-void ITaxiOrder::setOrderId(int _order_id)
+void ITaxiOrder::setOrderId(int order_id)
 {
-	_order_id = _order_id;
+	_order_id = order_id;
 }

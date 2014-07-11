@@ -140,6 +140,7 @@ private:
 	bool online;
 
 	void enableMainButtons(bool enable);
+	void enableInPlaceButton(bool enable);
 
 	QList<ITaxiOrder *> ordersHistory;
 };

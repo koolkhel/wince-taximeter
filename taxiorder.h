@@ -19,7 +19,7 @@ public:
 	void setRegionId(int _region_id);
 	int getRegionId();
 	int getOrderId();
-	void setOrderId(int _order_id);
+	void setOrderId(int order_id);
 	int calculateSum();
 	TaxiRatePeriod orderTaxiRate() { return taxiRate; }
 	double totalMileage();

@@ -146,7 +146,12 @@ void IndigoTaxi::startClientMove()
 	if (newDirection) {
 		backend->sendOrderEvent(hello_TaxiEvent_MOVED, iTaxiOrder);
 	} else {
-		backend->sendOrderEvent(hello_TaxiEvent_START_CLIENT_MOVE, iTaxiOrder);
+		if (iTaxiOrder->getOrderId() == NO_ORDER_ID) {
+			backend->sendOrderEvent(hello_TaxiEvent_CLIENT_IN_PLACE, iTaxiOrder);
+		} else
+		{
+			backend->sendOrderEvent(hello_TaxiEvent_START_CLIENT_MOVE, iTaxiOrder);
+		}
 		
 		// пошёл счёт
 		iTaxiOrder->startOrder();
@@ -247,7 +252,8 @@ void IndigoTaxi::updateTaxiRates()
 		//	"KM_G:" << taxiRates.rates().Get(i).km_g();
 	}
 	TaxiRatePeriod period = getCurrentTaxiRatePeriod();
-	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in() + currentParkingCost, 0, 'f', 1));
+	//ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in() + currentParkingCost, 0, 'f', 1));
+	ui.car_in_label->setText(QString("%1 руб.").arg(period.car_in()));
 	ui.km_g_label->setText(QString("%1 руб.").arg(period.km_g(), 0, 'f', 1));
 	ui.km_mg_label->setText(QString("%1 руб.").arg(taxiRates.mg(), 0, 'f', 1));
 	
@@ -264,6 +270,9 @@ void IndigoTaxi::updateTaxiRates()
  */
 void IndigoTaxi::updateTaxiRegionList()
 {
+	// только здесь мы уверены, что смена, наконец, началась
+	enableMainButtons(true);
+
 	ui.regionList->clear();
 	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
 		ui.regionList->addItem(QString::fromUtf8(taxiRegionList.regions().Get(i).region_name().c_str()));
@@ -421,10 +430,20 @@ void IndigoTaxi::enableMainButtons(bool enable)
 	ui.startClientMoveButton->setEnabled(enable);
 
 	ui.centralWidget->style()->unpolish(ui.moveToClientButton);
+	ui.centralWidget->style()->polish(ui.moveToClientButton);
 	ui.centralWidget->style()->unpolish(ui.startClientMoveButton);
+	ui.centralWidget->style()->polish(ui.startClientMoveButton);
 	ui.centralWidget->update();
 }
 
+void IndigoTaxi::enableInPlaceButton(bool enable)
+{
+	ui.inPlaceButton->setEnabled(enable);
+
+	ui.centralWidget->style()->unpolish(ui.inPlaceButton);
+	ui.centralWidget->style()->polish(ui.inPlaceButton);
+	ui.centralWidget->update();
+}
 /*!
  * \brief
  * На смену, со смены
@@ -444,8 +463,7 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 {
 	if (pressed) {
 		backend->sendEvent(hello_TaxiEvent_ARRIVED);
-		ui.dutyStart->setText("Конец смены");
-		enableMainButtons(true);
+		ui.dutyStart->setText("Конец смены");		
 	} else {
 		backend->sendEvent(hello_TaxiEvent_DAY_END);
 		ui.dutyStart->setText("Начало смены");
@@ -594,6 +612,7 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 void IndigoTaxi::destroyCurrentOrder()
 {
 	if (iTaxiOrder != NULL) {
+		enableInPlaceButton(false);
 		disconnect(iTaxiOrder, 0, 0, 0);
 		disconnect(backend, 0, iTaxiOrder, 0);
 		//delete iTaxiOrder;
@@ -616,7 +635,7 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 	if (iTaxiOrder != NULL && iTaxiOrder->getOrderId() == NO_ORDER_ID) {
 		iTaxiOrder->setOrderId(taxiOrder.order_id());
 		// что-то ещё отправить
-	} else if (iTaxiOrder != NULL) {
+	} else {
 		destroyCurrentOrder();
 
 		iTaxiOrder = createTaxiOrder(taxiOrder.order_id());
@@ -624,6 +643,9 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 		if (taxiOrder.has_address()) {
 			ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
 		}
+		enableInPlaceButton(true);
+		ui.inPlaceButton->setEnabled(true);
+
 	}
 }
 

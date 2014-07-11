@@ -203,7 +203,7 @@ QPushButton {
 	background: #724b22;
 }
 
-#farawayButton {
+#farawayButton:checked {
 	background: #1d1d1d;
 }
 

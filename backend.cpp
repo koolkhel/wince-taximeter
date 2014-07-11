@@ -213,8 +213,9 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 			pbOrder->set_money_city(order->moneyCity());
 			pbOrder->set_money_mg(order->moneyMg());
 			break;
+		case hello_TaxiEvent_CLIENT_IN_PLACE:
 		case hello_TaxiEvent_START_CLIENT_MOVE:
-			
+			pbOrder->set_parking_id(order->getParkingId());
 		case hello_TaxiEvent_MOVED:
 			pbOrder->set_destination_region_id(order->getRegionId());
 			break;

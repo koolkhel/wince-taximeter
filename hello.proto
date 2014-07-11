@@ -56,6 +56,8 @@ message hello
     NOT_EXIT = 21;
     // Пустая поездка
     EMPTY_TRIP = 22;
+    // ЗАКАЗ С МЕСТА
+    CLIENT_IN_PLACE = 23;
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];
@@ -96,50 +98,39 @@ message TaxiInfo {
 }
 
 message TaxiOrder {
-  // сумма расчёта по поездке
-  optional float money = 1                  [ default = 0 ];
-  // 
-  optional int32 order_id = 2               [ default = 0 ];
-  
-  // пройденное по городу расстояние
-  optional float distance_travelled = 3     [ default = 0.0 ];
-  
-  // общее время поездки
-  optional int32 seconds_travelled = 4      [ default = 0 ];
-  
-  // куда
-  optional int32 destination_region_id = 5 [ default = 0 ];
-  
-  optional string address = 6 [ default = "" ];
-  
   enum OrderStatus {
     NOTHING = 0;
     BEGIN = 1;
     END = 2;
     ABORT = 3;
   }
-  optional OrderStatus status = 7 [ default = NOTHING ];
-  
+  // стоит требование:
+  //  END_CLIENT_MOVE;SUMMA;SUMMA_GOROD;SUMMA_MG;TIME_TRIP;KM_GOROD;KM_TUDA;KM_OBRATNO;TIME_BAGAGE;TIME_CLIENT;TIME_DRIVER
+
+  // сумма расчёта по поездке
+  optional float money = 1                  [ default = 0 ];
+  // 
+  optional int32 order_id = 2               [ default = 0 ];  
+  // пройденное по городу расстояние
+  optional float distance_travelled = 3     [ default = 0.0 ];  
+  // общее время поездки
+  optional int32 seconds_travelled = 4      [ default = 0 ];  
+  // куда
+  optional int32 destination_region_id = 5 [ default = 0 ];  
+  optional string address = 6 [ default = "" ];    
+  optional OrderStatus status = 7 [ default = NOTHING ];  
   // времени с багажом
-  optional int32 seconds_baggage = 8 [ default = 0 ];
-  
+  optional int32 seconds_baggage = 8 [ default = 0 ];  
   // пройденное по межгороду расстояние
-  optional float distance_mg_travelled = 9 [ default = 0.0 ];
-  
+  optional float distance_mg_travelled = 9 [ default = 0.0 ];  
   // id стоянки, из которой выехали
-  optional int32 parking_id = 10 [ default = 0 ];
-  
-  optional float km_tuda = 11 [ default = 0.0 ];
-  
-  optional float km_obratno = 12 [ default = 0.0 ];
-  
-  optional int32 client_stops_seconds = 13 [ default = 0 ];
-  
+  optional int32 parking_id = 10 [ default = 0 ];  
+  optional float km_tuda = 11 [ default = 0.0 ];  
+  optional float km_obratno = 12 [ default = 0.0 ];  
+  optional int32 client_stops_seconds = 13 [ default = 0 ];  
   optional int32 driver_stops_seconds = 14 [ default = 0 ];
-  
   // cумма по городу 
-  optional int32 money_city = 15 [ default = 0];
-  
+  optional int32 money_city = 15 [ default = 0];  
   // сумма по межгороду
   optional int32 money_mg = 16 [ default = 0];
   
