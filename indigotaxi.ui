@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>491</width>
-    <height>273</height>
+    <width>512</width>
+    <height>268</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -273,7 +273,7 @@ QPushButton {
 }
 </string>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,0">
+   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -443,7 +443,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">

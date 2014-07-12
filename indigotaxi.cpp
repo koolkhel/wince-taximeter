@@ -570,7 +570,8 @@ void IndigoTaxi::fromcarEndButtonClicked()
 void IndigoTaxi::notToMeButtonClicked()
 {
 	// может быть только для прошлого заказа
-	backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, lastTaxiOrder);		
+	backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);
+	destroyCurrentOrder();
 	ui.serverMessage->setPlainText("");
 }
 
