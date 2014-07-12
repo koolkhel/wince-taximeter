@@ -296,7 +296,7 @@ void Backend::protobuf_message_slot(const google::protobuf::uint8* begin, google
 }
 #endif
 
-#define PROBABLE_VARINT32_SIZE 8
+#define PROBABLE_VARINT32_SIZE 4
 void Backend::consumeSocketData()
 {
 
