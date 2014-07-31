@@ -78,6 +78,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	connect(voiceLady, SIGNAL(playSoundFile(QString)), iSoundPlayer, SLOT(playFileSystemSound(QString)));
 
 
+	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 
 	//ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
 	//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
@@ -400,13 +402,13 @@ void IndigoTaxi::paytimeClick()
 
 	voiceLady->speakMoney(payment);
 	ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
-
+	
+	voiceLady->sayPhrase("BYE");
 }
 
 // свободен -- сумма оплачивается
 void IndigoTaxi::freeButtonClick()
 {
-	voiceLady->sayPhrase("BYE");
 	if (iTaxiOrder != NULL) {
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
 		destroyCurrentOrder();
@@ -466,6 +468,12 @@ void IndigoTaxi::enableInPlaceButton(bool enable)
 	ui.centralWidget->style()->polish(ui.inPlaceButton);
 	ui.centralWidget->update();
 }
+
+// клик на все кнопки
+void IndigoTaxi::playClick()
+{
+	voiceLady->click();
+}
 /*!
  * \brief
  * На смену, со смены
@@ -501,7 +509,7 @@ void IndigoTaxi::notPayClicked()
 void IndigoTaxi::dinnerStartClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_GO_DINNER);
-	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage2);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);
 }
 
 void IndigoTaxi::dinnerStopClicked()
@@ -529,7 +537,7 @@ void IndigoTaxi::driverNameEdited(QString newValue)
 void IndigoTaxi::awayButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_MOVE_OUT);
-	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage4);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageAway4);
 }
 
 void IndigoTaxi::awayEndButtonClicked()
@@ -541,7 +549,7 @@ void IndigoTaxi::awayEndButtonClicked()
 void IndigoTaxi::fromcarButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_GO_FROM_CAR);
-	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage3);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageFromcar3);
 }
 
 void IndigoTaxi::fromcarEndButtonClicked()
@@ -550,7 +558,38 @@ void IndigoTaxi::fromcarEndButtonClicked()
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
+void IndigoTaxi::emptyTripClicked() 
+{
+	// НЕУСТОЙКА
+	backend->sendEvent(hello_TaxiEvent_EMPTY_TRIP);
+	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+	// сбрасываем заказ
+	destroyCurrentOrder();
+}
 
+void IndigoTaxi::repairClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_GET_DAMAGE);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageRepair5);
+}
+
+void IndigoTaxi::repairEndClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_REPEAR_DAMAGE);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
+}
+
+void IndigoTaxi::techhelpClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_TECHHELP);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageTechhelp6);
+}
+
+void IndigoTaxi::techhelpBackClicked()
+{
+	backend->sendEvent(hello_TaxiEvent_BACK_TECHHELP);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
+}
 
 /*!
  * \brief
@@ -766,6 +805,7 @@ void IndigoTaxi::movementStart(int start)
 
 	if (movementStarted) {
 		// FIXME выключить режим переезда
+		//iTaxiOrder->getTra
 		if (iTaxiOrder != NULL)
 		{
 			iTaxiOrder->setTrainCross(false);

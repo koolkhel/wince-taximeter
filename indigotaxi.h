@@ -90,6 +90,13 @@ public slots:
 	void fromcarButtonClicked();
 	void fromcarEndButtonClicked();
 	void notToMeButtonClicked();
+	void emptyTripClicked();
+	void repairClicked();
+	void repairEndClicked();
+	void techhelpClicked();
+	void techhelpBackClicked();
+
+	void playClick();
 
 	void dinnerStartClicked();
 	void dinnerStopClicked();

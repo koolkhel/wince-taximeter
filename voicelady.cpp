@@ -123,6 +123,11 @@ void VoiceLady::alarm() {
 	emit playSoundFile("click.wav");
 }
 
+void VoiceLady::click()
+{
+	emit playSoundFile("click.wav");
+}
+
 void VoiceLady::sayPhrase(QString name)
 {
 	QString resourceName = ":/Sound/" + name;

@@ -30,6 +30,9 @@ public:
 	float cityMileageOverload() { return (((int)_mileage_city_overload + 50) / 100) / 10.0; }
 	float outOfCityMileageOverload() { return (((int)_mileage_out_of_city_overload + 50) / 100) / 10.0; }
 
+	//double car_in = taxiRate.car_in() + parkingCost;	
+	int getCarIn() { return taxiRate.car_in(); }
+
 	double moneyCity();
 
 	double moneyMg();
@@ -54,6 +57,9 @@ public:
 	int secondsTotal() { return _total_travel_time_seconds; }
 	int minutesMoving() { return (seconds_moving + 30) / 60; }
 	int secondsMoving() { return seconds_moving; }
+	
+	bool isClientStop() { return _clientStop; }
+	bool isTrainCross() { return _trainCross; } 
 
 signals:
 	void paymentChanged(int);

@@ -109,8 +109,7 @@ double ITaxiOrder::moneyMg()
 int ITaxiOrder::calculateSum()
 {
 	// подача машины -- с платной стоянки
-	//double car_in = taxiRate.car_in() + parkingCost;
-	double car_in = taxiRate.car_in();
+	double car_in = getCarIn();;
 		
 	// остановки по просьбе клиента
 	double client_stops = minutesClientStops() * taxiRate.client_stop();
