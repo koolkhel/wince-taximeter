@@ -2481,7 +2481,7 @@ QPushButton {
  <resources>
   <include location="indigotaxi.qrc"/>
   <include location="UI.qrc"/>
-  <include location="../../../Documents and Settings/Yury/.designer/backup/UI.qrc"/>
+  <include location="UI.qrc"/>
  </resources>
  <connections>
   <connection>

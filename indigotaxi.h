@@ -17,6 +17,9 @@
 #include "isoundplayer.h"
 #include "voicelady.h"
 
+#include "iconfirmationdialog.h"
+#include "iinfodialog.h"
+
 
 class IndigoTaxi : public QMainWindow
 {
@@ -154,6 +157,9 @@ private:
 	void enableInPlaceButton(bool enable);
 
 	QList<ITaxiOrder *> ordersHistory;
+
+	IConfirmationDialog *confirmDialog;
+	IInfoDialog *infoDialog;
 };
 
 #endif // INDIGOTAXI_H

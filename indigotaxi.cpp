@@ -77,6 +77,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	connect(voiceLady, SIGNAL(playSound(QString)), iSoundPlayer, SLOT(playResourceSound(QString)));
 	connect(voiceLady, SIGNAL(playSoundFile(QString)), iSoundPlayer, SLOT(playFileSystemSound(QString)));
 
+	infoDialog = new IInfoDialog(this);
+	confirmDialog = new IConfirmationDialog(this);
 
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
@@ -492,12 +494,22 @@ void IndigoTaxi::playClick()
 void IndigoTaxi::dutyButtonClicked(bool pressed)
 {
 	if (pressed) {
-		backend->sendEvent(hello_TaxiEvent_ARRIVED);
-		ui.dutyStart->setText("Конец смены");		
+		confirmDialog->setText("Вы подтверждаете начало смены?");
+		if (confirmDialog->exec() == QDialog::Accepted) {
+			backend->sendEvent(hello_TaxiEvent_ARRIVED);
+			ui.dutyStart->setText("Конец смены");		
+		} else {
+			ui.dutyStart->setChecked(true);
+		}
 	} else {
-		backend->sendEvent(hello_TaxiEvent_DAY_END);
-		ui.dutyStart->setText("Начало смены");
-		enableMainButtons(false);
+		confirmDialog->setText("Вы подтверждаете конец смены?");
+		if (confirmDialog->exec() == QDialog::Rejected) {
+			backend->sendEvent(hello_TaxiEvent_DAY_END);
+			ui.dutyStart->setText("Начало смены");
+			enableMainButtons(false);
+		} else {
+			ui.dutyStart->setChecked(false);
+		}
 	}
 }
 
