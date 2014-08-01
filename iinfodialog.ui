@@ -2,16 +2,22 @@
 <ui version="4.0">
  <class>IInfoDialog</class>
  <widget class="QDialog" name="IInfoDialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>272</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>IInfoDialog</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="5,2">
    <item>
