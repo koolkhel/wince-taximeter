@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="UI">
+    <file>images/error.png</file>
+    <file>images/gps.png</file>
+    <file>images/ok.png</file>
     <file>images/gps.png</file>
     <file>images/connection-ok.png</file>
     <file>images/connection-bad.png</file>

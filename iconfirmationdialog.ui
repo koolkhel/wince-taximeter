@@ -43,8 +43,24 @@ p, li { white-space: pre-wrap; }
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>НАЗАД</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/UI/images/error.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -56,8 +72,24 @@ p, li { white-space: pre-wrap; }
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>ПОДТВЕРЖДАЮ</string>
+        <string>OK</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/UI/images/ok.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -66,7 +98,9 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="UI.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>pushButton_2</sender>
@@ -80,7 +114,7 @@ p, li { white-space: pre-wrap; }
     </hint>
     <hint type="destinationlabel">
      <x>271</x>
-     <y>-41</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -96,7 +130,7 @@ p, li { white-space: pre-wrap; }
     </hint>
     <hint type="destinationlabel">
      <x>125</x>
-     <y>-63</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>

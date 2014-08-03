@@ -13,6 +13,7 @@ public:
 	~IConfirmationDialog();
 
 	void setText(QString text);
+	bool ask(QString text);
 
 private:
 	Ui::IConfirmationDialog ui;

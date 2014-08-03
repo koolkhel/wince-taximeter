@@ -13,6 +13,7 @@ public:
 	~IInfoDialog();
 
 	void setText(QString text);
+	void info(QString text);
 
 private:
 	Ui::IInfoDialog ui;

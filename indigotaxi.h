@@ -155,6 +155,7 @@ private:
 
 	void enableMainButtons(bool enable);
 	void enableInPlaceButton(bool enable);
+	void enableWidget(QWidget *widget, bool enable);
 
 	QList<ITaxiOrder *> ordersHistory;
 

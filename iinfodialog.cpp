@@ -15,3 +15,9 @@ void IInfoDialog::setText(QString text)
 {
 	ui.textBrowser->setText(text);
 }
+
+void IInfoDialog::info(QString text)
+{
+	setText(text);
+	exec();
+}

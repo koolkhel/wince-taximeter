@@ -450,25 +450,23 @@ void IndigoTaxi::backToStandByClick()
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
+void IndigoTaxi::enableWidget(QWidget *widget, bool enable)
+{
+	widget->setEnabled(enable);
+	ui.centralWidget->style()->unpolish(widget);
+	ui.centralWidget->style()->polish(widget);
+	ui.centralWidget->update();
+}
+
 void IndigoTaxi::enableMainButtons(bool enable)
 {
-	ui.moveToClientButton->setEnabled(enable);
-	ui.startClientMoveButton->setEnabled(enable);
-
-	ui.centralWidget->style()->unpolish(ui.moveToClientButton);
-	ui.centralWidget->style()->polish(ui.moveToClientButton);
-	ui.centralWidget->style()->unpolish(ui.startClientMoveButton);
-	ui.centralWidget->style()->polish(ui.startClientMoveButton);
-	ui.centralWidget->update();
+	enableWidget(ui.moveToClientButton, enable);
+	enableWidget(ui.startClientMoveButton, enable);
 }
 
 void IndigoTaxi::enableInPlaceButton(bool enable)
 {
-	ui.inPlaceButton->setEnabled(enable);
-
-	ui.centralWidget->style()->unpolish(ui.inPlaceButton);
-	ui.centralWidget->style()->polish(ui.inPlaceButton);
-	ui.centralWidget->update();
+	enableWidget(ui.inPlaceButton, enable);
 }
 
 // клик на все кнопки
@@ -493,24 +491,26 @@ void IndigoTaxi::playClick()
  */
 void IndigoTaxi::dutyButtonClicked(bool pressed)
 {
-	if (pressed) {
-		confirmDialog->setText("Вы подтверждаете начало смены?");
-		if (confirmDialog->exec() == QDialog::Accepted) {
+	if (!ui.dutyStart->property("pressed").toBool()) {
+		if (confirmDialog->ask("Вы подтверждаете начало смены?")) {
 			backend->sendEvent(hello_TaxiEvent_ARRIVED);
-			ui.dutyStart->setText("Конец смены");		
-		} else {
-			ui.dutyStart->setChecked(true);
+			ui.dutyStart->setText("КОНЕЦ СМЕНЫ");		
+			ui.dutyStart->setProperty("pressed", true);
+			infoDialog->info("Смена начата!");
 		}
+		
 	} else {
-		confirmDialog->setText("Вы подтверждаете конец смены?");
-		if (confirmDialog->exec() == QDialog::Rejected) {
+		if (confirmDialog->ask("Вы подтверждаете конец смены?")) {
 			backend->sendEvent(hello_TaxiEvent_DAY_END);
-			ui.dutyStart->setText("Начало смены");
+			ui.dutyStart->setText("НАЧАЛО СМЕНЫ");
 			enableMainButtons(false);
-		} else {
-			ui.dutyStart->setChecked(false);
+			ui.dutyStart->setProperty("pressed", false);
 		}
 	}
+	
+	ui.dutyStart->style()->unpolish(ui.dutyStart);
+	ui.dutyStart->style()->polish(ui.dutyStart);
+	ui.dutyStart->update();
 }
 
 void IndigoTaxi::notPayClicked()
@@ -680,6 +680,8 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 
 	iTaxiOrder->recalcSum();
 
+	enableWidget(ui.moveToClientButton, true);
+
 	return iTaxiOrder;
 }
 
@@ -698,6 +700,8 @@ void IndigoTaxi::destroyCurrentOrder()
 
 		lastTaxiOrder = iTaxiOrder;
 		iTaxiOrder = NULL;
+
+		enableWidget(ui.moveToClientButton, false);
 	}
 }
 
