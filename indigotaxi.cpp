@@ -85,6 +85,22 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	//ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
 	//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
+	int dpi = 122;
+#ifdef UNDER_CE
+	QRect rect = QApplication::desktop()->geometry();
+	int width = rect.width();
+	int height = rect.height();
+	dpi = (int) sqrt(width*width + height*height) / 4.5; // average screen size
+	qDebug() << "calculated DPI:" << dpi;
+#endif
+
+	setProperty("_q_customDpiX", QVariant(dpi));
+	setProperty("_q_customDpiY", QVariant(dpi));
+	infoDialog->setProperty("_q_customDpiX", QVariant(dpi));
+	infoDialog->setProperty("_q_customDpiY", QVariant(dpi));
+	confirmDialog->setProperty("_q_customDpiX", QVariant(dpi));
+	confirmDialog->setProperty("_q_customDpiY", QVariant(dpi));
+
 }
 		
 IndigoTaxi::~IndigoTaxi()
@@ -111,11 +127,13 @@ void IndigoTaxi::settingsButtonClick()
 void IndigoTaxi::moveToClient() 
 {
 	backend->sendOrderEvent(hello_TaxiEvent_MOVE_TO_CLIENT, iTaxiOrder);
+	voiceLady->sayPhrase("ORDERACCEPT");
 }
 
 void IndigoTaxi::inPlace()
 {
 	backend->sendOrderEvent(hello_TaxiEvent_IN_PLACE, iTaxiOrder);
+	voiceLady->sayPhrase("ORDERINPLACE");
 }
 
 void IndigoTaxi::driverRegionSelectClicked()
@@ -123,6 +141,11 @@ void IndigoTaxi::driverRegionSelectClicked()
 	changeRegion = true;
 
 	ui.stackedWidget->setCurrentWidget(ui.regionListPage6);
+}
+
+void IndigoTaxi::startClientMoveClicked()
+{
+	voiceLady->sayPhrase("ORDERGO");
 }
 
 void IndigoTaxi::startClientMove()
@@ -180,7 +203,9 @@ void IndigoTaxi::startClientMove()
 		}
 		
 		// ÔÓ¯∏Î Ò˜∏Ú
-		iTaxiOrder->startOrder();
+		// ÔÓ Ë‰ÂÂ Ú‡ÍÒËÒÚÓ‚, ÌÓ‚˚È Á‡Í‡Á ÌÂ Ì‡‰Ó Ò‡ÁÛ Ì‡˜ËÌ‡Ú¸ Ò˜ËÚ‡Ú¸. œÓÂ‰ÂÏ -- ÚÓ„‰‡ Ë Ò˜∏Ú
+		// ËÌ‡˜Â Û Ì‡Ò ÔÓÒÚÓÈ ·Û‰ÂÚ Ì‡Í‡ÔÎË‚‡Ú¸Òˇ Ì‡ Ó‚ÌÓÏ ÏÂÒÚÂ
+		// iTaxiOrder->startOrder();
 	}
 	
 	// Ó·ÌÓ‚ÎˇÂÏ ˆËÙ˚
@@ -297,7 +322,7 @@ void IndigoTaxi::updateTaxiRates()
 void IndigoTaxi::updateTaxiRegionList()
 {
 	// ÚÓÎ¸ÍÓ Á‰ÂÒ¸ Ï˚ Û‚ÂÂÌ˚, ˜ÚÓ ÒÏÂÌ‡, Ì‡ÍÓÌÂˆ, Ì‡˜‡Î‡Ò¸
-	enableMainButtons(true);
+	enableWidget(ui.startClientMoveButton, true);
 
 	ui.regionList->clear();
 	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
@@ -310,7 +335,7 @@ void IndigoTaxi::connectionStatus(bool status)
 {
 	if (status && !online) {
 		voiceLady->sayPhrase("CONNECTIONOK");
-		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));		
+		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));
 		online = true;
 	} else if (!status && online) {
 		voiceLady->sayPhrase("NOCONNECTION");		
@@ -431,17 +456,19 @@ void IndigoTaxi::clearMessageClick()
 {	
 	//QSound::play("click.wav");
 	//QSound::play(qApp->applicationDirPath() + QDir::separator() + "stop.wav");
-	if (iTaxiOrder != NULL) {
-		destroyCurrentOrder();
-		iTaxiOrder = NULL;
-	}
+	//if (iTaxiOrder != NULL) {
+	//	destroyCurrentOrder();
+	//	iTaxiOrder = NULL;
+	//}
 	
 	ui.serverMessage->setPlainText("");
 }
 
 void IndigoTaxi::exitButtonClick()
 {
-	qApp->quit();
+	if (confirmDialog->ask("¬€ œŒƒ“¬≈–∆ƒ¿≈“≈ ¬€’Œƒ »« œ–Œ√–¿ÃÃ€?")) {
+		qApp->quit();
+	}
 }
 
 // ‚ÂÌÛÚ¸Òˇ
@@ -505,6 +532,7 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 			ui.dutyStart->setText("Õ¿◊¿ÀŒ —Ã≈Õ€");
 			enableMainButtons(false);
 			ui.dutyStart->setProperty("pressed", false);
+			infoDialog->info("—ÏÂÌ‡ ÓÍÓÌ˜ÂÌ‡!");
 		}
 	}
 	
@@ -515,7 +543,10 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 
 void IndigoTaxi::notPayClicked()
 {
-	backend->sendOrderEvent(hello_TaxiEvent_NOT_PAY, lastTaxiOrder);
+	if (confirmDialog->ask("¬€ œŒƒ“¬≈–∆ƒ¿≈“≈, ◊“Œ  À»≈Õ“ Õ≈ ŒœÀ¿“»À œŒ≈«ƒ ”?")) {
+		backend->sendOrderEvent(hello_TaxiEvent_NOT_PAY, lastTaxiOrder);
+		infoDialog->info("ƒ»—œ≈“◊≈–” Œ“œ–¿¬À≈ÕŒ ”¬≈ƒŒÃÀ≈Õ»≈ Œ Õ≈ŒœÀ¿“≈ œŒ≈«ƒ »");
+	}
 }
 
 void IndigoTaxi::dinnerStartClicked()
@@ -573,10 +604,13 @@ void IndigoTaxi::fromcarEndButtonClicked()
 void IndigoTaxi::emptyTripClicked() 
 {
 	// Õ≈”—“Œ… ¿
-	backend->sendEvent(hello_TaxiEvent_EMPTY_TRIP);
-	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
-	// Ò·‡Ò˚‚‡ÂÏ Á‡Í‡Á
-	destroyCurrentOrder();
+	if (confirmDialog->ask("¬€ œŒƒ“¬≈–∆ƒ¿≈“≈ Õ≈”—“Œ… ” œŒ «¿ ¿«”?")) {
+		backend->sendEvent(hello_TaxiEvent_EMPTY_TRIP);
+		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+		// Ò·‡Ò˚‚‡ÂÏ Á‡Í‡Á
+		destroyCurrentOrder();
+		infoDialog->info("ƒ»—œ≈“◊≈–” Œ“œ–¿¬À≈ÕŒ ”¬≈ƒŒÃÀ≈Õ»≈ Œ Õ≈”—“Œ… ≈");
+	}
 }
 
 void IndigoTaxi::repairClicked()
@@ -620,10 +654,12 @@ void IndigoTaxi::techhelpBackClicked()
  */
 void IndigoTaxi::notToMeButtonClicked()
 {
-	// ÏÓÊÂÚ ·˚Ú¸ ÚÓÎ¸ÍÓ ‰Îˇ ÔÓ¯ÎÓ„Ó Á‡Í‡Á‡
-	backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);
-	destroyCurrentOrder();
-	ui.serverMessage->setPlainText("");
+	if (confirmDialog->ask("¬€ œŒƒ“¬≈–∆ƒ¿≈“≈ Œ“ ¿« Œ“ “≈ ”Ÿ≈√Œ «¿ ¿«¿?")) {
+		backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);
+		destroyCurrentOrder();
+		ui.serverMessage->setPlainText("");
+		infoDialog->info("ƒ»—œ≈“◊≈–” Œ“œ–¿¬À≈ÕŒ ”¬≈ƒŒÃÀ≈Õ»≈ Œ¡ Œ“ ¿«≈ Œ“ «¿ ¿«¿");
+	}
 }
 
 // Â‡ÍˆËˇ Ì‡ ÔÓÂı‡ÎË
@@ -788,7 +824,10 @@ void IndigoTaxi::newTimeTotal(int _seconds)
 
 void IndigoTaxi::clientNotExit()
 {
-	backend->sendOrderEvent(hello_TaxiEvent_NOT_EXIT, iTaxiOrder);
+	if (confirmDialog->ask("¬€ œŒƒ“¬≈–∆ƒ¿≈“≈, ◊“Œ  À»≈Õ“ Õ≈ ¬€ÿ≈À?")) {
+		backend->sendOrderEvent(hello_TaxiEvent_NOT_EXIT, iTaxiOrder);
+		infoDialog->info("ƒ»—œ≈“◊≈–” Œ“œ–¿¬À≈ÕŒ ”¬≈ƒŒÃÀ≈Õ»≈, ◊“Œ  À»≈Õ“ Õ≈ ¬€ÿ≈À");
+	}
 }
 
 void IndigoTaxi::clientStopClicked(bool on)
@@ -796,19 +835,14 @@ void IndigoTaxi::clientStopClicked(bool on)
 	if (iTaxiOrder == NULL)
 		return;
 
-
-
 	if (!movementStarted) {
 		iTaxiOrder->setClientStop(on);
 
 		if (on)
 		{
 			voiceLady->sayPhrase("CLIENTSTOP");
-		} else
-		{
-			voiceLady->sayPhrase("CLIENTSTOPOFF");
+			ui.clientStopButton->setEnabled(false);
 		}
-
 	}
 }
 
@@ -820,14 +854,30 @@ void IndigoTaxi::movementStart(int start)
 	movementStarted = start == 1;
 
 	if (movementStarted) {
-		// FIXME ‚˚ÍÎ˛˜ËÚ¸ ÂÊËÏ ÔÂÂÂÁ‰‡
-		//iTaxiOrder->getTra
-		if (iTaxiOrder != NULL)
-		{
-			iTaxiOrder->setTrainCross(false);
+		if (iTaxiOrder != NULL) {
+			// Ò˜∏Ú Ì‡˜ËÌ‡ÂÚÒˇ ÚÓÎ¸ÍÓ, ÂÒÎË ÔÓÂı‡ÎË
+			if (!iTaxiOrder->isStarted()) {
+				iTaxiOrder->startOrder();
+			}
+			// ‚˚ÍÎ˛˜‡ÂÏ ÔÂÂÂÁ‰
+			if (iTaxiOrder->isTrainCross()) {
+				iTaxiOrder->setTrainCross(false);
+
+				voiceLady->sayPhrase("TRAINCROSSOFF");
+				
+				ui.trainCrossButton->setEnabled(true);
+				ui.trainCrossButton->setChecked(false);
+			}
+			
+			// ‚˚ÍÎ˛˜‡ÂÏ ÓÒÚ‡ÌÓ‚ÍÛ ÔÓ ÔÓÒ¸·Â ÍÎËÂÌÚ‡
+			if (iTaxiOrder->isClientStop()) {
+				iTaxiOrder->setClientStop(false);
+				voiceLady->sayPhrase("CLIENTSTOPOFF");
+
+				ui.clientStopButton->setEnabled(true);
+				ui.clientStopButton->setChecked(false);
+			}
 		}
-		ui.trainCrossButton->setEnabled(true);
-		ui.trainCrossButton->setChecked(false);
 	}
 }
 
@@ -842,9 +892,6 @@ void IndigoTaxi::trainCrossButtonClicked()
 		{
 			iTaxiOrder->setTrainCross(true);
 		}
-	} else {
-		// ÓÚÊËÏ‡ÂÏ Ó·‡ÚÌÓ
-		ui.trainCrossButton->setChecked(false);
 	}
 }
 
@@ -887,7 +934,9 @@ void IndigoTaxi::cancelRegionSelectClicked()
 void IndigoTaxi::rebootSystem()
 {
 	// reboot
+	if (confirmDialog->ask("œ≈–≈«¿√–”«»“‹ —»—“≈Ã”?")) {
 #ifdef UNDER_CE
-	SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
+		SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
 #endif
+	}
 }

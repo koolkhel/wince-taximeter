@@ -134,5 +134,40 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>IConfirmationDialog</receiver>
+   <slot>clickSound()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>236</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>313</x>
+     <y>-17</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IConfirmationDialog</receiver>
+   <slot>clickSound()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>135</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>-39</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>clickSound()</slot>
+ </slots>
 </ui>

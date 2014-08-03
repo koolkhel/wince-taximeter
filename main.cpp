@@ -98,18 +98,11 @@ Debug: "WindowsMobile"
 
 		
 #ifdef UNDER_CE
-		QRect rect = QApplication::desktop()->geometry();
-		int width = rect.width();
-		int height = rect.height();
-		int dpi = (int) sqrt(width*width + height*height) / 4.5; // average screen size
-		qDebug() << "calculated DPI:" << dpi;
-		w.setProperty("_q_customDpiX", QVariant(dpi));
-		w.setProperty("_q_customDpiY", QVariant(dpi));
+		
 		w.show();
 		w.showFullScreen();
 #else
-		w.setProperty("_q_customDpiX", QVariant(122));
-		w.setProperty("_q_customDpiY", QVariant(122));
+
 		w.show();
 #endif
 

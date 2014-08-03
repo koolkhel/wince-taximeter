@@ -2,6 +2,7 @@
 <qresource prefix="/Sound">
 <file alias="GREETING">Resources/voice/GREETING.wav</file>
 <file alias="TRAINCROSS">Resources/voice/TRAINCROSS.wav</file>
+<file alias="TRAINCROSSOFF">Resources/voice/TRAINCROSSOFF.wav</file>
 <file alias="OVERLOAD">Resources/voice/OVERLOAD.wav</file>
 <file alias="OVERLOADOFF">Resources/voice/OVERLOADOFF.wav</file>
 <file alias="CLIENTSTOP">Resources/voice/CLIENTSTOP.wav</file>
@@ -16,6 +17,9 @@
 <file alias="CONNECTIONOK">Resources/voice/CONNECTIONOK.wav</file>
 <file alias="DISCOUNTON">Resources/voice/DISCOUNTON.wav</file>
 <file alias="DISCOUNTOFF">Resources/voice/DISCOUNTOFF.wav</file>
+<file alias="ORDERACCEPT">Resources/voice/ORDERACCEPT.wav</file>
+<file alias="ORDERINPLACE">Resources/voice/ORDERINPLACE.wav</file>
+<file alias="ORDERGO">Resources/voice/ORDERGO.wav</file>
 <file alias="1">Resources/voice/1.wav</file>
 <file alias="2">Resources/voice/2.wav</file>
 <file alias="3">Resources/voice/3.wav</file>

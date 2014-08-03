@@ -1,5 +1,7 @@
 #include "iinfodialog.h"
 
+#include <QSound>
+
 IInfoDialog::IInfoDialog(QWidget *parent)
 	: QDialog(parent)
 {
@@ -20,4 +22,9 @@ void IInfoDialog::info(QString text)
 {
 	setText(text);
 	exec();
+}
+
+void IInfoDialog::clickSound()
+{
+	QSound::play("click.wav");
 }

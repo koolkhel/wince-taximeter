@@ -88,5 +88,24 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IInfoDialog</receiver>
+   <slot>clickSound()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>228</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>-31</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>clickSound()</slot>
+ </slots>
 </ui>

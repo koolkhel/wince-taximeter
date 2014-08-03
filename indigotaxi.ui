@@ -199,11 +199,11 @@ QPushButton {
 }
 
 
-#farawayButton {
+#clientStopButton {
 	background: #724b22;
 }
 
-#farawayButton:checked {
+#clientStopButton:checked {
 	background: #1d1d1d;
 }
 
@@ -443,7 +443,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1564,7 +1564,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -3760,6 +3760,22 @@ QPushButton[pressed=true] {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>startClientMoveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>startClientMoveClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>408</x>
+     <y>185</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>418</x>
+     <y>-166</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -3798,5 +3814,6 @@ QPushButton[pressed=true] {
   <slot>techhelpClicked()</slot>
   <slot>techhelpBackClicked()</slot>
   <slot>playClick()</slot>
+  <slot>startClientMoveClicked()</slot>
  </slots>
 </ui>

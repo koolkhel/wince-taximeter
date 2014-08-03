@@ -14,7 +14,8 @@ public:
 
 	void setText(QString text);
 	void info(QString text);
-
+public slots:
+	void clickSound();
 private:
 	Ui::IInfoDialog ui;
 };

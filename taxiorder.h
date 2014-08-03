@@ -59,7 +59,9 @@ public:
 	int secondsMoving() { return seconds_moving; }
 	
 	bool isClientStop() { return _clientStop; }
-	bool isTrainCross() { return _trainCross; } 
+	bool isTrainCross() { return _trainCross; }
+
+	bool isStarted() { return started; }
 
 signals:
 	void paymentChanged(int);

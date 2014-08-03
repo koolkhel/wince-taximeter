@@ -14,7 +14,8 @@ public:
 
 	void setText(QString text);
 	bool ask(QString text);
-
+public slots:
+	void clickSound();
 private:
 	Ui::IConfirmationDialog ui;
 };

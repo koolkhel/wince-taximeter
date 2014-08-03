@@ -29,6 +29,7 @@ public:
 	IndigoTaxi(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~IndigoTaxi();
 	static int const EXIT_CODE_REBOOT;
+
 signals:
 	void reboot_application();
 	void orderMovementStart(int startStop);
@@ -57,6 +58,7 @@ public slots:
 	void inPlace();
 	void selectRegionClicked();
 	void startClientMove();
+	void startClientMoveClicked();
 	void settingsButtonClick();
 	void clearMessageClick();
 

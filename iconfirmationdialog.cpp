@@ -1,5 +1,7 @@
 #include "iconfirmationdialog.h"
 
+#include <QSound>
+
 IConfirmationDialog::IConfirmationDialog(QWidget *parent)
 	: QDialog(parent)
 {
@@ -20,4 +22,9 @@ bool IConfirmationDialog::ask(QString text)
 {
 	setText(text);
 	return exec() == QDialog::Accepted;
+}
+
+void IConfirmationDialog::clickSound()
+{
+	QSound::play("click.wav");
 }
