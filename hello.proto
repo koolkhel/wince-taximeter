@@ -8,56 +8,38 @@ message hello
 {
 	// позывной
 	optional int32 drivername   = 1 [ default = 0 ];
+  
+  // сюда попадёт список остановок с позывными для выбора
 	optional string text_string = 2 [ default = "" ];
 
 	enum TaxiEvent {
 		NOTHING 		=	0;
-    //	Вышел на линию
-		ARRIVED			=	1	;
-    //	Смена закончена	
-		DAY_END			=	2	;	
-    //	Ушел на обед
-		GO_DINNER		=	3	;	
-    //	Вернулся с обеда
-		BACK_DINNER		=	4	;	
-    //	Отлучился
-		MOVE_OUT		=	5	;	
-    //	Вернулся
-		BACK_MOVE_OUT		=	6	;	
-    //	Вышел из машины
-		GO_FROM_CAR		=	7	;	
-    //	Вернулся в машину
-		BACK_TO_CAR		=	8	;	
-    //	Поломка
-		GET_DAMAGE		=	9	;	
-    //	Отремонтировался
-		REPEAR_DAMAGE		=	10	;
-    //	Поехал на тех помощь	
-		TECHHELP		=	11	;	
-    //	Вернулся с тех помощи
-		BACK_TECHHELP		=	12	;	
-    //	На месте. Приглашай
-		IN_PLACE		=	13	;	
-    //	Поехал за клиентом
-		MOVE_TO_CLIENT		=	14	;	
-    //	Поехал с клиентом
-		START_CLIENT_MOVE	=	15	;
-    //	Помощь
-		HELP			=	16	;
-    //	Отказ от заказа (водителем)
-		NOT_TO_ME		=	17	;
-    // Расчёт	
-    END_CLIENT_MOVE = 18 ; 
-    // Смена целевого района
-    MOVED = 19;
-    // Не заплатили
-    NOT_PAY = 20;
-    // Не вышли
-    NOT_EXIT = 21;
-    // Пустая поездка
-    EMPTY_TRIP = 22;
-    // ЗАКАЗ С МЕСТА
-    CLIENT_IN_PLACE = 23;
+    ARRIVED	=	1	;	//	Вышел на линию
+    DAY_END	=	2	;	//	Смена закончена
+    GO_DINNER	=	3	;	//	Ушел на обед
+    BACK_DINNER	=	4	;	//	Вернулся с обеда
+    MOVE_OUT	=	5	;	//	Отлучился
+    BACK_MOVE_OUT	=	6	;	//	Вернулся
+    GO_FROM_CAR	=	7	;	//	Вышел из машины
+    BACK_TO_CAR	=	8	;	//	Вернулся в машину
+    GET_DAMAGE	=	9	;	//	Поломка
+    REPEAR_DAMAGE	=	10	;	//	Отремонтировался
+    TECHHELP	=	11	;	//	Поехал на тех помощь
+    BACK_TECHHELP	=	12	;	//	Вернулся с тех помощи
+    IN_PLACE	=	13	;	//	На месте. Приглашай
+    MOVE_TO_CLIENT	=	14	;	//	Поехал за клиентом
+    START_CLIENT_MOVE	=	15	;	//	Поехал с клиентом
+    HELP	=	16	;	//	Помощь
+    NOT_TO_ME	=	17	;	//	Отказ от заказа (водителем)
+    END_CLIENT_MOVE = 18;	//	Поездку завершили
+    MOVED	=	19	;	// Смена целевого района заказа либо положения водителя	
+    NOT_PAY	=	20	;	// Не заплатили	
+    NOT_EXIT	=	21	;	// Не вышли	
+    EMPTY_TRIP	=	22	;	// Пустая поездка	
+    CLIENT_IN_PLACE	=	23	;	// ЗАКАЗ С МЕСТА
+    GET_INFO = 24; // сервер, пришли данные, пожалуйста
+    ASK_REGION = 25; // информация о позывных по региону
+    CHANGE_REGION = 26;	 // хочу стать в такой район на такую стоянку
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];

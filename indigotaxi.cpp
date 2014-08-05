@@ -46,6 +46,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	int driverName = settingsIniFile->value("driverName", QVariant(500)).toInt();
 	settingsIniFile->endGroup();
 	backend->setDriverName(driverName);
+	backend->sendEvent(hello_TaxiEvent_GET_INFO);
 	
 
 	//ui.versionLabel->setText(version);
@@ -205,7 +206,7 @@ void IndigoTaxi::startClientMove()
 		// пошёл счёт
 		// по идее таксистов, новый заказ не надо сразу начинать считать. Поедем -- тогда и счёт
 		// иначе у нас простой будет накапливаться на ровном месте
-		// iTaxiOrder->startOrder();
+		iTaxiOrder->startOrder();
 	}
 	
 	// обновляем цифры
@@ -668,7 +669,7 @@ void IndigoTaxi::selectRegionClicked()
 #ifndef DEBUG
 	if (!newDirection && satellitesUsed < 5) {
 		voiceLady->sayPhrase("NOGPS");
-		QMessageBox::critical(this, "Невозможно начать поездку", "Число спутников должно быть больше 5");
+		infoDialog->info("Невозможно начать поездку. Число спутников должно быть больше 5");
 		return;
 	}
 #endif
@@ -840,6 +841,10 @@ void IndigoTaxi::clientStopClicked(bool on)
 
 		if (on)
 		{
+			// вдруг это время будет как-то задерживаться уже клиентом?
+			//if (!iTaxiOrder->isStarted()) {
+			//	iTaxiOrder->startOrder();
+			//}
 			voiceLady->sayPhrase("CLIENTSTOP");
 			ui.clientStopButton->setEnabled(false);
 		}
@@ -856,9 +861,11 @@ void IndigoTaxi::movementStart(int start)
 	if (movementStarted) {
 		if (iTaxiOrder != NULL) {
 			// счёт начинается только, если поехали
+#if 0
 			if (!iTaxiOrder->isStarted()) {
 				iTaxiOrder->startOrder();
 			}
+#endif
 			// выключаем переезд
 			if (iTaxiOrder->isTrainCross()) {
 				iTaxiOrder->setTrainCross(false);
