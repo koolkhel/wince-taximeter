@@ -102,11 +102,40 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	confirmDialog->setProperty("_q_customDpiX", QVariant(dpi));
 	confirmDialog->setProperty("_q_customDpiY", QVariant(dpi));
 
+	setCurrentScreenFromSettings();
 }
 		
 IndigoTaxi::~IndigoTaxi()
 {
 
+}
+
+void IndigoTaxi::setCurrentScreenFromSettings()
+{
+	QString status = getSettingsStatus();
+
+	if (status == "OK") {
+	} else if (status == "DINNER") {
+		enableDutyUI(true);
+		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);		
+		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+	} else if (status == "FROMCAR") {
+		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+		enableDutyUI(true);
+		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageFromcar3);
+	} else if (status == "AWAY") {
+		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+		enableDutyUI(true);
+		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageAway4);
+	} else if (status == "REPAIR") {
+		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+		enableDutyUI(true);
+		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageRepair5);
+	} else if (status == "TECHHELP") {
+		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);	
+		enableDutyUI(true);
+		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageTechhelp6);
+	}
 }
 
 void IndigoTaxi::updateTime()
@@ -515,6 +544,20 @@ void IndigoTaxi::playClick()
 {
 	voiceLady->click();
 }
+
+void IndigoTaxi::enableDutyUI(bool enable) 
+{
+	if (enable) {
+		enableMainButtons(true);
+		ui.dutyStart->setText("ÊÎÍÅÖ ÑÌÅÍÛ");		
+		ui.dutyStart->setProperty("pressed", true);
+	} else {
+		enableMainButtons(false);
+		ui.dutyStart->setText("ÍÀ×ÀËÎ ÑÌÅÍÛ");
+		ui.dutyStart->setProperty("pressed", false);
+	}
+}
+
 /*!
  * \brief
  * Íà ñìåíó, ñî ñìåíû
@@ -535,18 +578,14 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 	if (!ui.dutyStart->property("pressed").toBool()) {
 		if (confirmDialog->ask("Âû ïîäòâåðæäàåòå íà÷àëî ñìåíû?")) {
 			backend->sendEvent(hello_TaxiEvent_ARRIVED);
-			enableMainButtons(true);
-			ui.dutyStart->setText("ÊÎÍÅÖ ÑÌÅÍÛ");		
-			ui.dutyStart->setProperty("pressed", true);
+			enableDutyUI(true);
 			infoDialog->info("Ñìåíà íà÷àòà!");
 		}
 		
 	} else {
 		if (confirmDialog->ask("Âû ïîäòâåðæäàåòå êîíåö ñìåíû?")) {
 			backend->sendEvent(hello_TaxiEvent_DAY_END);
-			ui.dutyStart->setText("ÍÀ×ÀËÎ ÑÌÅÍÛ");
-			enableMainButtons(false);
-			ui.dutyStart->setProperty("pressed", false);
+			enableDutyUI(false);
 			infoDialog->info("Ñìåíà îêîí÷åíà!");
 		}
 	}
@@ -567,12 +606,14 @@ void IndigoTaxi::notPayClicked()
 void IndigoTaxi::dinnerStartClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_GO_DINNER);
+	setSettingsStatus("DINNER");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);
 }
 
 void IndigoTaxi::dinnerStopClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_DINNER);
+	setSettingsStatus("OK");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
@@ -595,24 +636,28 @@ void IndigoTaxi::driverNameEdited(QString newValue)
 void IndigoTaxi::awayButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_MOVE_OUT);
+	setSettingsStatus("AWAY");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageAway4);
 }
 
 void IndigoTaxi::awayEndButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_MOVE_OUT);
+	setSettingsStatus("OK");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
 void IndigoTaxi::fromcarButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_GO_FROM_CAR);
+	setSettingsStatus("FROMCAR");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageFromcar3);
 }
 
 void IndigoTaxi::fromcarEndButtonClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_TO_CAR);
+	setSettingsStatus("OK");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
@@ -631,24 +676,28 @@ void IndigoTaxi::emptyTripClicked()
 void IndigoTaxi::repairClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_GET_DAMAGE);
+	setSettingsStatus("REPAIR");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageRepair5);
 }
 
 void IndigoTaxi::repairEndClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_REPEAR_DAMAGE);
+	setSettingsStatus("OK");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
 void IndigoTaxi::techhelpClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_TECHHELP);
+	setSettingsStatus("TECHHELP");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageTechhelp6);
 }
 
 void IndigoTaxi::techhelpBackClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_TECHHELP);
+	setSettingsStatus("OK");
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
@@ -961,4 +1010,21 @@ void IndigoTaxi::rebootSystem()
 		SetSystemPowerState(NULL, POWER_STATE_RESET, 0);
 #endif
 	}
+}
+
+QString IndigoTaxi::getSettingsStatus()
+{
+	settingsIniFile->beginGroup("main");
+	QString status = settingsIniFile->value("status", QVariant("OK")).toString();
+	settingsIniFile->endGroup();
+
+	return status;
+}
+
+void IndigoTaxi::setSettingsStatus(QString status)
+{
+	settingsIniFile->beginGroup("main");
+	settingsIniFile->setValue("status", QVariant(status));
+	settingsIniFile->endGroup();
+	settingsIniFile->sync();
 }

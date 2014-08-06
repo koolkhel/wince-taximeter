@@ -114,6 +114,11 @@ public slots:
 	// page 6
 	void cancelRegionSelectClicked();
 
+	// для статуса водителя, типа ремонт-обед и так далее
+	QString getSettingsStatus();
+	void setSettingsStatus(QString status);
+	void enableDutyUI(bool enable);
+
 private:
 	TaxiRegionList taxiRegionList;
 	TaxiRateAll taxiRates;
@@ -160,6 +165,8 @@ private:
 	void enableWidget(QWidget *widget, bool enable);
 
 	void abortOrder(int order_id);
+
+	void setCurrentScreenFromSettings();
 
 	QList<ITaxiOrder *> ordersHistory;
 

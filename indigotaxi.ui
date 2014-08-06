@@ -1560,6 +1560,9 @@ QPushButton {
             <bold>false</bold>
            </font>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="tabShape">
            <enum>QTabWidget::Rounded</enum>
           </property>
@@ -2474,6 +2477,60 @@ QPushButton[pressed=true] {
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <layoutfunction spacing="0" margin="0"/>
+ <tabstops>
+  <tabstop>dutyStart</tabstop>
+  <tabstop>messageHistoryButton</tabstop>
+  <tabstop>orderHistoryButton</tabstop>
+  <tabstop>techhelpButton</tabstop>
+  <tabstop>screenLockButton</tabstop>
+  <tabstop>repairButton</tabstop>
+  <tabstop>dinnerButton</tabstop>
+  <tabstop>awayButton</tabstop>
+  <tabstop>fromCarButton</tabstop>
+  <tabstop>trainCrossButton</tabstop>
+  <tabstop>overloadButton</tabstop>
+  <tabstop>clientStopButton</tabstop>
+  <tabstop>resumeVoyageButton</tabstop>
+  <tabstop>freeButton</tabstop>
+  <tabstop>settingsTabWidget</tabstop>
+  <tabstop>backToStandByButton</tabstop>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>pushButton_7</tabstop>
+  <tabstop>pushButton_14</tabstop>
+  <tabstop>refuseButton</tabstop>
+  <tabstop>pushButton_10</tabstop>
+  <tabstop>pushButton_9</tabstop>
+  <tabstop>pushButton_11</tabstop>
+  <tabstop>pushButton_12</tabstop>
+  <tabstop>pushButton_13</tabstop>
+  <tabstop>driverNameLineEdit</tabstop>
+  <tabstop>driverNumberButton</tabstop>
+  <tabstop>menuButton</tabstop>
+  <tabstop>moveToClientButton</tabstop>
+  <tabstop>clearButton</tabstop>
+  <tabstop>inPlaceButton</tabstop>
+  <tabstop>directionValueButton</tabstop>
+  <tabstop>startClientMoveButton</tabstop>
+  <tabstop>paytimeButton</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_4</tabstop>
+  <tabstop>pushButton_5</tabstop>
+  <tabstop>pushButton_6</tabstop>
+  <tabstop>pushButton_8</tabstop>
+  <tabstop>pushButton_15</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>rebootButton</tabstop>
+  <tabstop>taxiRateShowButton</tabstop>
+  <tabstop>turnOffButton</tabstop>
+  <tabstop>softInfoButton</tabstop>
+  <tabstop>exitButton_2</tabstop>
+  <tabstop>pushButton_21</tabstop>
+  <tabstop>regionListSettingsWidget</tabstop>
+  <tabstop>regionList</tabstop>
+  <tabstop>backToStandbyButton</tabstop>
+  <tabstop>acceptRegionButton</tabstop>
+  <tabstop>serverMessage</tabstop>
+ </tabstops>
  <resources>
   <include location="indigotaxi.qrc"/>
   <include location="UI.qrc"/>
