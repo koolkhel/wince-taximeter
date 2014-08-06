@@ -121,22 +121,27 @@ void IndigoTaxi::setCurrentScreenFromSettings()
 
 	if (status == "OK") {
 	} else if (status == "DINNER") {
-		enableDutyUI(true);
-		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);		
 		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+		enableDutyUI(true);
+		ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
+		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);			
 	} else if (status == "FROMCAR") {
+		ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
 		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
 		enableDutyUI(true);
 		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageFromcar3);
 	} else if (status == "AWAY") {
+		ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
 		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
 		enableDutyUI(true);
 		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageAway4);
 	} else if (status == "REPAIR") {
+		ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
 		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
 		enableDutyUI(true);
 		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageRepair5);
 	} else if (status == "TECHHELP") {
+		ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
 		ui.stackedWidget->setCurrentWidget(ui.settingsPage4);	
 		enableDutyUI(true);
 		ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageTechhelp6);
@@ -329,6 +334,7 @@ void IndigoTaxi::abortOrder(int order_id)
 		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() + " ÎÒÌÅÍ¨Í ÄÈÑÏÅÒ×ÅÐÎÌ");
 		destroyCurrentOrder();
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+		orderReceiveTimer->stop();
 		clearMessageClick();
 	}
 }
@@ -715,6 +721,7 @@ void IndigoTaxi::emptyTripClicked()
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 		// ñáðàñûâàåì çàêàç
 		destroyCurrentOrder();
+		clearMessageClick();
 		infoDialog->info("ÄÈÑÏÅÒ×ÅÐÓ ÎÒÏÐÀÂËÅÍÎ ÓÂÅÄÎÌËÅÍÈÅ Î ÍÅÓÑÒÎÉÊÅ");
 	}
 }
@@ -860,8 +867,8 @@ void IndigoTaxi::orderReceiveTimerTimeout()
 		orderReceiveCounter--;
 	} else {
 		voiceLady->sayPhrase("ORDERABORT");
-		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() +  " ÎÒÌÅÍ¨Í ÏÎ ÏÐÈ×ÈÍÅ ÎÒÑÓÒÑÒÂÈß ÎÒÂÅÒÀ ÂÎÄÈÒÅËß ÍÀ ÇÀÏÐÎÑ ÄÈÑÏÅÒ×ÅÐÀ");
 		backend->sendOrderEvent(hello_TaxiEvent_NOT_ANSWER, iTaxiOrder);
+		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() +  " ÎÒÌÅÍ¨Í ÏÎ ÏÐÈ×ÈÍÅ ÎÒÑÓÒÑÒÂÈß ÎÒÂÅÒÀ ÂÎÄÈÒÅËß ÍÀ ÇÀÏÐÎÑ ÄÈÑÏÅÒ×ÅÐÀ");		
 		destroyCurrentOrder();
 		clearMessageClick();
 		orderReceiveTimer->stop();
