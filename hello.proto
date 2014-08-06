@@ -40,6 +40,7 @@ message hello
     GET_INFO = 24; // сервер, пришли данные, пожалуйста
     ASK_REGION = 25; // информация о позывных по региону
     CHANGE_REGION = 26;	 // хочу стать в такой район на такую стоянку
+    ABORT_ORDER = 27; // отмена заказа
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];

@@ -63,6 +63,9 @@ public:
 
 	bool isStarted() { return started; }
 
+	QString address() { return _address; }
+	void setAddress(QString address) { _address = address; }
+
 signals:
 	void paymentChanged(int);
 	void regionChanged(int regionId);
@@ -90,6 +93,8 @@ public slots:
 private:	
 	// IMPORTANT ORDER VARIABLES (USED FOR MONEY COMPUATION)	
 	TaxiRatePeriod taxiRate;
+
+	QString _address;
 	
 	// стоимость километра в межгороде
 	float _out_of_city_rate;

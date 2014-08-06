@@ -204,8 +204,6 @@ void IndigoTaxi::startClientMove()
 		}
 		
 		// пошёл счёт
-		// по идее таксистов, новый заказ не надо сразу начинать считать. Поедем -- тогда и счёт
-		// иначе у нас простой будет накапливаться на ровном месте
 		iTaxiOrder->startOrder();
 	}
 	
@@ -228,9 +226,13 @@ void IndigoTaxi::startClientMove()
 void IndigoTaxi::protobuf_message(hello message)
 {
 	// старый способ доставки адреса
+	if (message.event() == hello_TaxiEvent_ABORT_ORDER) {
+		abortOrder(message.taxiorder().order_id());
+	}
+#if 0
 	if (message.text_string().length() > 0)
 		ui.serverMessage->setPlainText(QString::fromUtf8(message.text_string().c_str()));
-
+#endif
 	// новый способ доставки адреса
 	if (message.has_taxiorder()) {
 		handleNewOrder(message.taxiorder());		
@@ -249,6 +251,16 @@ void IndigoTaxi::protobuf_message(hello message)
 	if (message.has_taxiinfo()) {
 		taxiInfo = message.taxiinfo();
 		updateTaxiInfo();
+	}
+}
+
+void IndigoTaxi::abortOrder(int order_id)
+{
+	if (iTaxiOrder->getOrderId() == order_id) {
+		voiceLady->sayPhrase("ORDERABORT");
+		infoDialog->info("ЗАКАЗ НА АДРЕС " + iTaxiOrder->address() + " ОТМЕНЁН ДИСПЕТЧЕРОМ");
+		destroyCurrentOrder();
+		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 	}
 }
 	
@@ -522,6 +534,7 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 	if (!ui.dutyStart->property("pressed").toBool()) {
 		if (confirmDialog->ask("Вы подтверждаете начало смены?")) {
 			backend->sendEvent(hello_TaxiEvent_ARRIVED);
+			enableMainButtons(true);
 			ui.dutyStart->setText("КОНЕЦ СМЕНЫ");		
 			ui.dutyStart->setProperty("pressed", true);
 			infoDialog->info("Смена начата!");
@@ -606,7 +619,7 @@ void IndigoTaxi::emptyTripClicked()
 {
 	// НЕУСТОЙКА
 	if (confirmDialog->ask("ВЫ ПОДТВЕРЖДАЕТЕ НЕУСТОЙКУ ПО ЗАКАЗУ?")) {
-		backend->sendEvent(hello_TaxiEvent_EMPTY_TRIP);
+		backend->sendOrderEvent(hello_TaxiEvent_EMPTY_TRIP, iTaxiOrder);
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 		// сбрасываем заказ
 		destroyCurrentOrder();
@@ -716,6 +729,7 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 	connect(this, SIGNAL(orderMovementStart(int)), iTaxiOrder, SLOT(movementStart(int)));
 
 	iTaxiOrder->recalcSum();
+	iTaxiOrder->setAddress(ui.serverMessage->toPlainText());
 
 	enableWidget(ui.moveToClientButton, true);
 

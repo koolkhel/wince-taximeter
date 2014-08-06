@@ -159,6 +159,8 @@ private:
 	void enableInPlaceButton(bool enable);
 	void enableWidget(QWidget *widget, bool enable);
 
+	void abortOrder(int order_id);
+
 	QList<ITaxiOrder *> ordersHistory;
 
 	IConfirmationDialog *confirmDialog;
