@@ -145,7 +145,7 @@ private:
 	ITaxiOrder *iTaxiOrder, *lastTaxiOrder;
 	TaxiRatePeriod getCurrentTaxiRatePeriod();
 	void handleNewOrder(TaxiOrder order);	
-	ITaxiOrder *createTaxiOrder(int order_id);
+	ITaxiOrder *createTaxiOrder(int order_id, QString address = "");
 
 	bool movementStarted;
 

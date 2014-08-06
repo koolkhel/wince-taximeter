@@ -261,6 +261,7 @@ void IndigoTaxi::abortOrder(int order_id)
 		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() + " ÎÒÌÅÍ¨Í ÄÈÑÏÅÒ×ÅÐÎÌ");
 		destroyCurrentOrder();
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+		clearMessageClick();
 	}
 }
 	
@@ -710,7 +711,7 @@ TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 }
 
 // íîâûé çàêàç, ñ íîìåðîì èëè áåç
-ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id) 
+ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id, QString address) 
 {
 	ITaxiOrder *iTaxiOrder = new ITaxiOrder(order_id, getCurrentTaxiRatePeriod(), 
 		currentParkingCost, currentParkingId, this);
@@ -729,7 +730,7 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id)
 	connect(this, SIGNAL(orderMovementStart(int)), iTaxiOrder, SLOT(movementStart(int)));
 
 	iTaxiOrder->recalcSum();
-	iTaxiOrder->setAddress(ui.serverMessage->toPlainText());
+	iTaxiOrder->setAddress(address);
 
 	enableWidget(ui.moveToClientButton, true);
 
@@ -767,7 +768,7 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 	} else {
 		destroyCurrentOrder();
 
-		iTaxiOrder = createTaxiOrder(taxiOrder.order_id());
+		iTaxiOrder = createTaxiOrder(taxiOrder.order_id(), QString::fromUtf8(taxiOrder.address().c_str()));
 		voiceLady->alarm();
 
 		if (taxiOrder.has_address()) {
