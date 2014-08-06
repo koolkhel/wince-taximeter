@@ -118,6 +118,8 @@ public slots:
 	QString getSettingsStatus();
 	void setSettingsStatus(QString status);
 	void enableDutyUI(bool enable);
+	
+	void orderReceiveTimerTimeout();
 
 private:
 	TaxiRegionList taxiRegionList;
@@ -167,6 +169,10 @@ private:
 	void abortOrder(int order_id);
 
 	void setCurrentScreenFromSettings();
+
+	// обращать на себя внимание 30 секунд, потом всё закрывать
+	QTimer *orderReceiveTimer;
+	int orderReceiveCounter;
 
 	QList<ITaxiOrder *> ordersHistory;
 

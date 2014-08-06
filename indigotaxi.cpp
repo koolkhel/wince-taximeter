@@ -94,6 +94,9 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	dpi = (int) sqrt(width*width + height*height) / 4.5; // average screen size
 	qDebug() << "calculated DPI:" << dpi;
 #endif
+	orderReceiveTimer = new QTimer(this);
+	orderReceiveTimer->setSingleShot(false);
+	connect(orderReceiveTimer, SIGNAL(timeout()), SLOT(orderReceiveTimerTimeout()));
 
 	setProperty("_q_customDpiX", QVariant(dpi));
 	setProperty("_q_customDpiY", QVariant(dpi));
@@ -158,6 +161,7 @@ void IndigoTaxi::moveToClient()
 {
 	backend->sendOrderEvent(hello_TaxiEvent_MOVE_TO_CLIENT, iTaxiOrder);
 	voiceLady->sayPhrase("ORDERACCEPT");
+	orderReceiveTimer->stop(); // ñáðàñûâàåì òàéìàóò íà ïðè¸ì çàêàçà
 }
 
 void IndigoTaxi::inPlace()
@@ -368,8 +372,11 @@ void IndigoTaxi::updateTaxiRegionList()
 	enableWidget(ui.startClientMoveButton, true);
 
 	ui.regionList->clear();
+	ui.regionListSettingsWidget->clear();
 	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
-		ui.regionList->addItem(QString::fromUtf8(taxiRegionList.regions().Get(i).region_name().c_str()));
+		QString regionName = QString::fromUtf8(taxiRegionList.regions().Get(i).region_name().c_str());
+		ui.regionList->addItem(regionName);
+		ui.regionListSettingsWidget->addItem(regionName);
 	}
 	ui.regionList->setCurrentRow(0);
 }
@@ -719,6 +726,7 @@ void IndigoTaxi::techhelpBackClicked()
 void IndigoTaxi::notToMeButtonClicked()
 {
 	if (confirmDialog->ask("ÂÛ ÏÎÄÒÂÅÐÆÄÀÅÒÅ ÎÒÊÀÇ ÎÒ ÒÅÊÓÙÅÃÎ ÇÀÊÀÇÀ?")) {
+		orderReceiveTimer->stop();
 		backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);
 		destroyCurrentOrder();
 		ui.serverMessage->setPlainText("");
@@ -806,6 +814,21 @@ void IndigoTaxi::destroyCurrentOrder()
 	}
 }
 
+void IndigoTaxi::orderReceiveTimerTimeout()
+{
+	voiceLady->alarm();
+	if (orderReceiveCounter > 0) {
+		orderReceiveCounter--;
+	} else {
+		voiceLady->sayPhrase("ORDERABORT");
+		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() +  " ÎÒÌÅÍ¨Í ÏÎ ÏÐÈ×ÈÍÅ ÎÒÑÓÒÑÒÂÈß ÎÒÂÅÒÀ ÂÎÄÈÒÅËß ÍÀ ÇÀÏÐÎÑ ÄÈÑÏÅÒ×ÅÐÀ");
+		backend->sendOrderEvent(hello_TaxiEvent_NOT_ANSWER, iTaxiOrder);
+		destroyCurrentOrder();
+		clearMessageClick();
+		orderReceiveTimer->stop();
+	}
+}
+
 // ïðèø¸ë çàêàç ñ ñåðâåðà, íàäî ðåàãèðîâàòü
 void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 {
@@ -820,11 +843,17 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 		iTaxiOrder = createTaxiOrder(taxiOrder.order_id(), QString::fromUtf8(taxiOrder.address().c_str()));
 		voiceLady->alarm();
 
+		// æä¸ì ñòîëüêî-òî âðåìåíè
+		orderReceiveCounter = 2; // 3 ïî 10 ñåêóíä 
+		orderReceiveTimer->setInterval(10 * 1000);
+		orderReceiveTimer->start();
+
 		if (taxiOrder.has_address()) {
 			ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
 		}
 		enableInPlaceButton(true);
 		ui.inPlaceButton->setEnabled(true);
+
 
 	}
 }
