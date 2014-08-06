@@ -12,15 +12,15 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.0.9";
+static const char *version = "0.1.001";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
-#define DEBUG
+//#define DEBUG
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
-	newDirection(false), online(false), downloader(NULL), changeRegion(false)
+	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -106,6 +106,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	confirmDialog->setProperty("_q_customDpiY", QVariant(dpi));
 
 	setCurrentScreenFromSettings();
+
+	progressDialog = new QProgressDialog("Получение информации о районе", "Отмена", 0, 2, this);
 }
 		
 IndigoTaxi::~IndigoTaxi()
@@ -285,6 +287,39 @@ void IndigoTaxi::protobuf_message(hello message)
 		taxiInfo = message.taxiinfo();
 		updateTaxiInfo();
 	}
+
+	qDebug() << "got" << message.taxiregioninfo().region_data().c_str();
+	if (message.has_taxiregioninfo() && message.event() == hello_TaxiEvent_ASK_REGION) {
+		processAskRegionReply(message);
+	}
+}
+
+void IndigoTaxi::processAskRegionReply(hello var)
+{
+	progressDialog->hide();
+
+	regions_stops_ids.clear();	
+	regions_stops_names.clear();
+	ui.regionDetailsList->clear();
+	// По району/0/5,2,3,36,13*;РП/59/13*,36;МАГНИТ/61/3
+	QString data = QString::fromUtf8(var.taxiregioninfo().region_data().c_str());
+	QStringList rows = data.split(";");
+	
+	for (int i = 0; i < rows.count(); i++) {
+		QStringList parts = rows[i].split("/");
+
+		if (parts.count() != 3) {
+			qDebug() << "error data";
+			continue;
+		}
+
+		regions_stops_ids.append(parts[1].toInt());
+		regions_stops_names.append(parts[0]);
+		ui.regionDetailsList->addItem(parts[0] + ": " + parts[2]);
+	}
+	ui.regionDetailsList->setCurrentRow(0);
+
+	ui.regionsSettingsStackedWidget->setCurrentWidget(ui.regionsSettingsPage2);
 }
 
 void IndigoTaxi::abortOrder(int order_id)
@@ -486,6 +521,10 @@ void IndigoTaxi::paytimeClick()
 // свободен -- сумма оплачивается
 void IndigoTaxi::freeButtonClick()
 {
+	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
+		if (iTaxiOrder->getRegionId() == taxiRegionList.regions().Get(i).region_id())
+			ui.currentRegionLabel->setText(taxiRegionList.regions().Get(i).region_name().c_str());
+	}
 	if (iTaxiOrder != NULL) {
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
 		destroyCurrentOrder();
@@ -1056,4 +1095,49 @@ void IndigoTaxi::setSettingsStatus(QString status)
 	settingsIniFile->setValue("status", QVariant(status));
 	settingsIniFile->endGroup();
 	settingsIniFile->sync();
+}
+
+void IndigoTaxi::cancelRegionUpdate()
+{
+	
+}
+
+void IndigoTaxi::showRegionDetailsClicked()
+{
+	hello var;
+	TaxiRegionInfo *info = var.mutable_taxiregioninfo();
+	asked_region_id = taxiRegionList.regions().Get(ui.regionListSettingsWidget->currentRow()).region_id();
+	var.set_event(hello_TaxiEvent_ASK_REGION);
+	info->set_region_id(asked_region_id);
+
+	backend->send_message(var);
+	
+	progressDialog->setModal(true);
+	progressDialog->setValue(1);
+	progressDialog->show();
+}
+
+void IndigoTaxi::backToRegionsSettings()
+{
+	ui.regionsSettingsStackedWidget->setCurrentWidget(ui.regionsSettingsPage1);
+}
+
+void IndigoTaxi::changeDriverRegionStopClicked()
+{
+	int stop_id = regions_stops_ids[ui.regionDetailsList->currentRow()];
+	QString stop_name = regions_stops_names[ui.regionDetailsList->currentRow()];
+	if (confirmDialog->ask("ВЫ ДЕЙСТВИТЕЛЬНО ХОТИТЕ ПЕРЕЙТИ НА СТОЯНКУ " + stop_name + "?")) {
+		hello var;
+		TaxiRegionInfo *info = var.mutable_taxiregioninfo();
+		info->set_region_id(asked_region_id);
+		info->set_stop_id(stop_id);
+		var.set_event(hello_TaxiEvent_CHANGE_REGION);
+
+		backend->send_message(var);
+		ui.currentRegionLabel->setText(stop_name);
+
+		infoDialog->info("УВЕДОМЛЕНИЕ ДИСПЕТЧЕРУ ОТПРАВЛЕНО");
+
+		ui.regionsSettingsStackedWidget->setCurrentWidget(ui.regionsSettingsPage1);
+	}
 }

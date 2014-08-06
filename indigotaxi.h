@@ -1,7 +1,10 @@
 #ifndef INDIGOTAXI_H
 #define INDIGOTAXI_H
 
+#include <QVector>
+
 #include <QtGui/QMainWindow>
+#include <QtGui/QProgressDialog>
 
 #include "ui_indigotaxi.h"
 
@@ -113,13 +116,19 @@ public slots:
 
 	// page 6
 	void cancelRegionSelectClicked();
+	void showRegionDetailsClicked();
+	void changeDriverRegionStopClicked();
 
 	// для статуса водителя, типа ремонт-обед и так далее
 	QString getSettingsStatus();
 	void setSettingsStatus(QString status);
 	void enableDutyUI(bool enable);
+
+	void cancelRegionUpdate();
 	
 	void orderReceiveTimerTimeout();
+
+	void backToRegionsSettings();
 
 private:
 	TaxiRegionList taxiRegionList;
@@ -136,6 +145,8 @@ private:
 	SettingsForm *settingsForm;
 	Backend *backend;
 	QSettings *settingsIniFile;
+
+	QProgressDialog *progressDialog;
 
 	FileDownloader *downloader;
 	QMutex restartMutex;
@@ -178,6 +189,12 @@ private:
 
 	IConfirmationDialog *confirmDialog;
 	IInfoDialog *infoDialog;
+
+	int asked_region_id;
+
+	void processAskRegionReply(hello var);
+	QVector<int> regions_stops_ids;
+	QVector<QString> regions_stops_names;
 };
 
 #endif // INDIGOTAXI_H

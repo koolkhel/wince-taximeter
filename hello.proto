@@ -38,8 +38,8 @@ message hello
     EMPTY_TRIP	=	22	;	// Пустая поездка	
     CLIENT_IN_PLACE	=	23	;	// ЗАКАЗ С МЕСТА
     GET_INFO = 24; // сервер, пришли данные, пожалуйста
-    ASK_REGION = 25; // информация о позывных по региону
-    CHANGE_REGION = 26;	 // хочу стать в такой район на такую стоянку
+    ASK_REGION = 25; // информация о позывных по региону ASK_REGION;ID_района
+    CHANGE_REGION = 26;	 // хочу стать в такой район на такую стоянку; CHANGE_REGION;ID_района;ID_стоянки
     ABORT_ORDER = 27; // отмена заказа
     NOT_ANSWER = 28; // водитель затупил и не принял заказ
 	}
@@ -63,6 +63,17 @@ message hello
   optional TaxiOrder taxiOrder = 10;
   
   optional TaxiInfo taxiInfo = 11;
+  
+  optional TaxiRegionInfo taxiRegionInfo = 12;
+}
+
+message TaxiRegionInfo {
+  optional int32 region_id = 1 [ default = 0 ];
+  
+// от сервера -- По району/0/5,2,3,36,13*;РП/59/13*,36;МАГНИТ/61/3;
+  optional string region_data = 2 [ default = "" ];
+  
+  optional int32 stop_id = 3 [ default = 0 ];
 }
 
 message TaxiInfo {

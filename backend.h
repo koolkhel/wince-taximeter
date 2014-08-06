@@ -60,6 +60,9 @@ public slots:
 	void reconnect();
 	void flushOrderEvents();
 
+	
+	void send_message(hello &var);
+
 private:
 	QSettings *settingsIniFile;
 	void consumeSocketData();
@@ -82,8 +85,6 @@ private:
 	google::protobuf::uint32 message_length;
 	const google::protobuf::uint8 *message_start;
 	int remainder;
-
-	void send_message(hello &var);
 
 	int driverName;
 	int taxiId;

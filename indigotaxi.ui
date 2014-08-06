@@ -36,11 +36,12 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">#regionList QScrollBar:vertical, #regionListSettingsWidget QScrollBar:vertical {
+    <string notr="true">#regionList QScrollBar:vertical, #regionListSettingsWidget QScrollBar:vertical,
+#regionDetailsList QScrollBar:vertical {
       width: 80px;
 }
 
-#regionList, #regionListSettingsWidget {
+#regionList, #regionListSettingsWidget, #regionDetailsList {
 	font: 24pt &quot;Segoe UI&quot;;
 	font-weight: bold;
 }
@@ -1567,7 +1568,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>3</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -2302,7 +2303,7 @@ QPushButton[pressed=true] {
            <attribute name="title">
             <string>Районы</string>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,8">
+           <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0">
             <property name="spacing">
              <number>5</number>
             </property>
@@ -2310,15 +2311,28 @@ QPushButton[pressed=true] {
              <number>5</number>
             </property>
             <item>
-             <widget class="QPushButton" name="pushButton_21">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             <widget class="QStackedWidget" name="regionsSettingsStackedWidget">
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-              <property name="text">
-               <string>В
+              <widget class="QWidget" name="regionsSettingsPage1">
+               <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="1,8,2">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_21">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>В
 е
 р
 н
@@ -2327,46 +2341,136 @@ QPushButton[pressed=true] {
 ь
 с
 я</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QListWidget" name="regionListSettingsWidget">
-              <item>
-               <property name="text">
-                <string>Выбор 1</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Выбор 2</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Выбор 3</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Выбор 4</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Выбор 5</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Выбор 6</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Выбор 7</string>
-               </property>
-              </item>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QListWidget" name="regionListSettingsWidget">
+                  <item>
+                   <property name="text">
+                    <string>Выбор 1</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Выбор 2</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Выбор 3</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Выбор 4</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Выбор 5</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Выбор 6</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Выбор 7</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_16">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>80</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>ВЫБОР</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="regionsSettingsPage2">
+               <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="1,8,1">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_17">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>В
+Е
+Р
+Н
+У
+Т
+Ь
+С
+Я</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QListWidget" name="regionDetailsList">
+                  <item>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>2</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>3</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_18">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>В
+Ы
+Б
+О
+Р</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
            </layout>
@@ -2672,8 +2776,8 @@ QPushButton[pressed=true] {
    <slot>cancelRegionSelectClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>49</y>
+     <x>104</x>
+     <y>244</y>
     </hint>
     <hint type="destinationlabel">
      <x>321</x>
@@ -2688,8 +2792,8 @@ QPushButton[pressed=true] {
    <slot>startClientMove()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>49</y>
+     <x>358</x>
+     <y>244</y>
     </hint>
     <hint type="destinationlabel">
      <x>479</x>
@@ -3833,6 +3937,70 @@ QPushButton[pressed=true] {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_16</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>showRegionDetailsClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>460</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>460</x>
+     <y>-22</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_16</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>playClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>480</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>592</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_17</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>backToRegionsSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>26</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>69</x>
+     <y>-51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_18</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>changeDriverRegionStopClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>463</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>578</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -3872,5 +4040,8 @@ QPushButton[pressed=true] {
   <slot>techhelpBackClicked()</slot>
   <slot>playClick()</slot>
   <slot>startClientMoveClicked()</slot>
+  <slot>showRegionDetailsClicked()</slot>
+  <slot>backToRegionsSettings()</slot>
+  <slot>changeDriverRegionStopClicked()</slot>
  </slots>
 </ui>
