@@ -1148,3 +1148,9 @@ void IndigoTaxi::changeDriverRegionStopClicked()
 		ui.regionsSettingsStackedWidget->setCurrentWidget(ui.regionsSettingsPage1);
 	}
 }
+
+void IndigoTaxi::emergencyButtonClicked()
+{
+	voiceLady->click();
+	backend->sendEvent(hello_TaxiEvent_HELP);
+}

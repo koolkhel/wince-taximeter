@@ -64,6 +64,7 @@ public slots:
 	void startClientMoveClicked();
 	void settingsButtonClick();
 	void clearMessageClick();
+	void emergencyButtonClicked();
 
 	// page 2
 	void newPaymentCalculated(int);

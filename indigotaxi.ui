@@ -1568,7 +1568,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1652,19 +1652,6 @@ QPushButton {
                  </property>
                  <property name="text">
                   <string>Неустойка</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
-                <widget class="QPushButton" name="pushButton_14">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Помощь</string>
                  </property>
                 </widget>
                </item>
@@ -2600,7 +2587,6 @@ QPushButton[pressed=true] {
   <tabstop>backToStandByButton</tabstop>
   <tabstop>pushButton_3</tabstop>
   <tabstop>pushButton_7</tabstop>
-  <tabstop>pushButton_14</tabstop>
   <tabstop>refuseButton</tabstop>
   <tabstop>pushButton_10</tabstop>
   <tabstop>pushButton_9</tabstop>
@@ -3890,22 +3876,6 @@ QPushButton[pressed=true] {
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_14</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>423</x>
-     <y>231</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>552</x>
-     <y>241</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>dutyStart</sender>
    <signal>clicked(bool)</signal>
    <receiver>IndigoTaxiClass</receiver>
@@ -4001,6 +3971,22 @@ QPushButton[pressed=true] {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>driverNumberButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>emergencyButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>673</x>
+     <y>94</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -4043,5 +4029,6 @@ QPushButton[pressed=true] {
   <slot>showRegionDetailsClicked()</slot>
   <slot>backToRegionsSettings()</slot>
   <slot>changeDriverRegionStopClicked()</slot>
+  <slot>emergencyButtonClicked()</slot>
  </slots>
 </ui>
