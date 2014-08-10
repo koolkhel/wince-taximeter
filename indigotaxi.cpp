@@ -279,6 +279,7 @@ void IndigoTaxi::protobuf_message(hello message)
 
 	if (message.event() == hello_TaxiEvent_PERSONAL_ANSWER) {
 		handlePersonalAnswer(message);
+		return; // криво, но не надо спускать в новый заказ
 	}
 
 	if (message.event() == hello_TaxiEvent_TEXT_MESSAGE) {
@@ -324,6 +325,7 @@ void IndigoTaxi::handlePersonalAnswer(hello var)
 {
 	if (iTaxiOrder != NULL && iTaxiOrder->getOrderId() == NO_ORDER_ID) {
 		qDebug() << "PERSONAL_ANSWER" << var.taxiorder().order_id();
+		orderReceiveTimer->stop();
 		iTaxiOrder->setOrderId(var.taxiorder().order_id());
 		ui.serverMessage->setPlainText("ѕ≈–—ќЌјЋ ј");
 	}
@@ -571,7 +573,7 @@ void IndigoTaxi::freeButtonClick()
 {
 	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
 		if (iTaxiOrder->getRegionId() == taxiRegionList.regions().Get(i).region_id())
-			ui.currentRegionLabel->setText(taxiRegionList.regions().Get(i).region_name().c_str());
+			ui.currentRegionLabel->setText(QString::fromUtf8(taxiRegionList.regions().Get(i).region_name().c_str()));
 	}
 	if (iTaxiOrder != NULL) {
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);

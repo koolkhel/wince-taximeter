@@ -42,7 +42,7 @@
 }
 
 #regionList, #regionListSettingsWidget, #regionDetailsList {
-	font: 24pt &quot;Segoe UI&quot;;
+	font: 14pt &quot;Segoe UI&quot;;
 	font-weight: bold;
 }
 
@@ -444,7 +444,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1571,7 +1571,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1779,7 +1779,7 @@ QPushButton {
                <enum>QFrame::NoFrame</enum>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="driverCabinetPage1">
                <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1,1,1,1" columnstretch="1,2,2">
@@ -2257,7 +2257,7 @@ QPushButton[pressed=true] {
             <item>
              <widget class="QStackedWidget" name="systemSettingsStackedWidget">
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="systemSettingsPage1">
                <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,2,2">
@@ -2722,7 +2722,7 @@ QPushButton[pressed=true] {
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>24</pointsize>
+            <pointsize>14</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
