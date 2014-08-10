@@ -444,7 +444,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -709,6 +709,9 @@ QPushButton {
                 </property>
                 <property name="plainText">
                  <string/>
+                </property>
+                <property name="textInteractionFlags">
+                 <set>Qt::NoTextInteraction</set>
                 </property>
                </widget>
               </item>
@@ -4280,6 +4283,22 @@ QPushButton[pressed=true] {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>stackedWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>stackedWidgetCurrentChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>255</x>
+     <y>143</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -4328,5 +4347,6 @@ QPushButton[pressed=true] {
   <slot>taxiRateShowButtonClicked()</slot>
   <slot>taxiRateReturnButtonClicked()</slot>
   <slot>privateClientButtonClicked()</slot>
+  <slot>stackedWidgetCurrentChanged(int)</slot>
  </slots>
 </ui>

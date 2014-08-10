@@ -137,6 +137,8 @@ public slots:
 
 	void backToRegionsSettings();
 
+	void stackedWidgetCurrentChanged(int);
+
 private:
 	TaxiRegionList taxiRegionList;
 	TaxiRateAll taxiRates;
@@ -171,6 +173,7 @@ private:
 	TaxiRatePeriod getCurrentTaxiRatePeriod();
 	void handleNewOrder(TaxiOrder order);	
 	void handlePersonalAnswer(hello var);
+	void handleTextMessage(hello var);
 	ITaxiOrder *createTaxiOrder(int order_id, QString address = "");
 
 	bool movementStarted;

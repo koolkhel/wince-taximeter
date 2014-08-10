@@ -44,6 +44,7 @@ message hello
     NOT_ANSWER = 28; // водитель затупил и не принял заказ
     PERSONAL = 29; // свой клиент (персоналка)
     PERSONAL_ANSWER = 30;
+    TEXT_MESSAGE = 31; // текстовое сообщение, что в одну, что в другую сторону
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];
