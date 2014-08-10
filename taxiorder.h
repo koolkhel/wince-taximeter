@@ -16,6 +16,17 @@ public:
 	ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCost, int _parkingId, QObject *parent);
 	~ITaxiOrder();
 
+	enum {
+		NO_STATUS = 0,
+		SUCCESS = 1,
+		ABORT_TIMEOUT = 2,
+		ABORT_DISPATCHER = 3,
+		NOT_PAY = 4,
+		NOT_EXIT = 5,
+		NOT_TO_ME = 6,
+		EMPTY_TRIP = 7
+	};
+
 	void setRegionId(int _region_id);
 	int getRegionId();
 	int getOrderId();

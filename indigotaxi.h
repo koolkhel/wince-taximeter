@@ -104,6 +104,7 @@ public slots:
 	void repairEndClicked();
 	void techhelpClicked();
 	void techhelpBackClicked();
+	void showOrderHistoryClicked();
 
 	void playClick();
 
@@ -115,10 +116,14 @@ public slots:
 
 	void notPayClicked();
 
+	void taxiRateShowButtonClicked();
+	void taxiRateReturnButtonClicked();
+
 	// page 6
 	void cancelRegionSelectClicked();
 	void showRegionDetailsClicked();
 	void changeDriverRegionStopClicked();
+	void backToDriverCabinetSettingsClicked();
 
 	// для статуса водителя, типа ремонт-обед и так далее
 	QString getSettingsStatus();
@@ -196,6 +201,11 @@ private:
 	void processAskRegionReply(hello var);
 	QVector<int> regions_stops_ids;
 	QVector<QString> regions_stops_names;
+
+	void addOrderHistory(QString address, QString status, int sum);
+	void saveOrderHistory(ITaxiOrder *order, int status = 0);
+
+	bool _taxiRateUpdated;
 };
 
 #endif // INDIGOTAXI_H

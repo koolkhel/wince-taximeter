@@ -20,7 +20,8 @@ int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
-	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0)
+	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
+	_taxiRateUpdated(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -108,6 +109,13 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	setCurrentScreenFromSettings();
 
 	progressDialog = new QProgressDialog("Ïîëó÷åíèå èíôîğìàöèè î ğàéîíå", "Îòìåíà", 0, 2, this);
+
+	ui.orderHistoryTable->verticalHeader()->setVisible(false);
+	ui.orderHistoryTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	ui.orderHistoryTable->setRowCount(0);
+
+	ui.taxiRateTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	ui.taxiRateTableWidget->resizeColumnsToContents();
 }
 		
 IndigoTaxi::~IndigoTaxi()
@@ -154,7 +162,10 @@ void IndigoTaxi::updateTime()
     QString text = time.toString("hh:mm");
     ui.timeLabel->setText(text);
 
-	updateTaxiRates();
+	if (!_taxiRateUpdated || time.second() == 0) {
+		updateTaxiRates();
+		_taxiRateUpdated = true;
+	}
 }
 
 void IndigoTaxi::settingsButtonClick()
@@ -190,11 +201,7 @@ void IndigoTaxi::startClientMoveClicked()
 }
 
 void IndigoTaxi::startClientMove()
-{
-#ifndef DEBUG
-	if (movementStarted)
-		return;
-#endif
+{	
 	// ñìåíà ğàéîíà òàêñèñòà
 	if (iTaxiOrder == NULL && changeRegion)
 	{
@@ -293,7 +300,6 @@ void IndigoTaxi::protobuf_message(hello message)
 		updateTaxiInfo();
 	}
 
-	qDebug() << "got" << message.taxiregioninfo().region_data().c_str();
 	if (message.has_taxiregioninfo() && message.event() == hello_TaxiEvent_ASK_REGION) {
 		processAskRegionReply(message);
 	}
@@ -332,6 +338,7 @@ void IndigoTaxi::abortOrder(int order_id)
 	if (iTaxiOrder->getOrderId() == order_id) {
 		voiceLady->sayPhrase("ORDERABORT");
 		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄĞÅÑ " + iTaxiOrder->address() + " ÎÒÌÅÍ¨Í ÄÈÑÏÅÒ×ÅĞÎÌ");
+		saveOrderHistory(iTaxiOrder, ITaxiOrder::ABORT_DISPATCHER);
 		destroyCurrentOrder();
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 		orderReceiveTimer->stop();
@@ -401,6 +408,15 @@ void IndigoTaxi::updateTaxiRates()
 	ui.client_stop_label->setText(QString("%1/%2 ğóá.")
 		.arg(clientStopsTaxiRate, 0, 'f', 1)
 		.arg(stopsTaxiRate, 0, 'f', 1));
+
+	// êèëîìåòğàæ
+	ui.taxiRateTableWidget->setItem(0, 2, new QTableWidgetItem(QString("%1/%2").arg(period.km_g(), 0, 'f', 1).arg(taxiRates.mg(), 0, 'f', 1)));
+	// ïîäà÷à ìàøèíû
+	ui.taxiRateTableWidget->setItem(1, 2, new QTableWidgetItem(QString("%1").arg(period.car_in(), 0, 'f', 1)));
+	// îñòàíîâêè ïî ïğîñüáå êëèåíòà
+	ui.taxiRateTableWidget->setItem(2, 2, new QTableWidgetItem(QString("%1").arg(5.0, 0, 'f', 1)));
+	// ïğîáêè
+	ui.taxiRateTableWidget->setItem(4, 2, new QTableWidgetItem(QString("%1").arg(period.car_min() * 0.5	, 0, 'f', 1)));
 }
 
 /**
@@ -476,13 +492,15 @@ void IndigoTaxi::newVersionDownloaded()
 		qint64 writtenLen = downloadedFilePath.write(data);
 		downloadedFilePath.close();
 
-		if (writtenLen == data.length()) {
-			QString oldFilePath = QApplication::instance()->applicationDirPath() + "/old_exe.exe";
-			QFile::remove(oldFilePath);
-			bool result = !currentExePath.rename(oldFilePath);	
-			result |= !downloadedFilePath.rename(QApplication::instance()->applicationFilePath());
+		if (writtenLen == data.length()) {			
+			if (confirmDialog->ask("ÇÀÃĞÓÆÅÍÎ ÎÁÍÎÂËÅÍÈÅ ÏĞÎÃĞÀÌÌÛ. ÂÛÏÎËÍÈÒÜ ÎÁÍÎÂËÅÍÈÅ? (ÒĞÅÁÓÅÒÑß ÏÅĞÅÇÀÏÓÑÊ)")) {
+				QString oldFilePath = QApplication::instance()->applicationDirPath() + "/old_exe.exe";
+				QFile::remove(oldFilePath);
+				bool result = !currentExePath.rename(oldFilePath);	
+				result |= !downloadedFilePath.rename(QApplication::instance()->applicationFilePath());
 
-			emit reboot_application();
+				emit reboot_application();
+			}
 		}
 	}
 }
@@ -533,6 +551,7 @@ void IndigoTaxi::freeButtonClick()
 	}
 	if (iTaxiOrder != NULL) {
 		backend->sendOrderEvent(hello_TaxiEvent_END_CLIENT_MOVE, iTaxiOrder);
+		saveOrderHistory(iTaxiOrder, ITaxiOrder::SUCCESS);
 		destroyCurrentOrder();
 	}
 	ui.serverMessage->setPlainText("");
@@ -719,6 +738,7 @@ void IndigoTaxi::emptyTripClicked()
 	if (confirmDialog->ask("ÂÛ ÏÎÄÒÂÅĞÆÄÀÅÒÅ ÍÅÓÑÒÎÉÊÓ ÏÎ ÇÀÊÀÇÓ?")) {
 		backend->sendOrderEvent(hello_TaxiEvent_EMPTY_TRIP, iTaxiOrder);
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+		saveOrderHistory(iTaxiOrder, ITaxiOrder::EMPTY_TRIP);
 		// ñáğàñûâàåì çàêàç
 		destroyCurrentOrder();
 		clearMessageClick();
@@ -774,6 +794,7 @@ void IndigoTaxi::notToMeButtonClicked()
 	if (confirmDialog->ask("ÂÛ ÏÎÄÒÂÅĞÆÄÀÅÒÅ ÎÒÊÀÇ ÎÒ ÒÅÊÓÙÅÃÎ ÇÀÊÀÇÀ?")) {
 		orderReceiveTimer->stop();
 		backend->sendOrderEvent(hello_TaxiEvent_NOT_TO_ME, iTaxiOrder);
+		saveOrderHistory(iTaxiOrder, ITaxiOrder::NOT_TO_ME);
 		destroyCurrentOrder();
 		ui.serverMessage->setPlainText("");
 		infoDialog->info("ÄÈÑÏÅÒ×ÅĞÓ ÎÒÏĞÀÂËÅÍÎ ÓÂÅÄÎÌËÅÍÈÅ ÎÁ ÎÒÊÀÇÅ ÎÒ ÇÀÊÀÇÀ");
@@ -843,7 +864,6 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id, QString address)
 void IndigoTaxi::destroyCurrentOrder()
 {
 	if (iTaxiOrder != NULL) {
-		enableInPlaceButton(false);
 		disconnect(iTaxiOrder, 0, 0, 0);
 		disconnect(backend, 0, iTaxiOrder, 0);
 		//delete iTaxiOrder;
@@ -857,6 +877,7 @@ void IndigoTaxi::destroyCurrentOrder()
 		iTaxiOrder = NULL;
 
 		enableWidget(ui.moveToClientButton, false);
+		enableWidget(ui.inPlaceButton, false);
 	}
 }
 
@@ -868,6 +889,7 @@ void IndigoTaxi::orderReceiveTimerTimeout()
 	} else {
 		voiceLady->sayPhrase("ORDERABORT");
 		backend->sendOrderEvent(hello_TaxiEvent_NOT_ANSWER, iTaxiOrder);
+		saveOrderHistory(iTaxiOrder, ITaxiOrder::ABORT_TIMEOUT);
 		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄĞÅÑ " + iTaxiOrder->address() +  " ÎÒÌÅÍ¨Í ÏÎ ÏĞÈ×ÈÍÅ ÎÒÑÓÒÑÒÂÈß ÎÒÂÅÒÀ ÂÎÄÈÒÅËß ÍÀ ÇÀÏĞÎÑ ÄÈÑÏÅÒ×ÅĞÀ");		
 		destroyCurrentOrder();
 		clearMessageClick();
@@ -966,6 +988,7 @@ void IndigoTaxi::clientNotExit()
 {
 	if (confirmDialog->ask("ÂÛ ÏÎÄÒÂÅĞÆÄÀÅÒÅ, ×ÒÎ ÊËÈÅÍÒ ÍÅ ÂÛØÅË?")) {
 		backend->sendOrderEvent(hello_TaxiEvent_NOT_EXIT, iTaxiOrder);
+		// FIXME íó íå âûøåë, ÷òî äàëüøå? Äèñïåò÷åğ ïî èäåå íàçâàíèâàåò äàëüøå êëèåíòó è îòìåíÿåò çàêàç êòî-òî èç íèõ óæå
 		infoDialog->info("ÄÈÑÏÅÒ×ÅĞÓ ÎÒÏĞÀÂËÅÍÎ ÓÂÅÄÎÌËÅÍÈÅ, ×ÒÎ ÊËÈÅÍÒ ÍÅ ÂÛØÅË");
 	}
 }
@@ -1131,8 +1154,19 @@ void IndigoTaxi::backToRegionsSettings()
 
 void IndigoTaxi::changeDriverRegionStopClicked()
 {
-	int stop_id = regions_stops_ids[ui.regionDetailsList->currentRow()];
-	QString stop_name = regions_stops_names[ui.regionDetailsList->currentRow()];
+	int row = ui.regionDetailsList->currentRow();
+	int stop_id = 0;
+	if (row < regions_stops_ids.count()) {
+		stop_id = regions_stops_ids[row];
+	} else {
+		infoDialog->info("ÎØÈÁÊÀ. ÏÎÏĞÎÁÓÉÒÅ ÑÍÎÂÀ");		
+		ui.regionsSettingsStackedWidget->setCurrentWidget(ui.regionsSettingsPage1);
+		return;
+	}
+	
+	QString stop_name;
+	stop_name = regions_stops_names[row];
+
 	if (confirmDialog->ask("ÂÛ ÄÅÉÑÒÂÈÒÅËÜÍÎ ÕÎÒÈÒÅ ÏÅĞÅÉÒÈ ÍÀ ÑÒÎßÍÊÓ " + stop_name + "?")) {
 		hello var;
 		TaxiRegionInfo *info = var.mutable_taxiregioninfo();
@@ -1153,4 +1187,71 @@ void IndigoTaxi::emergencyButtonClicked()
 {
 	voiceLady->click();
 	backend->sendEvent(hello_TaxiEvent_HELP);
+}
+
+void IndigoTaxi::showOrderHistoryClicked()
+{
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageOrders7);
+}
+
+void IndigoTaxi::addOrderHistory(QString address, QString status, int sum)
+{
+	int rc = ui.orderHistoryTable->rowCount();
+	ui.orderHistoryTable->setRowCount(rc + 1);
+	ui.orderHistoryTable->setItem(rc, 0, new QTableWidgetItem(address));
+	ui.orderHistoryTable->setItem(rc, 1, new QTableWidgetItem(status));
+	ui.orderHistoryTable->setItem(rc, 2, new QTableWidgetItem(QString::number(sum)));
+}
+
+void IndigoTaxi::saveOrderHistory(ITaxiOrder *order, int status)
+{
+	QString address = order->address();
+	if (address == "")
+		address = "Áåç àäğåñà";
+	
+	switch (status) {
+		case ITaxiOrder::EMPTY_TRIP:
+			addOrderHistory(address, "Íåóñòîéêà", 0);
+			break;
+		case ITaxiOrder::ABORT_DISPATCHER:
+			addOrderHistory(address, "Îòìåíà äèñïåò÷åğîì", 0);
+			break;
+		case ITaxiOrder::SUCCESS:
+			addOrderHistory(address, "Çàâåğø¸í", order->calculateSum());
+			break;
+		case ITaxiOrder::ABORT_TIMEOUT:
+			addOrderHistory(address, "Íåò ğåàêöèè âîäèòåëÿ", 0);
+			break;
+		case ITaxiOrder::NOT_EXIT:
+			addOrderHistory(address, "Êëèåíò íå âûøåë, íåóñòîéêà", order->getCarIn());
+			break;
+		case ITaxiOrder::NOT_PAY:
+			addOrderHistory(address, "Êëèåíò íå îïëàòèë ïîåçäêó", 0);
+			break;
+		case ITaxiOrder::NOT_TO_ME:
+			addOrderHistory(address, "Âû îòêàçàëèñü îò çàêàçà", 0);
+			break;
+		case ITaxiOrder::NO_STATUS:
+			addOrderHistory(address, "", 0);
+			break;
+		default:
+			addOrderHistory(address, "", 0);
+			break;
+	}
+}
+
+void IndigoTaxi::backToDriverCabinetSettingsClicked()
+{
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
+}
+
+void IndigoTaxi::taxiRateShowButtonClicked()
+{
+	ui.systemSettingsStackedWidget->setCurrentWidget(ui.systemSettingsPage2);
+}
+
+
+void IndigoTaxi::taxiRateReturnButtonClicked() 
+{
+	ui.systemSettingsStackedWidget->setCurrentWidget(ui.systemSettingsPage1);
 }
