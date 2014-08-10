@@ -1568,7 +1568,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -2813,15 +2813,14 @@ QPushButton[pressed=true] {
   <tabstop>orderHistoryButton</tabstop>
   <tabstop>techhelpButton</tabstop>
   <tabstop>screenLockButton</tabstop>
-  <tabstop>dinnerButton</tabstop>
-  <tabstop>awayButton</tabstop>
   <tabstop>fromCarButton</tabstop>
-  <tabstop>trainCrossButton</tabstop>
+  <tabstop>awayButton</tabstop>
+  <tabstop>dinnerButton</tabstop>
+  <tabstop>pushButton</tabstop>
   <tabstop>overloadButton</tabstop>
   <tabstop>clientStopButton</tabstop>
   <tabstop>resumeVoyageButton</tabstop>
   <tabstop>freeButton</tabstop>
-  <tabstop>settingsTabWidget</tabstop>
   <tabstop>backToStandByButton</tabstop>
   <tabstop>pushButton_3</tabstop>
   <tabstop>pushButton_7</tabstop>
@@ -2840,7 +2839,7 @@ QPushButton[pressed=true] {
   <tabstop>directionValueButton</tabstop>
   <tabstop>startClientMoveButton</tabstop>
   <tabstop>paytimeButton</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>trainCrossButton</tabstop>
   <tabstop>pushButton_4</tabstop>
   <tabstop>pushButton_5</tabstop>
   <tabstop>pushButton_6</tabstop>
@@ -2858,6 +2857,14 @@ QPushButton[pressed=true] {
   <tabstop>backToStandbyButton</tabstop>
   <tabstop>acceptRegionButton</tabstop>
   <tabstop>serverMessage</tabstop>
+  <tabstop>pushButton_16</tabstop>
+  <tabstop>pushButton_17</tabstop>
+  <tabstop>pushButton_18</tabstop>
+  <tabstop>regionDetailsList</tabstop>
+  <tabstop>pushButton_14</tabstop>
+  <tabstop>orderHistoryTable</tabstop>
+  <tabstop>pushButton_19</tabstop>
+  <tabstop>taxiRateTableWidget</tabstop>
  </tabstops>
  <resources>
   <include location="indigotaxi.qrc"/>

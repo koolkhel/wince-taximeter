@@ -618,11 +618,6 @@ void IndigoTaxi::enableMainButtons(bool enable)
 	enableWidget(ui.startClientMoveButton, enable);
 }
 
-void IndigoTaxi::enableInPlaceButton(bool enable)
-{
-	enableWidget(ui.inPlaceButton, enable);
-}
-
 // êëèê íà âñå êíîïêè
 void IndigoTaxi::playClick()
 {
@@ -632,11 +627,11 @@ void IndigoTaxi::playClick()
 void IndigoTaxi::enableDutyUI(bool enable) 
 {
 	if (enable) {
-		enableMainButtons(true);
+		enableWidget(ui.startClientMoveButton, true);
 		ui.dutyStart->setText("ÊÎÍÅÖ ÑÌÅÍÛ");		
 		ui.dutyStart->setProperty("pressed", true);
 	} else {
-		enableMainButtons(false);
+		enableWidget(ui.startClientMoveButton, false);
 		ui.dutyStart->setText("ÍÀ×ÀËÎ ÑÌÅÍÛ");
 		ui.dutyStart->setProperty("pressed", false);
 	}
@@ -870,6 +865,7 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id, QString address)
 	iTaxiOrder->setAddress(address);
 
 	enableWidget(ui.moveToClientButton, true);
+	enableWidget(ui.inPlaceButton, true);
 
 	return iTaxiOrder;
 }
@@ -932,10 +928,6 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 		if (taxiOrder.has_address()) {
 			ui.serverMessage->setPlainText(QString::fromUtf8(taxiOrder.address().c_str()));
 		}
-		enableInPlaceButton(true);
-		ui.inPlaceButton->setEnabled(true);
-
-
 	}
 }
 

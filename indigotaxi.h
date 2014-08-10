@@ -182,7 +182,6 @@ private:
 	bool online;
 
 	void enableMainButtons(bool enable);
-	void enableInPlaceButton(bool enable);
 	void enableWidget(QWidget *widget, bool enable);
 
 	void abortOrder(int order_id);
