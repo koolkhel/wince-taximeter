@@ -1568,7 +1568,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -2254,7 +2254,7 @@ QPushButton[pressed=true] {
             <item>
              <widget class="QStackedWidget" name="systemSettingsStackedWidget">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="systemSettingsPage1">
                <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,2,2">
@@ -4257,6 +4257,22 @@ QPushButton[pressed=true] {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_11</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>privateClientButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>164</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>341</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -4304,5 +4320,6 @@ QPushButton[pressed=true] {
   <slot>backToDriverCabinetSettingsClicked()</slot>
   <slot>taxiRateShowButtonClicked()</slot>
   <slot>taxiRateReturnButtonClicked()</slot>
+  <slot>privateClientButtonClicked()</slot>
  </slots>
 </ui>

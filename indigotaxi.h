@@ -89,6 +89,7 @@ public slots:
 	// page 4
 	void driverNameChanged(int driverName);
 	void driverRegionSelectClicked();
+	void privateClientButtonClicked();
 
 	void exitButtonClick();
 	void backToStandByClick();
@@ -169,6 +170,7 @@ private:
 	ITaxiOrder *iTaxiOrder, *lastTaxiOrder;
 	TaxiRatePeriod getCurrentTaxiRatePeriod();
 	void handleNewOrder(TaxiOrder order);	
+	void handlePersonalAnswer(hello var);
 	ITaxiOrder *createTaxiOrder(int order_id, QString address = "");
 
 	bool movementStarted;

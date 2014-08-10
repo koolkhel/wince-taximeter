@@ -42,6 +42,8 @@ message hello
     CHANGE_REGION = 26;	 // хочу стать в такой район на такую стоянку; CHANGE_REGION;ID_района;ID_стоянки
     ABORT_ORDER = 27; // отмена заказа
     NOT_ANSWER = 28; // водитель затупил и не принял заказ
+    PERSONAL = 29; // свой клиент (персоналка)
+    PERSONAL_ANSWER = 30;
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];

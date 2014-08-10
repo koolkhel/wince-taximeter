@@ -276,6 +276,10 @@ void IndigoTaxi::protobuf_message(hello message)
 	if (message.event() == hello_TaxiEvent_ABORT_ORDER) {
 		abortOrder(message.taxiorder().order_id());
 	}
+
+	if (message.event() == hello_TaxiEvent_PERSONAL_ANSWER) {
+		handlePersonalAnswer(message);
+	}
 #if 0
 	if (message.text_string().length() > 0)
 		ui.serverMessage->setPlainText(QString::fromUtf8(message.text_string().c_str()));
@@ -302,6 +306,15 @@ void IndigoTaxi::protobuf_message(hello message)
 
 	if (message.has_taxiregioninfo() && message.event() == hello_TaxiEvent_ASK_REGION) {
 		processAskRegionReply(message);
+	}
+}
+
+void IndigoTaxi::handlePersonalAnswer(hello var)
+{
+	if (iTaxiOrder != NULL && iTaxiOrder->getOrderId() == NO_ORDER_ID) {
+		qDebug() << "PERSONAL_ANSWER" << var.taxiorder().order_id();
+		iTaxiOrder->setOrderId(var.taxiorder().order_id());
+		ui.serverMessage->setPlainText("ÏÅÐÑÎÍÀËÊÀ");
 	}
 }
 
@@ -1254,4 +1267,14 @@ void IndigoTaxi::taxiRateShowButtonClicked()
 void IndigoTaxi::taxiRateReturnButtonClicked() 
 {
 	ui.systemSettingsStackedWidget->setCurrentWidget(ui.systemSettingsPage1);
+}
+
+void IndigoTaxi::privateClientButtonClicked()
+{
+	if (confirmDialog->ask("ÂÛ ÏÎÄÒÂÅÐÆÄÀÅÒÅ ÏÅÐÑÎÍÀËÜÍÛÉ ÇÀÊÀÇ?")) {
+		destroyCurrentOrder();
+		clearMessageClick();
+		iTaxiOrder = createTaxiOrder(NO_ORDER_ID, "");
+		backend->sendOrderEvent(hello_TaxiEvent_PERSONAL, iTaxiOrder);
+	}
 }
