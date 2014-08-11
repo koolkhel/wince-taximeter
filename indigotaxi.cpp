@@ -298,6 +298,11 @@ void IndigoTaxi::protobuf_message(hello message)
 		handleNewOrder(message.taxiorder());		
 	}
 
+	if (message.has_taximessagetemplates()) {
+		taxiMessageTemplates = message.taximessagetemplates();
+		handleNewMessageTemplates();
+	}
+
 	if (message.has_taxirate()) {
 		_taxiRateReceived = true;
 		taxiRates = message.taxirate();
@@ -319,11 +324,48 @@ void IndigoTaxi::protobuf_message(hello message)
 	}
 }
 
+void IndigoTaxi::handleNewMessageTemplates()
+{
+	int count = taxiMessageTemplates.templates_size();
+
+	ui.messageTemplatesList->clear();
+	for (int i = 0; i < count; i++) {
+		QString message = QString::fromUtf8(taxiMessageTemplates.templates().Get(i).c_str());
+		ui.messageTemplatesList->addItem(message);
+	}
+}
+
 void IndigoTaxi::handleTextMessage(hello var)
 {
 	// TODO íåëüçÿ â ëþáîé ìîìåíò ïîêàçàòü ñîîáùåíèå
 	voiceLady->sayPhrase("MESSAGERECEIVED");
 	infoDialog->info(QString::fromUtf8(var.text_string().c_str()));
+}
+
+void IndigoTaxi::messagesBackClicked()
+{
+	ui.orderSettingsStackedWidget->setCurrentWidget(ui.orderSettingsStackedWidgetPage1);
+}
+
+void IndigoTaxi::messagesShowListClicked()
+{
+	ui.orderSettingsStackedWidget->setCurrentWidget(ui.orderSettingsStackedWidgetPage2);
+}
+
+void IndigoTaxi::messagesSendClicked()
+{
+	QString message = QString::fromUtf8(taxiMessageTemplates.templates().Get(ui.messageTemplatesList->currentRow()).c_str());
+	if (confirmDialog->ask("ÎÒÏÐÀÂÈÒÜ ÑÎÎÁÙÅÍÈÅ " + message)) {
+		hello var;
+		
+		var.set_event(hello_TaxiEvent_TEXT_MESSAGE);
+		var.set_text_string(message.toUtf8());
+		backend->send_message(var);
+		
+		infoDialog->info("ÑÎÎÁÙÅÍÈÅ ÎÒÏÐÀÂËÅÍÎ");
+		voiceLady->click();		
+		ui.orderSettingsStackedWidget->setCurrentWidget(ui.orderSettingsStackedWidgetPage1);
+	}
 }
 
 void IndigoTaxi::handlePersonalAnswer(hello var)

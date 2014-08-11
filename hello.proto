@@ -68,6 +68,8 @@ message hello
   optional TaxiInfo taxiInfo = 11;
   
   optional TaxiRegionInfo taxiRegionInfo = 12;
+  
+  optional TaxiMessageTemplates taxiMessageTemplates = 13;
 }
 
 message TaxiRegionInfo {
@@ -151,6 +153,11 @@ message TaxiRateAll {
   optional float client_stop = 4 [ default = 0.0 ];
   
 }
+
+message TaxiMessageTemplates {
+  repeated string templates = 1;
+}
+
 
 message TaxiRatePeriod {
   optional int32 begin_hour = 1   [ default = 0 ];

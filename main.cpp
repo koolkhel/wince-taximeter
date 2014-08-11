@@ -13,6 +13,10 @@
 #include "backend.h"
 #include "logger.h"
 
+#ifdef UNDER_CE
+#include <winbase.h>
+#endif
+
 IndigoTaxi *mainWindow = NULL;
 
 void myMessageOutput(QtMsgType type, const char *msg)
@@ -73,6 +77,17 @@ int main(int argc, char *argv[])
 	
 	QApplication a(argc, argv);
 	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
+	QStringList argList = qApp->arguments();
+	foreach (QString arg, argList) {
+#ifdef UNDER_CE
+		bool isNumber = false;
+		int ceLaunchId = arg.toInt(&isNumber);
+		if (isNumber) {
+			SignalStarted(ceLaunchId);
+		}
+#endif
+		qDebug() << arg;
+	}
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("CP1251"));
 
 		

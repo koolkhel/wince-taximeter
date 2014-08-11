@@ -139,9 +139,17 @@ public slots:
 
 	void stackedWidgetCurrentChanged(int);
 
+	void messagesBackClicked();
+
+	void messagesSendClicked();
+
+	void messagesShowListClicked();
+
 private:
 	TaxiRegionList taxiRegionList;
 	TaxiRateAll taxiRates;
+	TaxiMessageTemplates taxiMessageTemplates;
+
 	double currentParkingCost;
 	int currentParkingId;
 
@@ -174,6 +182,7 @@ private:
 	void handleNewOrder(TaxiOrder order);	
 	void handlePersonalAnswer(hello var);
 	void handleTextMessage(hello var);
+	void handleNewMessageTemplates();
 	ITaxiOrder *createTaxiOrder(int order_id, QString address = "");
 
 	bool movementStarted;

@@ -36,12 +36,19 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">#regionList QScrollBar:vertical, #regionListSettingsWidget QScrollBar:vertical,
-#regionDetailsList QScrollBar:vertical {
+    <string notr="true">#regionList QScrollBar:vertical, 
+#regionListSettingsWidget QScrollBar:vertical,
+#regionDetailsList QScrollBar:vertical ,
+#messageTemplatesList QScrollBar:vertical
+{
       width: 80px;
 }
 
-#regionList, #regionListSettingsWidget, #regionDetailsList {
+#regionList, 
+#regionListSettingsWidget, 
+#regionDetailsList,
+#messageTemplatesList
+{
 	font: 14pt &quot;Segoe UI&quot;;
 	font-weight: bold;
 }
@@ -444,7 +451,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1594,164 +1601,221 @@ QPushButton {
              <number>0</number>
             </property>
             <item>
-             <widget class="QFrame" name="settingsFrame">
+             <widget class="QStackedWidget" name="orderSettingsStackedWidget">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,1" columnstretch="1,1,1,1">
-               <property name="margin">
-                <number>5</number>
-               </property>
-               <property name="spacing">
-                <number>5</number>
-               </property>
-               <item row="0" column="0" rowspan="3">
-                <widget class="QPushButton" name="backToStandByButton">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Segoe UI</family>
-                   <pointsize>8</pointsize>
-                   <weight>75</weight>
-                   <italic>false</italic>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Вернуться</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QPushButton" name="pushButton_3">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Клиент
+              <widget class="QWidget" name="orderSettingsStackedWidgetPage1" native="true">
+               <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,1" columnstretch="1,1,1,1">
+                <property name="margin">
+                 <number>5</number>
+                </property>
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <item row="0" column="0" rowspan="3">
+                 <widget class="QPushButton" name="backToStandByButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Вернуться</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QPushButton" name="pushButton_3">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Клиент
 не
 вышел</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="3">
-                <widget class="QPushButton" name="pushButton_7">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Неустойка</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QPushButton" name="refuseButton">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Segoe UI</family>
-                   <pointsize>8</pointsize>
-                   <weight>75</weight>
-                   <italic>false</italic>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Отказ
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QPushButton" name="pushButton_7">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Неустойка</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="refuseButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Отказ
 от
 заказа</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="QPushButton" name="pushButton_10">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Сообщение
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QPushButton" name="pushButton_10">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Сообщение
 диспетчеру</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QPushButton" name="pushButton_9">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Отказ оплаты</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="QPushButton" name="pushButton_11">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Свой клиент
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="pushButton_9">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Отказ оплаты</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QPushButton" name="pushButton_11">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Свой клиент
 (персоналка)</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButton_12">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Выбор
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="pushButton_12">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Выбор
 района</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="2">
-                <widget class="QPushButton" name="pushButton_13">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Забрать
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="pushButton_13">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Забрать
 заказ</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="orderSettingsStackedWidgetPage2">
+               <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="1,8,1">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <property name="margin">
+                 <number>5</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_20">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>В
+Е
+Р
+Н
+У
+Т
+Ь
+С
+Я</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QListWidget" name="messageTemplatesList"/>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_22">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>О
+Т
+П
+Р
+А
+В
+И
+Т
+Ь</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
            </layout>
@@ -3199,54 +3263,6 @@ QPushButton[pressed=true] {
    </hints>
   </connection>
   <connection>
-   <sender>backToStandByButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>backToStandByClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>47</x>
-     <y>163</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>52</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>refuseButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>notToMeButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>213</x>
-     <y>108</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>211</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_9</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>notPayClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>175</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>168</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>exitButton_2</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
@@ -3291,54 +3307,6 @@ QPushButton[pressed=true] {
     <hint type="destinationlabel">
      <x>282</x>
      <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_12</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>driverRegionSelectClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>253</x>
-     <y>213</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>247</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_3</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>clientNotExit()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>427</x>
-     <y>77</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>172</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_7</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>emptyTripClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>424</x>
-     <y>154</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>408</x>
-     <y>-21</y>
     </hint>
    </hints>
   </connection>
@@ -3951,150 +3919,6 @@ QPushButton[pressed=true] {
    </hints>
   </connection>
   <connection>
-   <sender>backToStandByButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>161</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>22</x>
-     <y>-112</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>refuseButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>162</x>
-     <y>88</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>120</x>
-     <y>422</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_9</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>144</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>136</x>
-     <y>407</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_12</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>200</x>
-     <y>250</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>168</x>
-     <y>411</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_10</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>305</x>
-     <y>120</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>264</x>
-     <y>416</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_11</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>308</x>
-     <y>179</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>406</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_13</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>341</x>
-     <y>226</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>333</x>
-     <y>-88</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_3</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>395</x>
-     <y>97</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>428</x>
-     <y>-44</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_7</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>483</x>
-     <y>185</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>576</x>
-     <y>176</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>dutyStart</sender>
    <signal>clicked(bool)</signal>
    <receiver>IndigoTaxiClass</receiver>
@@ -4271,22 +4095,6 @@ QPushButton[pressed=true] {
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_11</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>privateClientButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>345</x>
-     <y>164</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>362</x>
-     <y>341</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>stackedWidget</sender>
    <signal>currentChanged(int)</signal>
    <receiver>IndigoTaxiClass</receiver>
@@ -4299,6 +4107,86 @@ QPushButton[pressed=true] {
     <hint type="destinationlabel">
      <x>255</x>
      <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_20</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>messagesBackClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>43</x>
+     <y>127</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>11</x>
+     <y>349</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_22</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>messagesSendClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>477</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_20</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>playClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-69</x>
+     <y>121</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_22</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>playClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>486</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>567</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_10</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>messagesShowListClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>323</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>292</x>
+     <y>-46</y>
     </hint>
    </hints>
   </connection>
@@ -4351,5 +4239,8 @@ QPushButton[pressed=true] {
   <slot>taxiRateReturnButtonClicked()</slot>
   <slot>privateClientButtonClicked()</slot>
   <slot>stackedWidgetCurrentChanged(int)</slot>
+  <slot>messagesBackClicked()</slot>
+  <slot>messagesSendClicked()</slot>
+  <slot>messagesShowListClicked()</slot>
  </slots>
 </ui>
