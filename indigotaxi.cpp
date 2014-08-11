@@ -339,7 +339,23 @@ void IndigoTaxi::handleTextMessage(hello var)
 {
 	// TODO нельзя в любой момент показать сообщение
 	voiceLady->sayPhrase("MESSAGERECEIVED");
-	infoDialog->info(QString::fromUtf8(var.text_string().c_str()));
+	QString message = QString::fromUtf8(var.text_string().c_str());
+	if (ui.stackedWidget->currentWidget() == ui.standByPage1) {
+		infoDialog->info(message);
+	} else {
+		_messagesToShow.append(message);
+	}
+}
+
+void IndigoTaxi::stackedWidgetCurrentChanged(int pageIndex)
+{
+	if (pageIndex == 0) {
+		// страница ожидания
+		foreach (QString message, _messagesToShow) {
+			infoDialog->info("СООБЩЕНИЕ ДИСПЕТЧЕРА: " + message);
+		}
+		_messagesToShow.clear();
+	}
 }
 
 void IndigoTaxi::messagesBackClicked()
@@ -1332,8 +1348,4 @@ void IndigoTaxi::privateClientButtonClicked()
 		iTaxiOrder = createTaxiOrder(NO_ORDER_ID, "");
 		backend->sendOrderEvent(hello_TaxiEvent_PERSONAL, iTaxiOrder);
 	}
-}
-
-void IndigoTaxi::stackedWidgetCurrentChanged(int)
-{
 }

@@ -220,6 +220,8 @@ private:
 
 	bool _taxiRateUpdated;
 	bool _taxiRateReceived;
+
+	QStringList _messagesToShow;
 };
 
 #endif // INDIGOTAXI_H
