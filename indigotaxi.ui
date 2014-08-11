@@ -444,7 +444,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1571,7 +1571,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1779,7 +1779,7 @@ QPushButton {
                <enum>QFrame::NoFrame</enum>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="driverCabinetPage1">
                <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1,1,1,1" columnstretch="1,2,2">
@@ -1826,6 +1826,9 @@ QPushButton {
                       <italic>false</italic>
                       <bold>false</bold>
                      </font>
+                    </property>
+                    <property name="focusPolicy">
+                     <enum>Qt::NoFocus</enum>
                     </property>
                     <property name="text">
                      <string/>
@@ -2257,7 +2260,7 @@ QPushButton[pressed=true] {
             <item>
              <widget class="QStackedWidget" name="systemSettingsStackedWidget">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="systemSettingsPage1">
                <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,2,2">

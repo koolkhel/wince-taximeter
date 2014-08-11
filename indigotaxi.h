@@ -210,6 +210,7 @@ private:
 	void saveOrderHistory(ITaxiOrder *order, int status = 0);
 
 	bool _taxiRateUpdated;
+	bool _taxiRateReceived;
 };
 
 #endif // INDIGOTAXI_H

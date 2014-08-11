@@ -21,7 +21,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
-	_taxiRateUpdated(false)
+	_taxiRateUpdated(false), _taxiRateReceived(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -162,6 +162,10 @@ void IndigoTaxi::updateTime()
     QString text = time.toString("hh:mm");
     ui.timeLabel->setText(text);
 
+	if (!_taxiRateReceived && (time.second() == 30 || time.second() == 0)) {
+		backend->sendEvent(hello_TaxiEvent_GET_INFO);
+	}
+
 	if (!_taxiRateUpdated || time.second() == 0) {
 		updateTaxiRates();
 		_taxiRateUpdated = true;
@@ -295,6 +299,7 @@ void IndigoTaxi::protobuf_message(hello message)
 	}
 
 	if (message.has_taxirate()) {
+		_taxiRateReceived = true;
 		taxiRates = message.taxirate();
 		updateTaxiRates();
 	}
