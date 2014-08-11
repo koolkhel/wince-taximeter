@@ -140,10 +140,14 @@ public slots:
 	void stackedWidgetCurrentChanged(int);
 
 	void messagesBackClicked();
+	void messagesHistoryBackClicked();
+	void messagesHistoryClicked();
 
 	void messagesSendClicked();
 
 	void messagesShowListClicked();
+
+	void addMessageHistory(QString message);
 
 private:
 	TaxiRegionList taxiRegionList;

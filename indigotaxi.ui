@@ -1578,7 +1578,7 @@ QPushButton {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1839,11 +1839,17 @@ QPushButton {
             </property>
             <item>
              <widget class="QStackedWidget" name="driverCabinetSettingsStackWidget">
+              <property name="styleSheet">
+               <string notr="true">QTableWidget {
+	font-size: 12pt;
+	font-weight: bold;
+}</string>
+              </property>
               <property name="frameShape">
                <enum>QFrame::NoFrame</enum>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>7</number>
               </property>
               <widget class="QWidget" name="driverCabinetPage1">
                <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1,1,1,1" columnstretch="1,2,2">
@@ -2296,6 +2302,51 @@ QPushButton[pressed=true] {
                     <string>100</string>
                    </property>
                   </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="driverCabinetPageMessages8">
+               <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="1,8">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_23">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>В
+Е
+Р
+Н
+У
+Т
+Ь
+С
+Я</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QTableWidget" name="messageHistoryTable">
+                  <column>
+                   <property name="text">
+                    <string>Дата</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Сообщение диспетчера</string>
+                   </property>
+                  </column>
                  </widget>
                 </item>
                </layout>
@@ -4190,6 +4241,38 @@ QPushButton[pressed=true] {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_23</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>messagesHistoryBackClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-50</x>
+     <y>83</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>messageHistoryButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>messagesHistoryClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>208</x>
+     <y>137</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>219</x>
+     <y>345</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -4242,5 +4325,7 @@ QPushButton[pressed=true] {
   <slot>messagesBackClicked()</slot>
   <slot>messagesSendClicked()</slot>
   <slot>messagesShowListClicked()</slot>
+  <slot>messagesHistoryBackClicked()</slot>
+  <slot>messagesHistoryClicked()</slot>
  </slots>
 </ui>

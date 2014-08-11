@@ -116,6 +116,9 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	ui.taxiRateTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	ui.taxiRateTableWidget->resizeColumnsToContents();
+
+	ui.messageHistoryTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	ui.messageHistoryTable->verticalHeader()->setVisible(false);
 }
 		
 IndigoTaxi::~IndigoTaxi()
@@ -340,11 +343,30 @@ void IndigoTaxi::handleTextMessage(hello var)
 	// TODO нельзя в любой момент показать сообщение
 	voiceLady->sayPhrase("MESSAGERECEIVED");
 	QString message = QString::fromUtf8(var.text_string().c_str());
+	addMessageHistory(message);
 	if (ui.stackedWidget->currentWidget() == ui.standByPage1) {
 		infoDialog->info(message);
 	} else {
 		_messagesToShow.append(message);
 	}
+}
+
+void IndigoTaxi::addMessageHistory(QString message)
+{
+	ui.messageHistoryTable->insertRow(0);
+	ui.messageHistoryTable->setItem(0, 0, new QTableWidgetItem(QDate::currentDate().toString()));
+	ui.messageHistoryTable->setItem(0, 1, new QTableWidgetItem(message));
+	ui.messageHistoryTable->resizeColumnsToContents();
+}
+
+void IndigoTaxi::messagesHistoryBackClicked()
+{
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
+}
+
+void IndigoTaxi::messagesHistoryClicked()
+{
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageMessages8);
 }
 
 void IndigoTaxi::stackedWidgetCurrentChanged(int pageIndex)
