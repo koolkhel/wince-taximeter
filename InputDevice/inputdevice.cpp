@@ -19,11 +19,13 @@ bool InputDevice::eventFilter(QObject *obj,  QEvent *event)
 {
     QString tmpClassName;
 	// грязный хак
-	if (obj->objectName() == "driverNameLineEdit" && event->type() == QEvent::FocusIn) {
+	if ((obj->objectName() == "driverNameLineEdit" || (obj->objectName() == "passwordEdit") || (obj->objectName() == "driverNumberLineEdit"))
+		&& event->type() == QEvent::FocusIn) {
 		QEvent eventTo(QEvent::RequestSoftwareInputPanel);
 		QApplication::sendEvent(obj, &eventTo);
 	}
-    if (event->type() == QEvent::RequestSoftwareInputPanel)
+    
+	if (event->type() == QEvent::RequestSoftwareInputPanel)
     {
         if (obj != NULL)
         {

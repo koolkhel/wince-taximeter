@@ -25,8 +25,10 @@ taxiId(4)
 
 // FIXME port number aquire
 #ifdef UNDER_CE
-	QString registryKey = "HKEY_LOCAL_MACHINE\\Drivers\\BuiltIn\\GPS";
+	//QString registryKey = "HKEY_LOCAL_MACHINE\\Drivers\\BuiltIn\\GPS";
+	QString registryKey = "HKEY_LOCAL_MACHINE\\init";
 	QSettings registry(registryKey, QSettings::NativeFormat);
+	//registry.setValue("Launch110", "\\ResidentFlash\\IndigoTaxi\\IndigoTaxi.exe");
 	QString portIndex = registry.value("index").toString();
 	QString portPrefix = registry.value("Prefix").toString();	
 	QString portName = portPrefix + portIndex;

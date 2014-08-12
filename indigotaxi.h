@@ -23,6 +23,7 @@
 #include "iconfirmationdialog.h"
 #include "iinfodialog.h"
 
+#include "drivernumberdialog.h"
 
 class IndigoTaxi : public QMainWindow
 {
@@ -106,6 +107,7 @@ public slots:
 	void techhelpClicked();
 	void techhelpBackClicked();
 	void showOrderHistoryClicked();
+	void changeDriverNumberClicked();
 
 	void playClick();
 
@@ -168,6 +170,7 @@ private:
 	QSettings *settingsIniFile;
 
 	QProgressDialog *progressDialog;
+	DriverNumberDialog *driverNumberDialog;
 
 	FileDownloader *downloader;
 	QMutex restartMutex;

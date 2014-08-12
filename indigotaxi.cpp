@@ -15,7 +15,7 @@
 static const char *version = "0.1.001";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
-#define DEBUG
+#undef DEBUG
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
@@ -31,6 +31,9 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	//settingsForm = new SettingsForm(this);
 	//settingsForm->hide();
+	infoDialog = new IInfoDialog(this);
+	confirmDialog = new IConfirmationDialog(this);
+	driverNumberDialog = new DriverNumberDialog(this);
 
 	backend = new Backend(this);
 	
@@ -58,11 +61,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	QUrl version(versionUrl);
 	downloader = new FileDownloader(version, this);
 	connect(downloader, SIGNAL(downloaded()), SLOT(checkVersion()));
-
-	ui.driverNameLineEdit->setProperty("keyboard",true); //enable the keyboard (this is a custom property)
-	QValidator *validator = new QIntValidator(0, 500, this);
-	ui.driverNameLineEdit->setValidator(validator); //add a int validator min value 0 max value 500. This will force the numpad to show, you can also use a QDoubleValidator
-
+	
 	timeTimer = new QTimer(this);
 	connect(timeTimer, SIGNAL(timeout()), SLOT(updateTime()));
 	timeTimer->setInterval(1000);
@@ -78,9 +77,6 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	connect(voiceLady, SIGNAL(playSound(QString)), iSoundPlayer, SLOT(playResourceSound(QString)));
 	connect(voiceLady, SIGNAL(playSoundFile(QString)), iSoundPlayer, SLOT(playFileSystemSound(QString)));
-
-	infoDialog = new IInfoDialog(this);
-	confirmDialog = new IConfirmationDialog(this);
 
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
@@ -105,6 +101,9 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	infoDialog->setProperty("_q_customDpiY", QVariant(dpi));
 	confirmDialog->setProperty("_q_customDpiX", QVariant(dpi));
 	confirmDialog->setProperty("_q_customDpiY", QVariant(dpi));
+	driverNumberDialog->setProperty("_q_customDpiX", QVariant(dpi));
+	driverNumberDialog->setProperty("_q_customDpiY", QVariant(dpi));
+
 
 	setCurrentScreenFromSettings();
 
@@ -124,6 +123,16 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 IndigoTaxi::~IndigoTaxi()
 {
 
+}
+
+void IndigoTaxi::changeDriverNumberClicked()
+{
+	if (driverNumberDialog->showPassword()) {
+		backend->setDriverName(driverNumberDialog->driverNumber());
+		infoDialog->info("ÏÎÇÛÂÍÎÉ ÑÌÅÍ¨Í");
+	} else {
+		infoDialog->info("ÎØÈÁÊÀ: ÍÅÂÅÐÍÛÉ ÏÀÐÎËÜ");
+	}
 }
 
 void IndigoTaxi::setCurrentScreenFromSettings()
@@ -627,10 +636,8 @@ void IndigoTaxi::paytimeClick()
 	if (iTaxiOrder == NULL)
 		return;
 
-#ifndef DEBUG
 	if (movementStarted)
 		return;
-#endif
 		
 	iTaxiOrder->stopOrder();
 	int payment = iTaxiOrder->calculateSum();
@@ -798,7 +805,8 @@ void IndigoTaxi::dinnerStopClicked()
 void IndigoTaxi::driverNameChanged(int driverName)
 {
 	ui.driverNumberButton->setText("ÏÎÇÛÂÍÎÉ\n" + QString::number(driverName));
-	ui.driverNameLineEdit->setText(QString::number(driverName));
+	driverNumberDialog->setDriverName(QString::number(driverName));
+//	ui.driverNameLineEdit->setText(QString::number(driverName));
 	settingsIniFile->beginGroup("main");
 	settingsIniFile->setValue("driverName", QVariant(driverName));
 	settingsIniFile->endGroup();
