@@ -619,7 +619,8 @@ void IndigoTaxi::newVersionDownloaded()
 				bool result = !currentExePath.rename(oldFilePath);	
 				result |= !downloadedFilePath.rename(QApplication::instance()->applicationFilePath());
 
-				emit reboot_application();
+				// перезагружаемся, тогда всё точно ок
+				rebootSystem();
 			}
 		}
 	}

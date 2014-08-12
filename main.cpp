@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 			SignalStarted(ceLaunchId);
 		}
 #endif
-		qDebug() << arg;
+		qDebug() << "arg:" << arg;
 	}
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("CP1251"));
 
