@@ -2377,19 +2377,6 @@ QPushButton[pressed=true] {
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
-                 <widget class="QPushButton" name="turnOffButton">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Выключить</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="1" column="2">
                  <widget class="QPushButton" name="softInfoButton">
                   <property name="sizePolicy">
@@ -2403,7 +2390,7 @@ QPushButton[pressed=true] {
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="2">
+                <item row="1" column="1">
                  <widget class="QPushButton" name="exitButton_2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
@@ -2917,9 +2904,7 @@ QPushButton[pressed=true] {
   <tabstop>pushButton_2</tabstop>
   <tabstop>rebootButton</tabstop>
   <tabstop>taxiRateShowButton</tabstop>
-  <tabstop>turnOffButton</tabstop>
   <tabstop>softInfoButton</tabstop>
-  <tabstop>exitButton_2</tabstop>
   <tabstop>pushButton_21</tabstop>
   <tabstop>regionListSettingsWidget</tabstop>
   <tabstop>regionList</tabstop>
@@ -3268,8 +3253,8 @@ QPushButton[pressed=true] {
    <slot>exitButtonClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>393</x>
-     <y>233</y>
+     <x>304</x>
+     <y>196</y>
     </hint>
     <hint type="destinationlabel">
      <x>320</x>
@@ -3412,7 +3397,7 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>32</x>
+     <x>34</x>
      <y>48</y>
     </hint>
     <hint type="destinationlabel">
@@ -3838,22 +3823,6 @@ QPushButton[pressed=true] {
    </hints>
   </connection>
   <connection>
-   <sender>turnOffButton</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>playClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>240</x>
-     <y>163</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>219</x>
-     <y>349</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>taxiRateShowButton</sender>
    <signal>clicked()</signal>
    <receiver>IndigoTaxiClass</receiver>
@@ -3892,8 +3861,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>334</x>
-     <y>224</y>
+     <x>304</x>
+     <y>196</y>
     </hint>
     <hint type="destinationlabel">
      <x>325</x>
@@ -4116,8 +4085,8 @@ QPushButton[pressed=true] {
    <slot>messagesSendClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>84</y>
+     <x>504</x>
+     <y>149</y>
     </hint>
     <hint type="destinationlabel">
      <x>524</x>
@@ -4148,8 +4117,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>84</y>
+     <x>504</x>
+     <y>149</y>
     </hint>
     <hint type="destinationlabel">
      <x>567</x>
@@ -4388,8 +4357,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>221</x>
-     <y>183</y>
+     <x>218</x>
+     <y>260</y>
     </hint>
     <hint type="destinationlabel">
      <x>213</x>
@@ -4420,12 +4389,28 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>97</x>
-     <y>241</y>
+     <x>75</x>
+     <y>260</y>
     </hint>
     <hint type="destinationlabel">
      <x>97</x>
      <y>364</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>softInfoButton</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>infoClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>490</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>591</x>
+     <y>186</y>
     </hint>
    </hints>
   </connection>
@@ -4484,5 +4469,6 @@ QPushButton[pressed=true] {
   <slot>messagesHistoryBackClicked()</slot>
   <slot>messagesHistoryClicked()</slot>
   <slot>changeDriverNumberClicked()</slot>
+  <slot>infoClicked()</slot>
  </slots>
 </ui>

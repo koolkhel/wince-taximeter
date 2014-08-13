@@ -1386,3 +1386,8 @@ void IndigoTaxi::privateClientButtonClicked()
 		backend->sendOrderEvent(hello_TaxiEvent_PERSONAL, iTaxiOrder);
 	}
 }
+
+void IndigoTaxi::infoClicked()
+{
+	infoDialog->info("ПРОГРАММА IndigoTaxi, версия " + QString(version) + ", 2014 год. Разработчик: ООО \"Системы Индиго\"");
+}

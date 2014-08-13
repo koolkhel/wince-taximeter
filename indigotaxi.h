@@ -122,6 +122,8 @@ public slots:
 	void taxiRateShowButtonClicked();
 	void taxiRateReturnButtonClicked();
 
+	void infoClicked();
+
 	// page 6
 	void cancelRegionSelectClicked();
 	void showRegionDetailsClicked();
