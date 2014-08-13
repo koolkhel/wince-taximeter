@@ -123,9 +123,10 @@ done:
 
 void Backend::readyRead()
 {
-	qDebug() << "ready read" << socket->bytesAvailable() << "bytes";
+	int bytes_avail = socket->bytesAvailable();
+	qDebug() << "ready read" << bytes_avail << "bytes";
 
-	QByteArray data = socket->readAll();
+	QByteArray data = socket->read(bytes_avail);
 	receiveBuffer.pushAll(data);
 	consumeSocketData();
 }
@@ -257,6 +258,7 @@ void Backend::flushOrderEvents()
 
 			socketMutex.lock();
 			qint64 result = socket->write(buffer, output.ByteCount());
+			qDebug() << "send safe:" << output.ByteCount() << "bytes";
 			socket->flush();
 			socketMutex.unlock();
 			if (result != -1) {
@@ -288,6 +290,7 @@ void Backend::send_message(hello &var)
 	if (socket->state() == QTcpSocket::ConnectedState) {
 		socketMutex.lock();
 		socket->write(buffer, output.ByteCount());
+		qDebug() << "send unsafe: " << output.ByteCount() << "bytes";
 		socket->flush();
 		socketMutex.unlock();
 	}
@@ -301,7 +304,7 @@ void Backend::protobuf_message_slot(const google::protobuf::uint8* begin, google
 }
 #endif
 
-#define PROBABLE_VARINT32_SIZE 4
+#define PROBABLE_VARINT32_SIZE 2
 void Backend::consumeSocketData()
 {
 
@@ -325,6 +328,12 @@ void Backend::consumeSocketData()
 			message_start = ReadVarint32FromArray(message_buffer, &message_length);
 			varint32_byte_count = message_start - &message_buffer[0];
 			remainder = message_length - (PROBABLE_VARINT32_SIZE - varint32_byte_count);
+			if (remainder > 10000) {
+				qDebug("ERROR =================================================");
+				qDebug("ERROR =================================================");
+				qDebug("ERROR =================================================");
+				socket->disconnectFromHost();
+			}
 			receive_state = MESSAGE_RECEIVING;
 
 			break;
@@ -338,17 +347,22 @@ void Backend::consumeSocketData()
 				count--;
 			}
 
+			// next part is coming
+			if (remainder != 0) {
+				break;
+			}
 			hello var;
 
 			google::protobuf::io::ArrayInputStream arrayIn(message_start, message_length);
 			google::protobuf::io::CodedInputStream codedIn(&arrayIn);	
 			google::protobuf::io::CodedInputStream::Limit msgLimit = codedIn.PushLimit(message_length);
-			var.ParseFromCodedStream(&codedIn);
+			if (var.ParseFromCodedStream(&codedIn)) {
+				emit protobuf_message(var);
+			}
 			codedIn.PopLimit(msgLimit);
 
 			// передаётся по значению
-			emit protobuf_message(var);
-
+			
 			receive_state = NOTHING;
 			break;
 		}

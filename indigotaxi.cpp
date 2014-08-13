@@ -15,7 +15,7 @@
 static const char *version = "0.1.002";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
-#undef DEBUG
+#define DEBUG
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
@@ -322,8 +322,11 @@ void IndigoTaxi::protobuf_message(hello message)
 	}
 
 	if (message.has_taxiregionlist()) {
-		taxiRegionList = message.taxiregionlist();
-		updateTaxiRegionList();
+		// почему-то (?) иногда приходят кривые сообщения
+		if (message.taxiregionlist().regions_size() > 0) {
+			taxiRegionList = message.taxiregionlist();
+			updateTaxiRegionList();
+		}
 	}
 
 	if (message.has_taxiinfo()) {
@@ -484,7 +487,7 @@ void IndigoTaxi::updateTaxiInfo()
 	} else {
 		intercity(0);
 	
-		qDebug() << "inside town" << taxiInfo.city_name().c_str();
+		qDebug() << "inside town" << QString::fromUtf8(taxiInfo.city_name().c_str());
 	}
 	
 	if (taxiInfo.inside_parking()) {
@@ -556,6 +559,7 @@ void IndigoTaxi::updateTaxiRegionList()
 		ui.regionListSettingsWidget->addItem(regionName);
 	}
 	ui.regionList->setCurrentRow(0);
+	ui.regionListSettingsWidget->setCurrentRow(0);
 }
 
 void IndigoTaxi::connectionStatus(bool status)
@@ -637,8 +641,10 @@ void IndigoTaxi::paytimeClick()
 	if (iTaxiOrder == NULL)
 		return;
 
+#ifndef DEBUG
 	if (movementStarted)
 		return;
+#endif
 		
 	iTaxiOrder->stopOrder();
 	int payment = iTaxiOrder->calculateSum();
