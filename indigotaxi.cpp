@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.002";
+static const char *version = "0.1.003";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 #undef DEBUG
@@ -462,6 +462,7 @@ void IndigoTaxi::abortOrder(int order_id)
 		voiceLady->sayPhrase("ORDERABORT");
 		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() + " ÎÒÌÅÍ¨Í ÄÈÑÏÅÒ×ÅÐÎÌ");
 		saveOrderHistory(iTaxiOrder, ITaxiOrder::ABORT_DISPATCHER);
+		backend->sendOrderEvent(hello_TaxiEvent_ABORT_ORDER, iTaxiOrder); // ÷òîáû öâåò ñìåíèëñÿ
 		destroyCurrentOrder();
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 		orderReceiveTimer->stop();
