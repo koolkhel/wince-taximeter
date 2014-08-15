@@ -328,7 +328,7 @@ void Backend::consumeSocketData()
 			message_start = ReadVarint32FromArray(message_buffer, &message_length);
 			varint32_byte_count = message_start - &message_buffer[0];
 			remainder = message_length - (PROBABLE_VARINT32_SIZE - varint32_byte_count);
-			if (remainder > 10000) {
+			if (remainder > 10000 || remainder < 0) {
 				qDebug("ERROR =================================================");
 				qDebug("ERROR =================================================");
 				qDebug("ERROR =================================================");
