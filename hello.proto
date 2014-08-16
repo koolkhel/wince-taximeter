@@ -45,6 +45,7 @@ message hello
     PERSONAL = 29; // свой клиент (персоналка)
     PERSONAL_ANSWER = 30;
     TEXT_MESSAGE = 31; // текстовое сообщение, что в одну, что в другую сторону
+    GET_TAXI_COUNT = 32; // количество такси по районам города
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];
@@ -70,6 +71,20 @@ message hello
   optional TaxiRegionInfo taxiRegionInfo = 12;
   
   optional TaxiMessageTemplates taxiMessageTemplates = 13;
+  
+  optional TaxiCount taxiCount = 14;
+}
+
+message TaxiCount {
+  repeated TaxiCountRegion regions = 1;
+}
+
+message TaxiCountRegion {
+  optional string region_name = 1 [ default = ""];
+  
+  optional int32 region_id = 2 [ default = 0 ];
+  
+  optional int32 taxi_count = 3 [ default = 0 ];
 }
 
 message TaxiRegionInfo {

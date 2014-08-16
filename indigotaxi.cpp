@@ -15,7 +15,7 @@
 static const char *version = "0.1.003";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
-#undef DEBUG
+#define DEBUG
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
@@ -293,6 +293,11 @@ void IndigoTaxi::protobuf_message(hello message)
 		abortOrder(message.taxiorder().order_id());
 	}
 
+	if (message.has_taxicount()) {
+		handleTaxiCount(message);
+		return;
+	}
+
 	if (message.event() == hello_TaxiEvent_PERSONAL_ANSWER) {
 		handlePersonalAnswer(message);
 		return; // криво, но не надо спускать в новый заказ
@@ -561,6 +566,26 @@ void IndigoTaxi::updateTaxiRegionList()
 	}
 	ui.regionList->setCurrentRow(0);
 	ui.regionListSettingsWidget->setCurrentRow(0);
+}
+
+void IndigoTaxi::settingsTabWidgetChanged(int tabNumber)
+{
+	if (ui.settingsTabWidget->widget(tabNumber)->objectName() == "regionsSettingsTab4") {
+		// ¬кладка районы
+		backend->sendEvent(hello_TaxiEvent_GET_TAXI_COUNT);
+	}
+}
+
+void IndigoTaxi::handleTaxiCount(hello var)
+{
+	ui.regionListSettingsWidget->clear();
+	for (int i = 0; i < var.taxicount().regions_size(); i++) {
+		QString regionName = QString::fromUtf8(var.taxicount().regions().Get(i).region_name().c_str());
+		QString count = QString::number(var.taxicount().regions().Get(i).taxi_count());
+		ui.regionListSettingsWidget->addItem(QString("%1 (%2)").arg(regionName).arg(count));
+	}
+	ui.regionListSettingsWidget->setCurrentRow(0);
+	voiceLady->click();
 }
 
 void IndigoTaxi::connectionStatus(bool status)

@@ -125,6 +125,7 @@ public slots:
 	void infoClicked();
 
 	// page 6
+	void settingsTabWidgetChanged(int);
 	void cancelRegionSelectClicked();
 	void showRegionDetailsClicked();
 	void changeDriverRegionStopClicked();
@@ -192,6 +193,7 @@ private:
 	void handlePersonalAnswer(hello var);
 	void handleTextMessage(hello var);
 	void handleNewMessageTemplates();
+	void handleTaxiCount(hello var);
 	ITaxiOrder *createTaxiOrder(int order_id, QString address = "");
 
 	bool movementStarted;

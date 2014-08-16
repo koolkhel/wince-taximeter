@@ -2949,8 +2949,8 @@ QPushButton[pressed=true] {
    <slot>inPlace()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>64</x>
-     <y>43</y>
+     <x>201</x>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>292</x>
@@ -2966,7 +2966,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>31</x>
-     <y>43</y>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>175</x>
@@ -2982,7 +2982,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>21</x>
-     <y>48</y>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>132</x>
@@ -2998,7 +2998,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>47</x>
-     <y>43</y>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>177</x>
@@ -3013,8 +3013,8 @@ QPushButton[pressed=true] {
    <slot>freeButtonClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>43</y>
+     <x>299</x>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>329</x>
@@ -3030,7 +3030,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>47</x>
-     <y>48</y>
+     <y>233</y>
     </hint>
     <hint type="destinationlabel">
      <x>79</x>
@@ -3045,8 +3045,8 @@ QPushButton[pressed=true] {
    <slot>clearMessageClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>97</x>
-     <y>48</y>
+     <x>303</x>
+     <y>233</y>
     </hint>
     <hint type="destinationlabel">
      <x>353</x>
@@ -3062,7 +3062,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>47</x>
-     <y>44</y>
+     <y>219</y>
     </hint>
     <hint type="destinationlabel">
      <x>321</x>
@@ -3077,8 +3077,8 @@ QPushButton[pressed=true] {
    <slot>startClientMove()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>94</x>
-     <y>44</y>
+     <x>300</x>
+     <y>219</y>
     </hint>
     <hint type="destinationlabel">
      <x>479</x>
@@ -3093,8 +3093,8 @@ QPushButton[pressed=true] {
    <slot>selectRegionClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>97</x>
-     <y>43</y>
+     <x>371</x>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>479</x>
@@ -3109,8 +3109,8 @@ QPushButton[pressed=true] {
    <slot>trainCrossButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>47</x>
-     <y>48</y>
+     <x>150</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>274</x>
@@ -3189,8 +3189,8 @@ QPushButton[pressed=true] {
    <slot>newDirectionClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>63</x>
-     <y>25</y>
+     <x>200</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
      <x>212</x>
@@ -3269,8 +3269,8 @@ QPushButton[pressed=true] {
    <slot>clientStopClicked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>98</x>
-     <y>48</y>
+     <x>406</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>397</x>
@@ -3285,8 +3285,8 @@ QPushButton[pressed=true] {
    <slot>overloadButtonClicked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>73</x>
-     <y>48</y>
+     <x>279</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>282</x>
@@ -3398,7 +3398,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>34</x>
-     <y>48</y>
+     <y>233</y>
     </hint>
     <hint type="destinationlabel">
      <x>52</x>
@@ -3414,7 +3414,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>31</x>
-     <y>43</y>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>37</x>
@@ -3429,8 +3429,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>64</x>
-     <y>43</y>
+     <x>201</x>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>213</x>
@@ -3445,8 +3445,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>97</x>
-     <y>43</y>
+     <x>371</x>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>361</x>
@@ -3461,8 +3461,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>97</x>
-     <y>48</y>
+     <x>303</x>
+     <y>233</y>
     </hint>
     <hint type="destinationlabel">
      <x>358</x>
@@ -3478,7 +3478,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>21</x>
-     <y>48</y>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>91</x>
@@ -3493,8 +3493,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>47</x>
-     <y>48</y>
+     <x>150</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>232</x>
@@ -3509,8 +3509,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>73</x>
-     <y>48</y>
+     <x>279</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>316</x>
@@ -3525,8 +3525,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>98</x>
-     <y>48</y>
+     <x>406</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>429</x>
@@ -3541,8 +3541,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>63</x>
-     <y>25</y>
+     <x>200</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
      <x>253</x>
@@ -3557,8 +3557,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>43</y>
+     <x>299</x>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>397</x>
@@ -3574,7 +3574,7 @@ QPushButton[pressed=true] {
    <hints>
     <hint type="sourcelabel">
      <x>47</x>
-     <y>43</y>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>193</x>
@@ -3893,8 +3893,8 @@ QPushButton[pressed=true] {
    <slot>startClientMoveClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>97</x>
-     <y>43</y>
+     <x>371</x>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
      <x>418</x>
@@ -3973,8 +3973,8 @@ QPushButton[pressed=true] {
    <slot>emergencyButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>36</y>
+     <x>454</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>673</x>
@@ -4414,6 +4414,22 @@ QPushButton[pressed=true] {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>settingsTabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>settingsTabWidgetChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>413</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>428</x>
+     <y>-31</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>settingsButtonClick()</slot>
@@ -4470,5 +4486,6 @@ QPushButton[pressed=true] {
   <slot>messagesHistoryClicked()</slot>
   <slot>changeDriverNumberClicked()</slot>
   <slot>infoClicked()</slot>
+  <slot>settingsTabWidgetChanged(int)</slot>
  </slots>
 </ui>
