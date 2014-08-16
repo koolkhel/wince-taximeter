@@ -150,9 +150,17 @@ void ITaxiOrder::newPosition(QGeoCoordinate newPosition)
 	
 	if (gotPosition) {
 		if (outOfCity) {
-			_mileage_out_of_city += newPosition.distanceTo(currentPosition);
+			if (_overload) {
+				_mileage_out_of_city_overload += newPosition.distanceTo(currentPosition);
+			} else {
+				_mileage_out_of_city += newPosition.distanceTo(currentPosition);
+			}
 		} else {
-			_mileage_city += newPosition.distanceTo(currentPosition);
+			if (_overload) {
+				_mileage_city_overload += newPosition.distanceTo(currentPosition);
+			} else {
+				_mileage_city += newPosition.distanceTo(currentPosition);
+			}
 		}
 		//emit newMileage((_mileage_out_of_city + _mileage_city + _mileage_city_overload + _mileage_out_of_city_overload) / 1000.0);
 		// все округлены по 100 метров и сложены
