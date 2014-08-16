@@ -705,6 +705,16 @@ void IndigoTaxi::freeButtonClick()
 		saveOrderHistory(iTaxiOrder, ITaxiOrder::SUCCESS);
 		destroyCurrentOrder();
 	}
+
+	ui.trainCrossButton->setChecked(false);
+	enableWidget(ui.trainCrossButton, true);
+	
+	ui.clientStopButton->setChecked(false);
+	enableWidget(ui.clientStopButton, true);
+	
+	ui.clientStopButton->setChecked(false);
+	enableWidget(ui.overloadButton, true);
+
 	ui.serverMessage->setPlainText("");
 	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
