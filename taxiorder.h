@@ -50,7 +50,7 @@ public:
 	
 	void setOverload(bool overload) { _overload = overload; }
 	void setClientStop(bool clientStop) { _clientStop = clientStop; }
-	void setTrainCross(bool on) { _trainCross = on; }
+	void setTrainCross(bool on);
 	
 	
 	float mgRate() { return _out_of_city_rate;}

@@ -143,6 +143,16 @@ void ITaxiOrder::movementStart(int startStop)
 	}
 }
 
+void ITaxiOrder::setTrainCross(bool on)
+{
+	_trainCross = on;
+	if (on) {
+		stopOrder();
+	} else {
+		startOrder();
+	}
+}
+
 void ITaxiOrder::newPosition(QGeoCoordinate newPosition)
 {
 	if (!started)
