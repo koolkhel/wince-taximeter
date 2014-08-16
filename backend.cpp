@@ -124,7 +124,7 @@ done:
 void Backend::readyRead()
 {
 	int bytes_avail = socket->bytesAvailable();
-	qDebug() << "ready read" << bytes_avail << "bytes";
+	//qDebug() << "ready read" << bytes_avail << "bytes";
 
 	QByteArray data = socket->read(bytes_avail);
 	receiveBuffer.pushAll(data);
@@ -258,7 +258,7 @@ void Backend::flushOrderEvents()
 
 			socketMutex.lock();
 			qint64 result = socket->write(buffer, output.ByteCount());
-			qDebug() << "send safe:" << output.ByteCount() << "bytes";
+			//qDebug() << "send safe:" << output.ByteCount() << "bytes";
 			socket->flush();
 			socketMutex.unlock();
 			if (result != -1) {
@@ -290,7 +290,7 @@ void Backend::send_message(hello &var)
 	if (socket->state() == QTcpSocket::ConnectedState) {
 		socketMutex.lock();
 		socket->write(buffer, output.ByteCount());
-		qDebug() << "send unsafe: " << output.ByteCount() << "bytes";
+		//qDebug() << "send unsafe: " << output.ByteCount() << "bytes";
 		socket->flush();
 		socketMutex.unlock();
 	}

@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.003";
+static const char *version = "0.1.006";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 #define DEBUG
@@ -614,6 +614,13 @@ void IndigoTaxi::rebootApp()
 	QApplication::exit(0);
 }
 
+void IndigoTaxi::downloadProgress(qint64 downloaded, qint64 total)
+{
+	long elapsed = updateStartTime.elapsed();
+	long remaining = elapsed * total / downloaded;
+	qDebug() << "downloaded" << downloaded << "of" << total << "time total:" << (remaining / 1000) << "seconds";
+}
+
 void IndigoTaxi::checkVersion()
 {
 	QByteArray data = downloader->downloadedData();
@@ -621,15 +628,25 @@ void IndigoTaxi::checkVersion()
 	newVersionString = newVersionString.trimmed();
 
 	QString oldVersionString = version;
+	qDebug() << "new version:" << newVersionString << "old version:" << oldVersionString << "updating:" << (newVersionString.trimmed() > oldVersionString.trimmed());
 	if (newVersionString.trimmed() > oldVersionString.trimmed()) {
-		qDebug() << "new version:" << newVersionString << "old version:" << oldVersionString;
 		QString newVersionUrlPath = "http://indigosystem.ru/IndigoTaxi.exe";
 		QUrl url(newVersionUrlPath);
 		downloader->deleteLater();
 		downloader = new FileDownloader(url, this);
 		connect(downloader, SIGNAL(downloaded()), SLOT(newVersionDownloaded()));
+		connect(downloader, SIGNAL(downloadProgress(qint64,qint64)), SLOT(downloadProgress(qint64,qint64)));
+		connect(downloader, SIGNAL(fileDownloadError(QString)), SLOT(updateDownloadError(QString)));
+		updateStartTime = QTime::currentTime();
+		updateStartTime.start();
 		//ui.versionLabel->setText(newVersionString.trimmed());
 	}
+}
+
+void IndigoTaxi::updateDownloadError(QString reason)
+{
+	voiceLady->click();
+	infoDialog->info("Ошибка установки обновления: " + reason);
 }
 
 void IndigoTaxi::newVersionDownloaded()

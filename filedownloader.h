@@ -19,16 +19,22 @@ public:
  
 signals:
         void downloaded();
+		void downloadProgress(qint64, qint64);
+		void fileDownloadError(QString);
  
 private slots:
  
     void fileDownloaded(QNetworkReply* pReply);
+
+	void downloadError(QNetworkReply::NetworkError);
  
 private:
  
     QNetworkAccessManager m_WebCtrl;
  
     QByteArray m_DownloadedData;
+
+	QNetworkReply *reply;
  
 };
  

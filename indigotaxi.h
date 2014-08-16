@@ -55,6 +55,8 @@ public slots:
 	void checkVersion();
 	void newVersionDownloaded();
 
+	void downloadProgress(qint64, qint64);
+
 	void updateTime();
 
 // page1
@@ -154,6 +156,9 @@ public slots:
 
 	void addMessageHistory(QString message);
 
+private slots:
+	void updateDownloadError(QString);
+
 private:
 	TaxiRegionList taxiRegionList;
 	TaxiRateAll taxiRates;
@@ -233,6 +238,8 @@ private:
 	bool _taxiRateReceived;
 
 	QStringList _messagesToShow;
+
+	QTime updateStartTime;
 };
 
 #endif // INDIGOTAXI_H
