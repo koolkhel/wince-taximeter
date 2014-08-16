@@ -741,7 +741,7 @@ void IndigoTaxi::clearMessageClick()
 
 void IndigoTaxi::exitButtonClick()
 {
-	if (confirmDialog->ask("ÂÛ ÏÎÄÒÂÅĞÆÄÀÅÒÅ ÂÛÕÎÄ ÈÇ ÏĞÎÃĞÀÌÌÛ?")) {
+	if (confirmDialog->ask("ÂÛ ÏÎÄÒÂÅĞÆÄÀÅÒÅ ÂÛÕÎÄ ÈÇ ÏĞÎÃĞÀÌÌÛ? ÇÀÂÅĞØÀÅÒÅ ËÈ ÂÛ ÑÌÅÍÓ?")) {
 		qApp->quit();
 	}
 }
