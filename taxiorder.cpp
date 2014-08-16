@@ -44,11 +44,14 @@ ITaxiOrder::~ITaxiOrder()
 
 void ITaxiOrder::measureTimes()
 {
+	_total_travel_time_seconds++;
+	emit newTimeTotal(_total_travel_time_seconds);
+
 	// заказ либо на паузе, либо не начался
 	if (!started)
 		return;
 
-	_total_travel_time_seconds++;
+	
 
 	if (!movementStarted && !_clientStop) {
 		// остановка считается, если больше 30 секунд
@@ -70,7 +73,6 @@ void ITaxiOrder::measureTimes()
 	emit newTimeMovement(seconds_moving);
 	emit newTimeStops(seconds_stops);
 	emit newTimeClientStops(seconds_client_stops);
-	emit newTimeTotal(_total_travel_time_seconds);
 }
 
 void ITaxiOrder::setRegionId(int _region_id)

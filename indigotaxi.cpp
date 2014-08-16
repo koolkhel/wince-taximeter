@@ -15,8 +15,6 @@
 static const char *version = "0.1.006";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
-#define DEBUG
-
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
