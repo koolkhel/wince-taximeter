@@ -727,7 +727,7 @@ void IndigoTaxi::freeButtonClick()
 	ui.clientStopButton->setChecked(false);
 	enableWidget(ui.clientStopButton, true);
 	
-	ui.clientStopButton->setChecked(false);
+	ui.overloadButton->setChecked(false);
 	enableWidget(ui.overloadButton, true);
 
 	ui.serverMessage->setPlainText("");
