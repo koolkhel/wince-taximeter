@@ -2384,19 +2384,6 @@ QPushButton[pressed=true] {
                 <property name="spacing">
                  <number>5</number>
                 </property>
-                <item row="0" column="0">
-                 <widget class="QPushButton" name="pushButton_2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Вернуться</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="1">
                  <widget class="QPushButton" name="rebootButton">
                   <property name="sizePolicy">
@@ -2457,6 +2444,19 @@ QPushButton[pressed=true] {
                   <property name="text">
                    <string>Выход
 из программы</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QPushButton" name="pushButton_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Вернуться</string>
                   </property>
                  </widget>
                 </item>

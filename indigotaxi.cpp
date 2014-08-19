@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.011";
+static const char *version = "0.1.013";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -1484,6 +1484,11 @@ void IndigoTaxi::newVersionDownloaded()
 		downloadedFilePath.close();
 
 		if (writtenLen == data.length()) {			
+			voiceLady->click();
+			voiceLady->click();
+			voiceLady->click();
+			voiceLady->click();
+			voiceLady->click();
 			if (confirmDialog->ask("ÇÀÃÐÓÆÅÍÎ ÎÁÍÎÂËÅÍÈÅ ÏÐÎÃÐÀÌÌÛ. ÂÛÏÎËÍÈÒÜ ÎÁÍÎÂËÅÍÈÅ? (ÒÐÅÁÓÅÒÑß ÏÅÐÅÇÀÏÓÑÊ)")) {
 				QString oldFilePath = QApplication::instance()->applicationDirPath() + "/old_exe.exe";
 				QFile::remove(oldFilePath);

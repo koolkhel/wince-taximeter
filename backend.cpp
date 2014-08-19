@@ -14,6 +14,7 @@ message_length(0),
 taxiId(4)
 {
 	socket = new QTcpSocket(this);
+	socket->setSocketOption(QAbstractSocket::LowDelayOption, QVariant(1));
 	connect(socket, SIGNAL(readyRead()), SLOT(readyRead()), Qt::QueuedConnection);
 	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(disconnected()));
 	connect(socket, SIGNAL(connected()), SLOT(connected()));
@@ -257,13 +258,16 @@ void Backend::flushOrderEvents()
 			var.SerializeToCodedStream(&output);
 
 			socketMutex.lock();
-			qint64 result = socket->write(buffer, output.ByteCount());
+
+			qint64 toWrite = output.ByteCount();
+			qint64 result = socket->write(buffer, toWrite);
 			//qDebug() << "send safe:" << output.ByteCount() << "bytes";
 			socket->flush();
 			socketMutex.unlock();
-			if (result != -1) {
+			if ((result != -1) && (result == toWrite)) {
 				orderEventsQueue.pop();
 			} else {
+				socket->disconnect();
 				break;
 			}
 
@@ -289,7 +293,9 @@ void Backend::send_message(hello &var)
 
 	if (socket->state() == QTcpSocket::ConnectedState) {
 		socketMutex.lock();
-		socket->write(buffer, output.ByteCount());
+		if (socket->write(buffer, output.ByteCount()) == -1) {
+			socket->disconnect();
+		}
 		//qDebug() << "send unsafe: " << output.ByteCount() << "bytes";
 		socket->flush();
 		socketMutex.unlock();
