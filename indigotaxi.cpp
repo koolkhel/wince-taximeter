@@ -58,13 +58,18 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	updateStartTimer = new QTimer(this);
 	connect(updateStartTimer, SIGNAL(timeout()), SLOT(updatesDownloadTipVersionString()));
 	updateStartTimer->setInterval(10 * 1000);
-	updateStartTimer->setSingleShot(false);
+	updateStartTimer->setSingleShot(true);
 
 	timeTimer = new QTimer(this);
 	connect(timeTimer, SIGNAL(timeout()), SLOT(updateTime()));
 	timeTimer->setInterval(1000);
 	timeTimer->setSingleShot(false);
 	timeTimer->start();
+
+	connectedTimer = new QTimer(this);
+	connect(connectedTimer, SIGNAL(timeout()), SLOT(connectedTimerTimeout()));
+	connectedTimer->setInterval(5000);
+	connectedTimer->setSingleShot(true);
 
 	voiceLady = new VoiceLady(this);
 	iSoundPlayer = new ISoundPlayer();
@@ -587,6 +592,12 @@ void IndigoTaxi::handleTaxiCount(hello var)
 	voiceLady->click();
 }
 
+void IndigoTaxi::connectedTimerTimeout()
+{
+	online = true;
+	voiceLady->sayPhrase("CONNECTIONOK");
+}
+
 void IndigoTaxi::connectionStatus(bool status)
 {
 	if (status && !online) {
@@ -596,11 +607,12 @@ void IndigoTaxi::connectionStatus(bool status)
 			updateStartTimer->start();
 		}
 		
-		voiceLady->sayPhrase("CONNECTIONOK");
+		connectedTimer->start();
 		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));
-		online = true;
+
 	} else if (!status && online) {
 		updateStartTimer->stop();
+		connectedTimer->stop();
 		voiceLady->sayPhrase("NOCONNECTION");		
 		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-bad.png"));
 		online = false;
@@ -702,7 +714,11 @@ void IndigoTaxi::clearMessageClick()
 void IndigoTaxi::exitButtonClick()
 {
 	if (confirmDialog->ask("бш ондрбепфдюере бшунд хг опнцпюллш? гюбепьюере кх бш ялемс?")) {
-		qApp->quit();
+		if (driverNumberDialog->showPassword()) {
+			qApp->quit();	
+		} else {
+			infoDialog->info("ньхайю: мебепмши оюпнкэ");
+		}
 	}
 }
 

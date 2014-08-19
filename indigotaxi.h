@@ -61,6 +61,8 @@ public slots:
 	void updatesDownloadTipVersionString();
 	void updateTime();
 
+	void connectedTimerTimeout();
+
 // page1
 	void moveToClient();
 	void inPlace();
@@ -223,6 +225,8 @@ private:
 	int orderReceiveCounter;
 
 	QTimer *updateStartTimer;
+
+	QTimer *connectedTimer;
 
 	QList<ITaxiOrder *> ordersHistory;
 
