@@ -254,6 +254,13 @@ void IndigoTaxi::startClientMove()
 		.arg(kmTaxiRate, 0, 'f', 1)
 		.arg(kmgTaxiRate, 0, 'f', 1));
 
+	float overloadCityTaxiRate = kmTaxiRate * 1.5;
+	float overloadOutOfCityTaxiRate = kmgTaxiRate * 1.5;
+	ui.overloadTaxiRateLabel->setText(QString("%1/%2")
+		.arg(overloadCityTaxiRate, 0, 'f', 1)
+		.arg(overloadOutOfCityTaxiRate, 0, 'f', 1));
+
+
 	float carInRate = iTaxiOrder->orderTaxiRate().car_in() + currentParkingCost;
 	ui.finalCarInLabel ->setText(QString("%1").arg(carInRate, 0, 'f', 1));
 
@@ -653,6 +660,10 @@ void IndigoTaxi::paytimeClick()
 	ui.finalMileageLabel->setText(QString("%1/%2")
 		.arg(iTaxiOrder->cityMileage(), 0, 'f', 1)
 		.arg(iTaxiOrder->outOfCityMileage(), 0, 'f', 1));
+
+	ui.finalOverloadLabel->setText(QString("%1/%2")
+		.arg(iTaxiOrder->cityMileageOverload(), 0, 'f', 1)
+		.arg(iTaxiOrder->outOfCityMileageOverload(), 0, 'f', 1));
 	
 	ui.finalStopsTimeLabel->setText(QString("%1/%2")
 		.arg(iTaxiOrder->minutesClientStops())
@@ -1167,8 +1178,8 @@ void IndigoTaxi::movementStart(int start)
 
 				voiceLady->sayPhrase("TRAINCROSSOFF");
 				
-				ui.trainCrossButton->setEnabled(true);
 				ui.trainCrossButton->setChecked(false);
+				enableWidget(ui.trainCrossButton, true);
 			}
 			
 			// выключаем остановку по просьбе клиента
@@ -1176,8 +1187,8 @@ void IndigoTaxi::movementStart(int start)
 				iTaxiOrder->setClientStop(false);
 				voiceLady->sayPhrase("CLIENTSTOPOFF");
 
-				ui.clientStopButton->setEnabled(true);
 				ui.clientStopButton->setChecked(false);
+				enableWidget(ui.clientStopButton, true);
 			}
 		}
 	}
