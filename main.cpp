@@ -27,8 +27,12 @@ void myMessageOutput(QtMsgType type, const char *msg)
 		 //fprintf(stderr, "Debug: %s\n", msg);
 		 if (strchr(msg, '\n')) {
 			fprintf(stderr, "%s", msg);
+			
 		 } else {
 			 fprintf(stderr, "%s\n", msg);
+		 }
+		 if (mainWindow != NULL) {
+			//mainWindow->log(msg);
 		 }
 
          break;

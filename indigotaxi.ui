@@ -299,7 +299,7 @@ QPushButton {
         <height>20</height>
        </size>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,0,1,5,1,2">
+      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,0,0,1,5,1,2">
        <property name="spacing">
         <number>5</number>
        </property>
@@ -377,6 +377,25 @@ QPushButton {
        </item>
        <item>
         <widget class="QLabel" name="updateInProgressIcon">
+         <property name="minimumSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="updateInProgressPercentage">
+         <property name="minimumSize">
+          <size>
+           <width>24</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -2929,7 +2948,6 @@ QPushButton[pressed=true] {
  </tabstops>
  <resources>
   <include location="indigotaxi.qrc"/>
-  <include location="UI.qrc"/>
   <include location="UI.qrc"/>
   <include location="../../../Documents and Settings/Yury/.designer/backup/UI.qrc"/>
  </resources>

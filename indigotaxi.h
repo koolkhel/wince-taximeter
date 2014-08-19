@@ -33,6 +33,7 @@ public:
 	IndigoTaxi(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~IndigoTaxi();
 	static int const EXIT_CODE_REBOOT;
+	void log(QString message) { ui.serverMessage->setPlainText(message); }
 
 signals:
 	void reboot_application();
@@ -52,11 +53,12 @@ public slots:
 // updates
 	void rebootApp();
 
-	void checkVersion();
+	void updatesCheckVersionString();
 	void newVersionDownloaded();
 
 	void downloadProgress(qint64, qint64);
-
+	
+	void updatesDownloadTipVersionString();
 	void updateTime();
 
 // page1
@@ -220,6 +222,8 @@ private:
 	QTimer *orderReceiveTimer;
 	int orderReceiveCounter;
 
+	QTimer *updateStartTimer;
+
 	QList<ITaxiOrder *> ordersHistory;
 
 	IConfirmationDialog *confirmDialog;
@@ -236,6 +240,8 @@ private:
 
 	bool _taxiRateUpdated;
 	bool _taxiRateReceived;
+
+	bool _updatePerformed;
 
 	QStringList _messagesToShow;
 

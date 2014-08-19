@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="UI">
+    <file>images/updateInProgress.png</file>
     <file>images/error.png</file>
     <file>images/gps.png</file>
     <file>images/ok.png</file>

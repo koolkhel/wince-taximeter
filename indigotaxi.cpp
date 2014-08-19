@@ -12,14 +12,14 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.006";
+static const char *version = "0.1.007";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
-	_taxiRateUpdated(false), _taxiRateReceived(false)
+	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -55,11 +55,11 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	connect(this, SIGNAL(reboot_application()), SLOT(rebootApp()));
 
-	QString versionUrl = "http://indigosystem.ru/taxi-version.txt";
-	QUrl version(versionUrl);
-	downloader = new FileDownloader(version, this);
-	connect(downloader, SIGNAL(downloaded()), SLOT(checkVersion()));
-	
+	updateStartTimer = new QTimer(this);
+	connect(updateStartTimer, SIGNAL(timeout()), SLOT(updatesDownloadTipVersionString()));
+	updateStartTimer->setInterval(10 * 1000);
+	updateStartTimer->setSingleShot(false);
+
 	timeTimer = new QTimer(this);
 	connect(timeTimer, SIGNAL(timeout()), SLOT(updateTime()));
 	timeTimer->setInterval(1000);
@@ -172,6 +172,7 @@ void IndigoTaxi::updateTime()
     QString text = time.toString("hh:mm");
     ui.timeLabel->setText(text);
 
+	// если сразу не получили (не было интернета), но очень хочется
 	if (!_taxiRateReceived && (time.second() == 30 || time.second() == 0)) {
 		backend->sendEvent(hello_TaxiEvent_GET_INFO);
 	}
@@ -589,10 +590,17 @@ void IndigoTaxi::handleTaxiCount(hello var)
 void IndigoTaxi::connectionStatus(bool status)
 {
 	if (status && !online) {
+		if (updateStartTimer->isActive()) {
+			updateStartTimer->stop();
+		} else if (!_updatePerformed) {
+			updateStartTimer->start();
+		}
+		
 		voiceLady->sayPhrase("CONNECTIONOK");
 		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-ok.png"));
 		online = true;
 	} else if (!status && online) {
+		updateStartTimer->stop();
 		voiceLady->sayPhrase("NOCONNECTION");		
 		ui.connectionLabel->setPixmap(QPixmap(":/UI/images/connection-bad.png"));
 		online = false;
@@ -611,69 +619,6 @@ void IndigoTaxi::rebootApp()
 
 	QApplication::exit(0);
 }
-
-void IndigoTaxi::downloadProgress(qint64 downloaded, qint64 total)
-{
-	long elapsed = updateStartTime.elapsed();
-	long remaining = elapsed * total / downloaded;
-	qDebug() << "downloaded" << downloaded << "of" << total << "time total:" << (remaining / 1000) << "seconds";
-}
-
-void IndigoTaxi::checkVersion()
-{
-	QByteArray data = downloader->downloadedData();
-	QString newVersionString = data.data();
-	newVersionString = newVersionString.trimmed();
-
-	QString oldVersionString = version;
-	qDebug() << "new version:" << newVersionString << "old version:" << oldVersionString << "updating:" << (newVersionString.trimmed() > oldVersionString.trimmed());
-	if (newVersionString.trimmed() > oldVersionString.trimmed()) {
-		QString newVersionUrlPath = "http://indigosystem.ru/IndigoTaxi.exe";
-		QUrl url(newVersionUrlPath);
-		downloader->deleteLater();
-		downloader = new FileDownloader(url, this);
-		connect(downloader, SIGNAL(downloaded()), SLOT(newVersionDownloaded()));
-		connect(downloader, SIGNAL(downloadProgress(qint64,qint64)), SLOT(downloadProgress(qint64,qint64)));
-		connect(downloader, SIGNAL(fileDownloadError(QString)), SLOT(updateDownloadError(QString)));
-		updateStartTime = QTime::currentTime();
-		updateStartTime.start();
-		//ui.versionLabel->setText(newVersionString.trimmed());
-	}
-}
-
-void IndigoTaxi::updateDownloadError(QString reason)
-{
-	voiceLady->click();
-	infoDialog->info("Ошибка установки обновления: " + reason);
-}
-
-void IndigoTaxi::newVersionDownloaded()
-{
-	// TODO проверить целостность обновления
-	QByteArray data = downloader->downloadedData();
-	QFile currentExePath(QApplication::instance()->applicationFilePath());
-	QFile downloadedFilePath(QApplication::instance()->applicationDirPath() + "/new_exe.exe");
-	if (downloadedFilePath.open(QIODevice::ReadWrite)) {;
-		qint64 writtenLen = downloadedFilePath.write(data);
-		downloadedFilePath.close();
-
-		if (writtenLen == data.length()) {			
-			if (confirmDialog->ask("ЗАГРУЖЕНО ОБНОВЛЕНИЕ ПРОГРАММЫ. ВЫПОЛНИТЬ ОБНОВЛЕНИЕ? (ТРЕБУЕТСЯ ПЕРЕЗАПУСК)")) {
-				QString oldFilePath = QApplication::instance()->applicationDirPath() + "/old_exe.exe";
-				QFile::remove(oldFilePath);
-				bool result = !currentExePath.rename(oldFilePath);	
-				result |= !downloadedFilePath.rename(QApplication::instance()->applicationFilePath());
-
-				// перезагружаемся, тогда всё точно ок
-				rebootSystem();
-			}
-		}
-	}
-}
-
-
-
-
 
 // расчёт
 void IndigoTaxi::paytimeClick() 
@@ -1441,4 +1386,80 @@ void IndigoTaxi::privateClientButtonClicked()
 void IndigoTaxi::infoClicked()
 {
 	infoDialog->info("ПРОГРАММА IndigoTaxi, версия " + QString(version) + ", 2014 год. Разработчик: ООО \"Системы Индиго\"");
+}
+
+void IndigoTaxi::updatesDownloadTipVersionString()
+{
+	QString versionUrl = "http://indigosystem.ru/taxi-version.txt";
+	QUrl version(versionUrl);
+	downloader = new FileDownloader(version, this);
+	connect(downloader, SIGNAL(downloaded()), SLOT(updatesCheckVersionString()));	
+
+	updateStartTimer->stop();
+}
+
+void IndigoTaxi::downloadProgress(qint64 downloaded, qint64 total)
+{
+	long elapsed = updateStartTime.elapsed();
+	long remaining = elapsed * total / downloaded;
+	qDebug() << "downloaded" << downloaded << "of" << total << "time total:" << (remaining / 1000) << "seconds";
+	double percent = (((double) downloaded) / total) * 100;
+	ui.updateInProgressPercentage->setText(QString("%1%").arg((int) percent));
+}
+
+void IndigoTaxi::updatesCheckVersionString()
+{
+	QByteArray data = downloader->downloadedData();
+	QString newVersionString = data.data();
+	newVersionString = newVersionString.trimmed();
+
+	QString oldVersionString = version;
+	qDebug() << "new version:" << newVersionString << "old version:" << oldVersionString << "updating:" << (newVersionString.trimmed() > oldVersionString.trimmed());
+	_updatePerformed = true;
+	if (newVersionString.trimmed() > oldVersionString.trimmed()) {
+		QString newVersionUrlPath = "http://indigosystem.ru/IndigoTaxi.exe";
+		ui.updateInProgressPercentage->setText(QString("%1%").arg(0));
+		QUrl url(newVersionUrlPath);
+		downloader->deleteLater();
+		downloader = new FileDownloader(url, this);
+		connect(downloader, SIGNAL(downloaded()), SLOT(newVersionDownloaded()));
+		connect(downloader, SIGNAL(downloadProgress(qint64,qint64)), SLOT(downloadProgress(qint64,qint64)));
+		connect(downloader, SIGNAL(fileDownloadError(QString)), SLOT(updateDownloadError(QString)));
+		
+		ui.updateInProgressIcon->setPixmap(QPixmap(":/UI/images/updateInProgress.png"));
+		
+		updateStartTime = QTime::currentTime();
+		updateStartTime.start();
+		//ui.versionLabel->setText(newVersionString.trimmed());
+	}
+}
+
+void IndigoTaxi::updateDownloadError(QString reason)
+{
+	voiceLady->click();
+	infoDialog->info("Ошибка установки обновления: " + reason);
+}
+
+void IndigoTaxi::newVersionDownloaded()
+{
+	// TODO проверить целостность обновления
+	QByteArray data = downloader->downloadedData();
+	QFile currentExePath(QApplication::instance()->applicationFilePath());
+	QFile downloadedFilePath(QApplication::instance()->applicationDirPath() + "/new_exe.exe");
+	if (downloadedFilePath.open(QIODevice::ReadWrite)) {;
+		qint64 writtenLen = downloadedFilePath.write(data);
+		downloadedFilePath.close();
+
+		if (writtenLen == data.length()) {			
+			if (confirmDialog->ask("ЗАГРУЖЕНО ОБНОВЛЕНИЕ ПРОГРАММЫ. ВЫПОЛНИТЬ ОБНОВЛЕНИЕ? (ТРЕБУЕТСЯ ПЕРЕЗАПУСК)")) {
+				QString oldFilePath = QApplication::instance()->applicationDirPath() + "/old_exe.exe";
+				QFile::remove(oldFilePath);
+				bool result = !currentExePath.rename(oldFilePath);	
+				result |= !downloadedFilePath.rename(QApplication::instance()->applicationFilePath());
+
+				// перезагружаемся, тогда всё точно ок
+				rebootSystem();
+			}
+		}
+	}
 }
