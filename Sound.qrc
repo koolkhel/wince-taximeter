@@ -3,6 +3,8 @@
 <file alias="GREETING">Resources/voice/GREETING.wav</file>
 <file alias="TRAINCROSS">Resources/voice/TRAINCROSS.wav</file>
 <file alias="TRAINCROSSOFF">Resources/voice/TRAINCROSSOFF.wav</file>
+<file alias="INTERCITY">Resources/voice/INTERCITY.wav</file>
+<file alias="INCITY">Resources/voice/INCITY.wav</file>
 <file alias="OVERLOAD">Resources/voice/OVERLOAD.wav</file>
 <file alias="OVERLOADOFF">Resources/voice/OVERLOADOFF.wav</file>
 <file alias="CLIENTSTOP">Resources/voice/CLIENTSTOP.wav</file>

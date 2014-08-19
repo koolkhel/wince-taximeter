@@ -19,7 +19,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
-	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false)
+	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -488,10 +488,14 @@ void IndigoTaxi::abortOrder(int order_id)
 	
 void IndigoTaxi::intercity(int intercity)
 {
-	if (intercity) {
+	if (intercity == 1 && _intercity == 0) {
 		ui.intercityLabel->setText("МЕЖГОРОД");
-	} else {
+		_intercity = intercity;
+		voiceLady->sayPhrase("INTERCITY");
+	} else if (intercity == 0 && _intercity == 1) {
 		ui.intercityLabel->setText("ГОРОД");
+		_intercity = intercity;
+		voiceLady->sayPhrase("INCITY");
 	}
 }
 
@@ -699,7 +703,9 @@ void IndigoTaxi::freeButtonClick()
 	enableWidget(ui.overloadButton, true);
 
 	ui.serverMessage->setPlainText("");
-	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
+	
+	ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+	ui.settingsTabWidget->setCurrentWidget(ui.regionsSettingsTab4);
 }
 
 // продолжаем поездку

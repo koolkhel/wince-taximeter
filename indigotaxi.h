@@ -247,6 +247,8 @@ private:
 
 	bool _updatePerformed;
 
+	int _intercity;
+
 	QStringList _messagesToShow;
 
 	QTime updateStartTime;
