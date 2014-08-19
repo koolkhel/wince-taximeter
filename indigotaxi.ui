@@ -299,7 +299,7 @@ QPushButton {
         <height>20</height>
        </size>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,1,5,1,2">
+      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,0,1,5,1,2">
        <property name="spacing">
         <number>5</number>
        </property>
@@ -372,6 +372,13 @@ QPushButton {
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="updateInProgressIcon">
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
@@ -451,7 +458,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -2330,7 +2337,7 @@ QPushButton[pressed=true] {
                <number>0</number>
               </property>
               <widget class="QWidget" name="systemSettingsPage1">
-               <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,2,2">
+               <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1" columnstretch="1,2,2">
                 <property name="margin">
                  <number>5</number>
                 </property>
@@ -2924,6 +2931,7 @@ QPushButton[pressed=true] {
   <include location="indigotaxi.qrc"/>
   <include location="UI.qrc"/>
   <include location="UI.qrc"/>
+  <include location="../../../Documents and Settings/Yury/.designer/backup/UI.qrc"/>
  </resources>
  <connections>
   <connection>

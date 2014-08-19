@@ -35,12 +35,13 @@ void FileDownloader::fileDownloaded(QNetworkReply* pReply)
 	if (pReply->error() == QNetworkReply::NoError) {
 		qDebug() << "download successful";
 		m_DownloadedData = pReply->readAll();
+		
 		emit downloaded();
 	} else {
 		qDebug() << "download error";
 		emit fileDownloadError(pReply->errorString());
 	}
-    
+	disconnect(reply, 0, this, 0);    
 	//emit a signal
     pReply->deleteLater();
     
