@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.007";
+static const char *version = "0.1.011";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -1417,7 +1417,7 @@ void IndigoTaxi::updatesCheckVersionString()
 	qDebug() << "new version:" << newVersionString << "old version:" << oldVersionString << "updating:" << (newVersionString.trimmed() > oldVersionString.trimmed());
 	_updatePerformed = true;
 	if (newVersionString.trimmed() > oldVersionString.trimmed()) {
-		QString newVersionUrlPath = "http://indigosystem.ru/IndigoTaxi.exe";
+		QString newVersionUrlPath = "http://indigosystem.ru/IndigoTaxi.exe.qz";
 		ui.updateInProgressPercentage->setText(QString("%1%").arg(0));
 		QUrl url(newVersionUrlPath);
 		downloader->deleteLater();
@@ -1443,10 +1443,10 @@ void IndigoTaxi::updateDownloadError(QString reason)
 void IndigoTaxi::newVersionDownloaded()
 {
 	// TODO проверить целостность обновления
-	QByteArray data = downloader->downloadedData();
+	QByteArray data = qUncompress(downloader->downloadedData());
 	QFile currentExePath(QApplication::instance()->applicationFilePath());
 	QFile downloadedFilePath(QApplication::instance()->applicationDirPath() + "/new_exe.exe");
-	if (downloadedFilePath.open(QIODevice::ReadWrite)) {;
+	if (downloadedFilePath.open(QIODevice::ReadWrite)) {
 		qint64 writtenLen = downloadedFilePath.write(data);
 		downloadedFilePath.close();
 

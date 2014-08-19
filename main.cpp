@@ -114,7 +114,6 @@ Debug: "WindowsMobile"
 	
 		IndigoTaxi w;
 		mainWindow = &w;
-
 		
 #ifdef UNDER_CE
 		
