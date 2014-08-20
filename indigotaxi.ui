@@ -146,6 +146,10 @@ QPushButton {
 	font: 6pt &quot;Segoe UI&quot;;
 }
 
+#timeLabel {
+	font-size: 8pt;
+}
+
 #statusRowFrame {
 	background: #000000;
 }
