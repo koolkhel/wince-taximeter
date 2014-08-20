@@ -279,6 +279,7 @@ void IndigoTaxi::startClientMove()
 		
 		// пошёл счёт
 		iTaxiOrder->startOrder();
+		iTaxiOrder->startTotalTime();
 	}
 	
 	// обновляем цифры

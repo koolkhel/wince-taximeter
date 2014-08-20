@@ -17,7 +17,7 @@ ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCo
 	
 	gotPosition(false), 
 	
-	started(false), movementStarted(false), 
+	started(false), movementStarted(false), _totalTimeStarted(false),
 	
 	parkingCost(_parkingCost), parkingId(_parkingId),
 	current_stop_seconds(0), 
@@ -44,8 +44,12 @@ ITaxiOrder::~ITaxiOrder()
 
 void ITaxiOrder::measureTimes()
 {
-	_total_travel_time_seconds++;
-	emit newTimeTotal(_total_travel_time_seconds);
+	// если мы на переезде и т.д. нам всё равно нужно время считать,
+	// но только после того, как вообще началась поездка
+	if (_totalTimeStarted) {
+		_total_travel_time_seconds++;
+		emit newTimeTotal(_total_travel_time_seconds);
+	}
 
 	// заказ либо на паузе, либо не начался
 	if (!started)

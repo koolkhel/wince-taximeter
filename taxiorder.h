@@ -77,6 +77,8 @@ public:
 	QString address() { return _address; }
 	void setAddress(QString address) { _address = address; }
 
+	void startTotalTime() { _totalTimeStarted = true; }
+
 signals:
 	void paymentChanged(int);
 	void regionChanged(int regionId);
@@ -165,6 +167,8 @@ private:
 	bool _clientStop;
 
 	bool _trainCross;
+
+	bool _totalTimeStarted;
 };
 
 #endif // TAXIORDER_H
