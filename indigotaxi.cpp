@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.013";
+static const char *version = "0.1.015";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -303,6 +303,7 @@ void IndigoTaxi::protobuf_message(hello message)
 	// ñòàðûé ñïîñîá äîñòàâêè àäðåñà
 	if (message.event() == hello_TaxiEvent_ABORT_ORDER) {
 		abortOrder(message.taxiorder().order_id());
+		return;
 	}
 
 	if (message.has_taxicount()) {
@@ -406,6 +407,10 @@ void IndigoTaxi::stackedWidgetCurrentChanged(int pageIndex)
 			infoDialog->info("ÑÎÎÁÙÅÍÈÅ ÄÈÑÏÅÒ×ÅÐÀ: " + message);
 		}
 		_messagesToShow.clear();
+	} else if (ui.stackedWidget->currentWidget()->objectName() == "settingsPage4"
+		&& ui.settingsTabWidget->currentWidget()->objectName() == "regionsSettingsTab4") {
+		// Âêëàäêà ðàéîíû
+		backend->sendEvent(hello_TaxiEvent_GET_TAXI_COUNT);
 	}
 }
 
@@ -476,14 +481,15 @@ void IndigoTaxi::processAskRegionReply(hello var)
 void IndigoTaxi::abortOrder(int order_id)
 {
 	if (iTaxiOrder->getOrderId() == order_id) {
+		QString address = iTaxiOrder->address();
 		voiceLady->sayPhrase("ORDERABORT");
-		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() + " ÎÒÌÅÍ¨Í ÄÈÑÏÅÒ×ÅÐÎÌ");
+		
 		saveOrderHistory(iTaxiOrder, ITaxiOrder::ABORT_DISPATCHER);
-		backend->sendOrderEvent(hello_TaxiEvent_ABORT_ORDER, iTaxiOrder); // ÷òîáû öâåò ñìåíèëñÿ
+		//backend->sendOrderEvent(hello_TaxiEvent_ABORT_ORDER, iTaxiOrder); // ÷òîáû öâåò ñìåíèëñÿ
+		
 		destroyCurrentOrder();
+		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + address + " ÎÒÌÅÍ¨Í ÄÈÑÏÅÒ×ÅÐÎÌ");
 		ui.stackedWidget->setCurrentWidget(ui.standByPage1);
-		orderReceiveTimer->stop();
-		clearMessageClick();
 	}
 }
 	
@@ -652,8 +658,9 @@ void IndigoTaxi::paytimeClick()
 		return;
 
 #ifndef DEBUG
-	if (movementStarted)
-		return;
+	// çäåñü êàêàÿ-òî áàãóëÿ áûëà äâàæäû çà äåíü ó ÷åëîâåêà, íå ïóñêàëî çàêàç äàëüøå
+//	if (movementStarted)
+//		return;
 #endif
 		
 	iTaxiOrder->stopOrder();
@@ -1015,7 +1022,9 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id, QString address)
 
 void IndigoTaxi::destroyCurrentOrder()
 {
-	if (iTaxiOrder != NULL) {
+	if (iTaxiOrder != NULL) {		
+		orderReceiveTimer->stop();
+		
 		disconnect(iTaxiOrder, 0, 0, 0);
 		disconnect(backend, 0, iTaxiOrder, 0);
 		//delete iTaxiOrder;
@@ -1027,6 +1036,8 @@ void IndigoTaxi::destroyCurrentOrder()
 
 		lastTaxiOrder = iTaxiOrder;
 		iTaxiOrder = NULL;
+
+		clearMessageClick();
 
 		enableWidget(ui.moveToClientButton, false);
 		enableWidget(ui.inPlaceButton, false);

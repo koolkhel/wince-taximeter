@@ -431,7 +431,7 @@ QPushButton {
        <item>
         <widget class="QLabel" name="taxiRegionOrdinalNumberLabel">
          <property name="text">
-          <string>1</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -481,7 +481,7 @@ QPushButton {
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
