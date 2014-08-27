@@ -149,6 +149,9 @@ message TaxiOrder {
   // сумма по межгороду
   optional int32 money_mg = 16 [ default = 0];
   
+  optional float distance_overload_travelled = 17 [ default = 0.0 ];
+  optional float distance_mg_overload_travelled = 18 [ default = 0.0 ];
+  
   // потом сюда пойдёт перегруз, всякие стоянки и т.д.
 }
 

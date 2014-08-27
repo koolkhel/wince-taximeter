@@ -998,7 +998,11 @@ TaxiRatePeriod IndigoTaxi::getCurrentTaxiRatePeriod() {
 // новый заказ, с номером или без
 ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id, QString address) 
 {
-	ITaxiOrder *iTaxiOrder = new ITaxiOrder(order_id, getCurrentTaxiRatePeriod(), 
+	if (iTaxiOrder != NULL) {
+		destroyCurrentOrder();
+	}
+	
+	iTaxiOrder = new ITaxiOrder(order_id, getCurrentTaxiRatePeriod(), 
 		currentParkingCost, currentParkingId, this);
 
 	iTaxiOrder->setMg(taxiRates.mg());
@@ -1025,26 +1029,29 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id, QString address)
 
 void IndigoTaxi::destroyCurrentOrder()
 {
-	if (iTaxiOrder != NULL) {		
-		orderReceiveTimer->stop();
-		
-		disconnect(iTaxiOrder, 0, 0, 0);
-		disconnect(backend, 0, iTaxiOrder, 0);
-		//delete iTaxiOrder;
-		if (lastTaxiOrder != NULL)
-		{
-			delete lastTaxiOrder;
-			lastTaxiOrder = NULL;
-		}
+	if (iTaxiOrder == NULL)
+		return;
 
-		lastTaxiOrder = iTaxiOrder;
-		iTaxiOrder = NULL;
+	orderReceiveTimer->stop();
 
-		clearMessageClick();
-
-		enableWidget(ui.moveToClientButton, false);
-		enableWidget(ui.inPlaceButton, false);
+	disconnect(iTaxiOrder, 0, 0, 0);
+	disconnect(backend, 0, iTaxiOrder, 0);
+	//delete iTaxiOrder;
+	if (lastTaxiOrder != NULL)
+	{
+		delete lastTaxiOrder;
+		lastTaxiOrder = NULL;
 	}
+
+	lastTaxiOrder = iTaxiOrder;
+	iTaxiOrder = NULL;
+
+	clearMessageClick();
+
+	enableWidget(ui.moveToClientButton, false);
+	enableWidget(ui.inPlaceButton, false);
+
+	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
 }
 
 void IndigoTaxi::orderReceiveTimerTimeout()

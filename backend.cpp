@@ -227,6 +227,8 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 			pbOrder->set_client_stops_seconds(order->secondsClientStops());
 			pbOrder->set_money_city(order->moneyCity());
 			pbOrder->set_money_mg(order->moneyMg());
+			pbOrder->set_distance_overload_travelled(order->cityMileageOverload());
+			pbOrder->set_distance_mg_overload_travelled(order->outOfCityMileageOverload());
 			break;
 		case hello_TaxiEvent_CLIENT_IN_PLACE:
 		case hello_TaxiEvent_START_CLIENT_MOVE:
