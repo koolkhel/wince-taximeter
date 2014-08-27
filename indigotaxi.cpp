@@ -49,7 +49,6 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	settingsIniFile->endGroup();
 	backend->setDriverName(driverName);
 	backend->sendEvent(hello_TaxiEvent_GET_INFO);
-	
 
 	//ui.versionLabel->setText(version);
 
@@ -121,6 +120,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	ui.messageHistoryTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	ui.messageHistoryTable->verticalHeader()->setVisible(false);
+
+	backend->reconnect();
 }
 		
 IndigoTaxi::~IndigoTaxi()
@@ -461,6 +462,8 @@ void IndigoTaxi::processAskRegionReply(hello var)
 	QString data = QString::fromUtf8(var.taxiregioninfo().region_data().c_str());
 	QStringList rows = data.split(";");
 	
+	qDebug() << "region row count" << rows.count();
+	
 	for (int i = 0; i < rows.count(); i++) {
 		QStringList parts = rows[i].split("/");
 
@@ -480,7 +483,7 @@ void IndigoTaxi::processAskRegionReply(hello var)
 
 void IndigoTaxi::abortOrder(int order_id)
 {
-	if (iTaxiOrder->getOrderId() == order_id) {
+	if (iTaxiOrder != NULL && iTaxiOrder->getOrderId() == order_id) {
 		QString address = iTaxiOrder->address();
 		voiceLady->sayPhrase("ORDERABORT");
 		
