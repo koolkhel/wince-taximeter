@@ -62,13 +62,12 @@ taxiId(4)
 	connect(gpsTimer, SIGNAL(timeout()), SLOT(sendLocationData()));
 	gpsTimer->start();
 		
-	reconnect();
 }
 
 Backend::~Backend()
 {
-
 }
+
 
 void Backend::setDriverName(int _driverName) {
 	driverName = _driverName;
