@@ -415,7 +415,7 @@ void Backend::detectStartStop(int speed)
 	static int startThreshold = 0;
 	static int stopThreshold = 0;
 	
-	if (speed > 5) {
+	if (speed >= 10) {
 		if (startThreshold >= 3) {			
 			emit movementStart(1);
 		} else {
