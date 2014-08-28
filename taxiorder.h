@@ -88,6 +88,8 @@ signals:
 	void newTimeClientStops(int seconds);
 	void newTimeTotal(int seconds);
 
+	void movementStartFiltered(bool);
+
 public slots:
 	void recalcSum();
 	void newPosition(QGeoCoordinate);

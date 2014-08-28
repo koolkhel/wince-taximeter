@@ -9,6 +9,7 @@
 <file alias="OVERLOADOFF">Resources/voice/OVERLOADOFF.wav</file>
 <file alias="CLIENTSTOP">Resources/voice/CLIENTSTOP.wav</file>
 <file alias="CLIENTSTOPOFF">Resources/voice/CLIENTSTOPOFF.wav</file>
+<file alias="STOP">Resources/voice/STOP.wav</file>
 <file alias="BYE">Resources/voice/BYE.wav</file>
 <file alias="COSTANNOUNCE">Resources/voice/COSTANNOUNCE.wav</file>
 <file alias="FARAWAYON">Resources/voice/FARAWAYON.wav</file>

@@ -56,7 +56,10 @@ void ITaxiOrder::measureTimes()
 		return;
 
 	
-
+	if (movementStarted) {
+		seconds_moving++;
+	}
+#if 0
 	if (!movementStarted && !_clientStop) {
 		// остановка считается, если больше 30 секунд
 		if (current_stop_seconds < 30) {
@@ -68,10 +71,20 @@ void ITaxiOrder::measureTimes()
 		current_stop_seconds = 0;
 		seconds_moving++;
 	}
+#endif
 
-	if (_clientStop)
+	// новые совмещённые остановки
+	if (_clientStop && !movementStarted)	
 	{
-		seconds_client_stops++;
+		if (current_stop_seconds < 30) {
+			current_stop_seconds++;
+		} else {
+			emit movementStartFiltered(false);
+			seconds_client_stops++;
+		}
+		
+	} else {
+		current_stop_seconds = 0;
 	}
 
 	emit newTimeMovement(seconds_moving);
@@ -115,17 +128,17 @@ double ITaxiOrder::moneyMg()
 int ITaxiOrder::calculateSum()
 {
 	// подача машины -- с платной стоянки
-	double car_in = getCarIn();;
+	double car_in = getCarIn();
 		
 	// остановки по просьбе клиента
 	double client_stops = minutesClientStops() * taxiRate.client_stop();
 
 	// пробки
-	double stops = taxiRate.car_min() * 0.5 * minutesStops();
+	// double stops = taxiRate.car_min() * 0.5 * minutesStops();
 
 	double value = car_in 
 		+ moneyCity() + moneyMg()
-		+ stops + client_stops;
+		+ client_stops;
 	
 	// округляем рубли к ближайшему
 	return ((int)((value + 0.5) * 10.0)) / 10;

@@ -12,14 +12,15 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.016";
+static const char *version = "0.1.017";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags), iTaxiOrder(NULL), lastTaxiOrder(NULL), 
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
-	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0)
+	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0),
+	_stop_sound_played(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -245,9 +246,8 @@ void IndigoTaxi::startClientMove()
 
 	float stopsTaxiRate = (floor((iTaxiOrder->orderTaxiRate().car_min() / 2.0) * 10)) / 10.0;
 	float clientStopsTaxiRate = (floor((iTaxiOrder->orderTaxiRate().client_stop()) * 10)) / 10.0;
-	ui.stopsTaxiRateLabel->setText(QString("%1/%2")
-		.arg(clientStopsTaxiRate, 0, 'f', 1)
-		.arg(stopsTaxiRate, 0, 'f', 1));
+	ui.stopsTaxiRateLabel->setText(QString("%1")
+		.arg(clientStopsTaxiRate, 0, 'f', 1));
 
 	float kmTaxiRate = iTaxiOrder->orderTaxiRate().km_g();
 	float kmgTaxiRate = iTaxiOrder->mgRate();
@@ -678,9 +678,8 @@ void IndigoTaxi::paytimeClick()
 		.arg(iTaxiOrder->cityMileageOverload(), 0, 'f', 1)
 		.arg(iTaxiOrder->outOfCityMileageOverload(), 0, 'f', 1));
 	
-	ui.finalStopsTimeLabel->setText(QString("%1/%2")
-		.arg(iTaxiOrder->minutesClientStops())
-		.arg(iTaxiOrder->minutesStops()));
+	ui.finalStopsTimeLabel->setText(QString("%1")
+		.arg(iTaxiOrder->minutesClientStops()));
 	ui.finalTotalTimeTravelledLabel->setText(QString("%1").arg(iTaxiOrder->minutesTotal()));
 
 	voiceLady->speakMoney(payment);
@@ -704,10 +703,7 @@ void IndigoTaxi::freeButtonClick()
 
 	ui.trainCrossButton->setChecked(false);
 	enableWidget(ui.trainCrossButton, true);
-	
-	ui.clientStopButton->setChecked(false);
-	enableWidget(ui.clientStopButton, true);
-	
+		
 	ui.overloadButton->setChecked(false);
 	enableWidget(ui.overloadButton, true);
 
@@ -1014,6 +1010,8 @@ ITaxiOrder *IndigoTaxi::createTaxiOrder(int order_id, QString address)
 	connect(iTaxiOrder, SIGNAL(newTimeMovement(int)), SLOT(newTimeMovement(int)));
 	connect(iTaxiOrder, SIGNAL(newTimeClientStops(int)), SLOT(newTimeClientStops(int)));
 
+	connect(iTaxiOrder, SIGNAL(movementStartFiltered(bool)), SLOT(movementStartFiltered(bool)));
+
 	connect(this, SIGNAL(orderMovementStart(int)), iTaxiOrder, SLOT(movementStart(int)));
 
 	iTaxiOrder->recalcSum();
@@ -1127,8 +1125,8 @@ void IndigoTaxi::newTimeStops(int _seconds)
 	int minutes = (_seconds % 3600) / 60;
 	int seconds = _seconds % 60;	
 	
-	ui.timeStopsLabel->setText(QString("%1:%2:%3")
-		.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
+	//ui.timeStopsLabel->setText(QString("%1:%2:%3")
+	//	.arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
 }
 
 void IndigoTaxi::newTimeClientStops(int _seconds)
@@ -1180,45 +1178,62 @@ void IndigoTaxi::clientStopClicked(bool on)
 			//	iTaxiOrder->startOrder();
 			//}
 			voiceLady->sayPhrase("CLIENTSTOP");
-			ui.clientStopButton->setEnabled(false);
+			//ui.clientStopButton->setEnabled(false);
 		}
+	}
+}
+
+// 30 секунд отфильтровано в заказе
+void IndigoTaxi::movementStartFiltered(bool started)
+{
+	if (!started && !_stop_sound_played) {
+		voiceLady->sayPhrase("STOP");
+		_stop_sound_played = true;
 	}
 }
 
 void IndigoTaxi::movementStart(int start)
 {
 	qDebug() << (start ? "movement START" : "movement STOP");
-	
+
 	emit orderMovementStart(start);
 	movementStarted = start == 1;
 
+	if (iTaxiOrder == NULL) {
+		return;
+	}
+
 	if (movementStarted) {
-		if (iTaxiOrder != NULL) {
-			// счёт начинается только, если поехали
+		voiceLady->sayPhrase("ORDERGO");
+		iTaxiOrder->setClientStop(false);
+		// счёт начинается только, если поехали
 #if 0
-			if (!iTaxiOrder->isStarted()) {
-				iTaxiOrder->startOrder();
-			}
-#endif
-			// выключаем переезд
-			if (iTaxiOrder->isTrainCross()) {
-				iTaxiOrder->setTrainCross(false);
-
-				voiceLady->sayPhrase("TRAINCROSSOFF");
-				
-				ui.trainCrossButton->setChecked(false);
-				enableWidget(ui.trainCrossButton, true);
-			}
-			
-			// выключаем остановку по просьбе клиента
-			if (iTaxiOrder->isClientStop()) {
-				iTaxiOrder->setClientStop(false);
-				voiceLady->sayPhrase("CLIENTSTOPOFF");
-
-				ui.clientStopButton->setChecked(false);
-				enableWidget(ui.clientStopButton, true);
-			}
+		if (!iTaxiOrder->isStarted()) {
+			iTaxiOrder->startOrder();
 		}
+#endif
+		// выключаем переезд
+		if (iTaxiOrder->isTrainCross()) {
+			iTaxiOrder->setTrainCross(false);
+
+			voiceLady->sayPhrase("TRAINCROSSOFF");
+
+			ui.trainCrossButton->setChecked(false);
+			enableWidget(ui.trainCrossButton, true);
+		}
+
+#if 0
+		// выключаем остановку по просьбе клиента
+		if (iTaxiOrder->isClientStop()) {
+			iTaxiOrder->setClientStop(false);
+			voiceLady->sayPhrase("CLIENTSTOPOFF");
+
+			//ui.clientStopButton->setChecked(false);
+			//enableWidget(ui.clientStopButton, true);
+		}
+#endif
+	} else { // if (movementStarted)
+		iTaxiOrder->setClientStop(true);
 	}
 }
 

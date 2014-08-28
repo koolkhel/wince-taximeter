@@ -415,14 +415,18 @@ void Backend::detectStartStop(int speed)
 	static int startThreshold = 0;
 	static int stopThreshold = 0;
 	
+	// скорость больше 10 кмч
 	if (speed >= 10) {
+		// 3 соседние отсчёта GPS
 		if (startThreshold >= 3) {			
 			emit movementStart(1);
 		} else {
 			startThreshold++;
 		}
 		stopThreshold = 0;
+	// скорость меньше 10 кмч
 	} else {
+		// соседние три отсчёта
 		if (stopThreshold >= 3) {
 			emit movementStart(0);
 		} else {			

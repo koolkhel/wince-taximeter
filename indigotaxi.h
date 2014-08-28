@@ -89,6 +89,8 @@ public slots:
 	void newTimeTotal(int _seconds);
 	void newTimeClientStops(int _seconds);
 
+	void movementStartFiltered(bool);
+
 	// page 3
 	void freeButtonClick();
 	void resumeVoyageClick();
@@ -248,6 +250,8 @@ private:
 	bool _updatePerformed;
 
 	int _intercity;
+
+	bool _stop_sound_played;
 
 	QStringList _messagesToShow;
 
