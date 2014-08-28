@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.015";
+static const char *version = "0.1.016";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -580,8 +580,6 @@ void IndigoTaxi::updateTaxiRates()
 void IndigoTaxi::updateTaxiRegionList()
 {
 	// òîëüêî çäåñü ìû óâåðåíû, ÷òî ñìåíà, íàêîíåö, íà÷àëàñü
-	enableWidget(ui.startClientMoveButton, true);
-
 	ui.regionList->clear();
 	ui.regionListSettingsWidget->clear();
 	for (int i = 0; i < taxiRegionList.regions_size(); i++) {
@@ -1063,10 +1061,10 @@ void IndigoTaxi::orderReceiveTimerTimeout()
 		voiceLady->sayPhrase("ORDERABORT");
 		backend->sendOrderEvent(hello_TaxiEvent_NOT_ANSWER, iTaxiOrder);
 		saveOrderHistory(iTaxiOrder, ITaxiOrder::ABORT_TIMEOUT);
-		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() +  " ÎÒÌÅÍ¨Í ÏÎ ÏÐÈ×ÈÍÅ ÎÒÑÓÒÑÒÂÈß ÎÒÂÅÒÀ ÂÎÄÈÒÅËß ÍÀ ÇÀÏÐÎÑ ÄÈÑÏÅÒ×ÅÐÀ");		
 		destroyCurrentOrder();
 		clearMessageClick();
 		orderReceiveTimer->stop();
+		infoDialog->info("ÇÀÊÀÇ ÍÀ ÀÄÐÅÑ " + iTaxiOrder->address() +  " ÎÒÌÅÍ¨Í ÏÎ ÏÐÈ×ÈÍÅ ÎÒÑÓÒÑÒÂÈß ÎÒÂÅÒÀ ÂÎÄÈÒÅËß ÍÀ ÇÀÏÐÎÑ ÄÈÑÏÅÒ×ÅÐÀ");		
 	}
 }
 
@@ -1078,8 +1076,10 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 	if (iTaxiOrder != NULL && iTaxiOrder->getOrderId() == NO_ORDER_ID) {
 		iTaxiOrder->setOrderId(taxiOrder.order_id());
 		// ÷òî-òî åù¸ îòïðàâèòü
+	} else if (iTaxiOrder != NULL) {
+		return;
 	} else {
-		destroyCurrentOrder();
+		//destroyCurrentOrder();
 
 		iTaxiOrder = createTaxiOrder(taxiOrder.order_id(), QString::fromUtf8(taxiOrder.address().c_str()));
 		voiceLady->alarm();
