@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.018";
+static const char *version = "0.1.019";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -570,9 +570,8 @@ void IndigoTaxi::updateTaxiRates()
 	
 	float clientStopsTaxiRate = (floor((period.client_stop()) * 10)) / 10.0;
 	float stopsTaxiRate = (floor((period.car_min() * 0.5) * 10)) / 10.0;
-	ui.client_stop_label->setText(QString("%1/%2 руб.")
-		.arg(clientStopsTaxiRate, 0, 'f', 1)
-		.arg(stopsTaxiRate, 0, 'f', 1));
+	ui.client_stop_label->setText(QString("%1 руб.")
+		.arg(clientStopsTaxiRate, 0, 'f', 1));
 
 	// километраж
 	ui.taxiRateTableWidget->setItem(0, 2, new QTableWidgetItem(QString("%1/%2").arg(period.km_g(), 0, 'f', 1).arg(taxiRates.mg(), 0, 'f', 1)));
