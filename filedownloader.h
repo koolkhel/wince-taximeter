@@ -16,6 +16,8 @@ public:
     virtual ~FileDownloader();
  
     QByteArray downloadedData() const;
+
+	void abort();
  
 signals:
         void downloaded();

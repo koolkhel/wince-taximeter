@@ -25,6 +25,8 @@
 
 #include "drivernumberdialog.h"
 
+#include "downloadmanager.h"
+
 class IndigoTaxi : public QMainWindow
 {
 	Q_OBJECT
@@ -56,10 +58,11 @@ public slots:
 	void updatesCheckVersionString();
 	void newVersionDownloaded();
 
-	void downloadProgress(qint64, qint64);
+	void downloadProgress(int);
 	
 	void updatesDownloadTipVersionString();
 	void updateTime();
+	void updateDownloadTimeout();
 
 	void connectedTimerTimeout();
 
@@ -226,8 +229,6 @@ private:
 	QTimer *orderReceiveTimer;
 	int orderReceiveCounter;
 
-	QTimer *updateStartTimer;
-
 	QTimer *connectedTimer;
 
 	QList<ITaxiOrder *> ordersHistory;
@@ -252,10 +253,15 @@ private:
 	int _intercity;
 
 	bool _stop_sound_played;
+	bool _start_sound_played;
 
 	QStringList _messagesToShow;
 
 	QTime updateStartTime;
+	QTimer *updateStartTimer;
+	QTimer *updateDownloadTimeoutTimer;
+
+	DownloadManager *downloadManager;
 };
 
 #endif // INDIGOTAXI_H

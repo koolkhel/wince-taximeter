@@ -20,7 +20,17 @@ FileDownloader::FileDownloader(QUrl imageUrl, QObject *parent) :
  
 FileDownloader::~FileDownloader()
 {
- 
+}
+
+void FileDownloader::abort()
+{
+	qDebug() << "FileDownloader::abort";
+	if (reply != NULL) {
+		//disconnect(reply, 0, 0, 0);
+		reply->abort();
+		delete reply;
+		reply = NULL;
+	}
 }
 
 void FileDownloader::downloadError(QNetworkReply::NetworkError error)
