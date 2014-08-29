@@ -578,7 +578,7 @@ void IndigoTaxi::updateTaxiRates()
 	// подача машины
 	ui.taxiRateTableWidget->setItem(1, 2, new QTableWidgetItem(QString("%1").arg(period.car_in(), 0, 'f', 1)));
 	// остановки по просьбе клиента
-	ui.taxiRateTableWidget->setItem(2, 2, new QTableWidgetItem(QString("%1").arg(5.0, 0, 'f', 1)));
+	ui.taxiRateTableWidget->setItem(2, 2, new QTableWidgetItem(QString("%1").arg(clientStopsTaxiRate, 0, 'f', 1)));
 	// пробки
 	ui.taxiRateTableWidget->setItem(4, 2, new QTableWidgetItem(QString("%1").arg(period.car_min() * 0.5	, 0, 'f', 1)));
 }
