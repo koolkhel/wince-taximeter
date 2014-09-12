@@ -108,9 +108,13 @@ void InputDevice::updatePosition()
 
     /*QPoint panelPos = QPoint(widgetRect.left(), widgetRect.bottom() + 2);
     panelPos = widget->mapToGlobal(panelPos);*/
+	
+	numpad->setMinimumSize((int) screenGeo.width(), (int) screenGeo.height() * 0.8);
+	numpad->setMaximumSize((int) (screenGeo.width()), (int) screenGeo.height() * 0.9);
 
     keyboard->move(QPoint((screenGeo.width()/2)-(keyGeo.width()/2),(screenGeo.height()/2)-(keyGeo.height()/2)));
-    numpad->move(QPoint((screenGeo.width()/2)-(numGeo.width()/2),(screenGeo.height()/2)-(numGeo.height()/2)));
+    numpad->move(QPoint(0, 0));
+
 
     //numpad->move(panelPos);
     //numpad->move(panelPos);

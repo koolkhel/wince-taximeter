@@ -76,7 +76,7 @@ void ITaxiOrder::measureTimes()
 	// новые совмещённые остановки
 	if (_clientStop && !movementStarted)	
 	{
-		if (current_stop_seconds < 30) {
+		if (current_stop_seconds < 15) {
 			current_stop_seconds++;
 		} else {
 			emit movementStartFiltered(false);

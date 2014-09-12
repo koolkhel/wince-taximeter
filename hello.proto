@@ -46,6 +46,7 @@ message hello
     PERSONAL_ANSWER = 30;
     TEXT_MESSAGE = 31; // текстовое сообщение, что в одну, что в другую сторону
     GET_TAXI_COUNT = 32; // количество такси по районам города
+    ASK_REGION_2 = 33; // альтернативный способ спросить район
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];
