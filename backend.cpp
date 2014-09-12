@@ -218,6 +218,9 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 				END_CLIENT_MOVE;SUMMA;SUMMA_GOROD;SUMMA_MG;TIME_TRIP;KM_GOROD;KM_TUDA;KM_OBRATNO;TIME_BAGAGE;TIME_CLIENT;TIME_DRIVER
 			*/
 			pbOrder->set_money(order->calculateSum());
+			pbOrder->set_money_city(order->calculateSum() - order->moneyMg());
+			pbOrder->set_money_mg(order->moneyMg());
+
 			pbOrder->set_parking_id(order->getParkingId());
 			pbOrder->set_seconds_baggage(0);
 			pbOrder->set_driver_stops_seconds(order->secondsTraincrossStops());
@@ -225,8 +228,6 @@ void Backend::sendOrderEvent(hello_TaxiEvent event, ITaxiOrder *order)
 			pbOrder->set_distance_mg_travelled(order->outOfCityMileage() + order->outOfCityMileageOverload());
 			pbOrder->set_seconds_travelled(order->secondsTotal());
 			pbOrder->set_client_stops_seconds(order->secondsClientStops());
-			pbOrder->set_money_city(order->moneyCity());
-			pbOrder->set_money_mg(order->moneyMg());
 			pbOrder->set_distance_overload_travelled(order->cityMileageOverload());
 			pbOrder->set_distance_mg_overload_travelled(order->outOfCityMileageOverload());
 			break;
