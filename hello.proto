@@ -47,33 +47,28 @@ message hello
     TEXT_MESSAGE = 31; // текстовое сообщение, что в одну, что в другую сторону
     GET_TAXI_COUNT = 32; // количество такси по районам города
     ASK_REGION_2 = 33; // альтернативный способ спросить район
+    GET_DRIVER_ORDER = 34; // порядковый номер по району
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];
-
 	optional float latitude = 4;
-
 	optional float longitude = 5;
-
-	optional int32 speed_kmh = 6     [default=0];
-
+	optional int32 speed_kmh = 6     [default = 0];
 	optional int32 taxiid = 7        [default = 0]; 
-
   // от сервера к устройству список тарифов
   optional TaxiRateAll taxiRate = 8;
-  
   // от сервера к устройству список районов
   optional TaxiRegionList taxiRegionList = 9;
-  
   optional TaxiOrder taxiOrder = 10;
-  
   optional TaxiInfo taxiInfo = 11;
-  
   optional TaxiRegionInfo taxiRegionInfo = 12;
-  
   optional TaxiMessageTemplates taxiMessageTemplates = 13;
-  
   optional TaxiCount taxiCount = 14;
+  optional DriverInfo driverInfo = 15;
+}
+
+message DriverInfo {
+  optional int32 region_order = 1 [ default = 0 ];
 }
 
 message TaxiCount {

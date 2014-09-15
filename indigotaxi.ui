@@ -430,7 +430,7 @@ QPushButton {
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="taxiRegionOrdinalNumberLabel">
+        <widget class="QLabel" name="taxiDriverOrderNumberLabel">
          <property name="text">
           <string/>
          </property>

@@ -40,11 +40,14 @@ public:
 signals:
 	void reboot_application();
 	void orderMovementStart(int startStop);
+	void driverOrderUpdated(int driverOrder);
 	
 	
 public slots:
 	// 1 -- межгород, 0 -- нет
 	void intercity(int intercity);
+
+	void driverOrderUpdatedSlot(int driverOrder);
 
 	void protobuf_message(hello message);
 	void connectionStatus(bool status);
@@ -165,6 +168,8 @@ public slots:
 
 	void addMessageHistory(QString message);
 
+	void driverUpdateTimerTimeout();
+
 private slots:
 	void updateDownloadError(QString);
 
@@ -255,11 +260,15 @@ private:
 	bool _stop_sound_played;
 	bool _start_sound_played;
 
+	int _driverOrder;
+
 	QStringList _messagesToShow;
 
 	QTime updateStartTime;
 	QTimer *updateStartTimer;
 	QTimer *updateDownloadTimeoutTimer;
+
+	QTimer *_driverOrderUpdateTimer;
 
 	DownloadManager *downloadManager;
 };

@@ -20,7 +20,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
 	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0),
-	_stop_sound_played(false), _start_sound_played(false)
+	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -81,6 +81,14 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	connect(connectedTimer, SIGNAL(timeout()), SLOT(connectedTimerTimeout()));
 	connectedTimer->setInterval(5000);
 	connectedTimer->setSingleShot(true);
+
+	_driverOrderUpdateTimer = new QTimer(this);
+	connect(_driverOrderUpdateTimer, SIGNAL(timeout()), SLOT(driverUpdateTimerTimeout()));
+	_driverOrderUpdateTimer->setInterval(20000);
+	_driverOrderUpdateTimer->setSingleShot(false);
+	_driverOrderUpdateTimer->start();
+	connect(this, SIGNAL(driverOrderUpdated(int)), SLOT(driverOrderUpdatedSlot(int)));
+
 
 	voiceLady = new VoiceLady(this);
 	iSoundPlayer = new ISoundPlayer();
@@ -214,6 +222,23 @@ void IndigoTaxi::setCurrentScreenFromSettings()
 	}
 }
 
+void IndigoTaxi::driverOrderUpdatedSlot(int driverNumber)
+{
+	voiceLady->click();
+	_driverOrder = driverNumber;
+
+	if (driverNumber == 0) {
+		ui.taxiDriverOrderNumberLabel->setText("");
+	} else {
+		ui.taxiDriverOrderNumberLabel->setText(QString("[%1]").arg(driverNumber));
+	}
+}
+
+void IndigoTaxi::driverUpdateTimerTimeout()
+{
+	backend->sendEvent(hello_TaxiEvent_GET_DRIVER_ORDER);
+}
+
 void IndigoTaxi::updateTime()
 {
 	QTime time = QTime::currentTime();    
@@ -345,6 +370,14 @@ void IndigoTaxi::protobuf_message(hello message)
 	// старый способ доставки адреса
 	if (message.event() == hello_TaxiEvent_ABORT_ORDER) {
 		abortOrder(message.taxiorder().order_id());
+		return;
+	}
+
+	if (message.event() == hello_TaxiEvent_GET_DRIVER_ORDER) {
+		qDebug() << "new driver order";
+		if (message.driverinfo().region_order() != _driverOrder) {
+			emit driverOrderUpdated(message.driverinfo().region_order());
+		}
 		return;
 	}
 
