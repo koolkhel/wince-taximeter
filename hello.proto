@@ -48,6 +48,7 @@ message hello
     GET_TAXI_COUNT = 32; // количество такси по районам города
     ASK_REGION_2 = 33; // альтернативный способ спросить район
     GET_DRIVER_ORDER = 34; // порядковый номер по району
+    CHANGE_DIRECT = 35; // смена района назначения в процессе поездки (в рамках починки бага)
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];

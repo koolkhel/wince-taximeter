@@ -335,7 +335,7 @@ void IndigoTaxi::startClientMove()
 	iTaxiOrder->setRegionId(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
 	// сообщаем серверу
 	if (newDirection) {
-		backend->sendOrderEvent(hello_TaxiEvent_MOVED, iTaxiOrder);
+		backend->sendOrderEvent(hello_TaxiEvent_CHANGE_DIRECT, iTaxiOrder);
 	} else {
 		if (iTaxiOrder->getOrderId() == NO_ORDER_ID) {
 			backend->sendOrderEvent(hello_TaxiEvent_CLIENT_IN_PLACE, iTaxiOrder);
