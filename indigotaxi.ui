@@ -1077,7 +1077,7 @@ QPushButton {
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_15" stretch="1,1,1">
+         <layout class="QVBoxLayout" name="verticalLayout_15" stretch="3,1,1">
           <property name="spacing">
            <number>0</number>
           </property>
