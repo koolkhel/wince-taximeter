@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.022";
+static const char *version = "0.1.023";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -1286,12 +1286,7 @@ void IndigoTaxi::movementStart(int start)
 		}
 		
 		iTaxiOrder->setClientStop(false);
-		// счёт начинается только, если поехали
-#if 0
-		if (!iTaxiOrder->isStarted()) {
-			iTaxiOrder->startOrder();
-		}
-#endif
+
 		// выключаем переезд
 		if (iTaxiOrder->isTrainCross()) {
 			iTaxiOrder->setTrainCross(false);
@@ -1310,14 +1305,14 @@ void IndigoTaxi::movementStart(int start)
 // нажат переезд, отжимается он сам
 void IndigoTaxi::trainCrossButtonClicked()
 {
-	if (!movementStarted) {
+	//if (!movementStarted) {
 		voiceLady->sayPhrase("TRAINCROSS");
 		ui.trainCrossButton->setEnabled(false);
 		if (iTaxiOrder != NULL)
 		{
 			iTaxiOrder->setTrainCross(true);
 		}
-	}
+	//}
 }
 
 void IndigoTaxi::overloadButtonClicked(bool on)

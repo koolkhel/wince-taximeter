@@ -1082,7 +1082,7 @@ QPushButton {
            <number>0</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="0,5,2">
+           <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="2,5,2">
             <property name="spacing">
              <number>5</number>
             </property>
@@ -1095,7 +1095,7 @@ QPushButton {
                </sizepolicy>
               </property>
               <property name="text">
-               <string>ПОЗЫВНОЙ:
+               <string>ПОЗЫВНОЙ
 500</string>
               </property>
              </widget>
@@ -1355,7 +1355,7 @@ QPushButton {
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_4" rowstretch="1,1,1,1,1,0" columnstretch="2,1,1,4">
+         <layout class="QGridLayout" name="gridLayout_4" rowstretch="1,1,1,1,1,1" columnstretch="2,1,1,4">
           <property name="leftMargin">
            <number>5</number>
           </property>
