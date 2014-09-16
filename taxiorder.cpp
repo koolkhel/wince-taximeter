@@ -59,32 +59,13 @@ void ITaxiOrder::measureTimes()
 	if (movementStarted) {
 		seconds_moving++;
 	}
-#if 0
-	if (!movementStarted && !_clientStop) {
-		// остановка считается, если больше 30 секунд
-		if (current_stop_seconds < 30) {
-			current_stop_seconds++;
-		} else {
-			seconds_stops++;
-		}
-	} else {
-		current_stop_seconds = 0;
-		seconds_moving++;
-	}
-#endif
 
 	// новые совмещённые остановки
 	if (_clientStop && !movementStarted)	
 	{
-		if (current_stop_seconds < 15) {
-			current_stop_seconds++;
-		} else {
-			emit movementStartFiltered(false);
-			seconds_client_stops++;
-		}
-		
-	} else {
-		current_stop_seconds = 0;
+		// тут была фильтрация по времени
+		emit movementStartFiltered(false);
+		seconds_client_stops++;
 	}
 
 	emit newTimeMovement(seconds_moving);

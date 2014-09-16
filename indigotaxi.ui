@@ -1881,7 +1881,7 @@ QPushButton {
                <number>0</number>
               </property>
               <widget class="QWidget" name="driverCabinetPage1">
-               <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1,1,1,0" columnstretch="1,2,2">
+               <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1,1,1" columnstretch="1,2,2">
                 <property name="margin">
                  <number>0</number>
                 </property>

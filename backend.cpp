@@ -412,7 +412,7 @@ void Backend::sendLocationData()
 
 void Backend::detectStartStop(int speed)
 {
-	if (speed > 10) {
+	if (speed >= 20) {
 		emit movementStart(1);
 	} else if (speed == 0) {
 		emit movementStart(0);		

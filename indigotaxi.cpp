@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.021";
+static const char *version = "0.1.022";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -285,7 +285,7 @@ void IndigoTaxi::driverRegionSelectClicked()
 
 void IndigoTaxi::startClientMoveClicked()
 {
-	voiceLady->sayPhrase("ORDERGO");
+	//voiceLady->sayPhrase("ORDERGO");
 }
 
 void IndigoTaxi::startClientMove()
@@ -1251,7 +1251,7 @@ void IndigoTaxi::clientStopClicked(bool on)
 			//if (!iTaxiOrder->isStarted()) {
 			//	iTaxiOrder->startOrder();
 			//}
-			voiceLady->sayPhrase("CLIENTSTOP");
+			//voiceLady->sayPhrase("CLIENTSTOP");
 			//ui.clientStopButton->setEnabled(false);
 		}
 	}
@@ -1261,7 +1261,7 @@ void IndigoTaxi::clientStopClicked(bool on)
 void IndigoTaxi::movementStartFiltered(bool started)
 {
 	if (!started && !_stop_sound_played) {
-		voiceLady->sayPhrase("STOP");
+		//voiceLady->sayPhrase("STOP");
 		_stop_sound_played = true;
 		_start_sound_played = false;
 	}
@@ -1280,7 +1280,7 @@ void IndigoTaxi::movementStart(int start)
 
 	if (movementStarted) {
 		if (!_start_sound_played) {
-			voiceLady->sayPhrase("ORDERGO");
+			//voiceLady->sayPhrase("ORDERGO");
 			_start_sound_played = true;
 			_stop_sound_played = false;
 		}
