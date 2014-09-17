@@ -26,24 +26,7 @@
    <string>IndigoTaxi</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#regionList QScrollBar:vertical, 
-#regionListSettingsWidget QScrollBar:vertical,
-#regionDetailsList QScrollBar:vertical ,
-#messageTemplatesList QScrollBar:vertical
-{
-      width: 80px;
-}
-
-#regionList, 
-#regionListSettingsWidget, 
-#regionDetailsList,
-#messageTemplatesList
-{
-	font: 14pt &quot;Segoe UI&quot;;
-	font-weight: bold;
-}
-
-QTabBar::tab {
+   <string notr="true">QTabBar::tab {
  	height: 40px;
 	font: 10pt &quot;Segoe UI&quot;;
 	font-weight: bold; 
@@ -133,36 +116,56 @@ QTabBar::tab {
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">* {
-	background: #1d1d1d;
-	color: white;
+    <string notr="true">#regionList, 
+#regionListSettingsWidget, 
+#regionDetailsList,
+#messageTemplatesList
+{
+	font: 14pt &quot;Segoe UI&quot;;
+	font-weight: bold;
+}
+
+#regionList QScrollBar:vertical, 
+#regionListSettingsWidget QScrollBar:vertical,
+#regionDetailsList QScrollBar:vertical ,
+#messageTemplatesList QScrollBar:vertical
+{
+      width: 80px;
+}
+
+
+* {
+	background: #5BCAFF;
+	color: #2b2b2b;
 }
 
 QPushButton {
-	color: white;
+	color: #1d1d1d;
+	border: 2px solid #1d1d1d;
 }
 
 #statusRowFrame * {
-	background: black;
-	color: white;
+	background: #BDBEC2;
+	color: black;
 }
 
 #statusRowFrame {
-	background: black;
+	background: #BDBEC2;
 }
 
 #taxiRateFrame * {
-	background: black;
-	color: #b0b0b0;
+	background: #5BCAFF;
+	color: #2b2b2b;
 }
 
 #taxiRateFrame {
-	background: black;
+	background: #5BCAFF;
 	border-top: 1px solid #101010;
 }
 
 #driverNumberButton, #orderPageDriverNumberButton {
 	color: #909090;
+	border: none;
 }
 
 #acceptRegionButton {
@@ -203,24 +206,24 @@ QPushButton {
 }
 
 QTabBar::tab:selected {
-	background: #63a400;
+	background: #5856D6;
 }
 
 QTabBar::tab:!selected {
-	background: #034900;
+	background: #8E8E93;
 }
 
 /* three main buttons */
 #moveToClientButton{
-	background: #ea6b00;
+	background: #1D62F0;
 }
 
 #inPlaceButton {
-	background: #4ca2a6;
+	background: #4CD964;
 }
 
 #startClientMoveButton {
-	background: #70a400;
+	background: #FF3B30;
 }
 
 #inPlaceButton[enabled=&quot;false&quot;],
@@ -238,7 +241,7 @@ QTabBar::tab:!selected {
 
 /* ---------- order page --------------- */
 #paytimeButton {
-	background: #c23c00;
+	background: #FF1300;
 }
 
 #overloadButton {
@@ -250,7 +253,7 @@ QTabBar::tab:!selected {
 }
 
 #trainCrossButton {
-	background: #275883;
+	background: #5856D6;
 }
 
 #trainCrossButton:checked {
@@ -258,7 +261,7 @@ QTabBar::tab:!selected {
 }
 
 #directionValueButton {
-	background: #6c0144;
+	background: #4CD964;
 }
 
 /* ------------------ */
@@ -284,7 +287,7 @@ QTabBar::tab:!selected {
 /* settings pages */
 /* all settings button are cyan */
 #settingsTabWidget QPushButton {
-	background: #4ca2a6;
+	background: #4CD964;
 }
 
 #dutyStart:checked {
@@ -772,7 +775,7 @@ QTabBar::tab:!selected {
                  <bool>true</bool>
                 </property>
                 <property name="plainText">
-                 <string/>
+                 <string>HELLO WORLD</string>
                 </property>
                 <property name="textInteractionFlags">
                  <set>Qt::NoTextInteraction</set>
@@ -843,7 +846,7 @@ QTabBar::tab:!selected {
             <item>
              <widget class="QPushButton" name="moveToClientButton">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -869,7 +872,7 @@ QTabBar::tab:!selected {
             <item>
              <widget class="QPushButton" name="inPlaceButton">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -889,7 +892,7 @@ QTabBar::tab:!selected {
             <item>
              <widget class="QPushButton" name="startClientMoveButton">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -2675,6 +2678,15 @@ QPushButton[pressed=true] {
                 </item>
                 <item>
                  <widget class="QListWidget" name="regionListSettingsWidget">
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>14</pointsize>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                   <item>
                    <property name="text">
                     <string>Выбор 1</string>
@@ -2821,11 +2833,11 @@ QPushButton[pressed=true] {
          <widget class="QListWidget" name="regionList">
           <property name="font">
            <font>
-            <family>75 Segoe UI</family>
-            <pointsize>8</pointsize>
-            <weight>50</weight>
+            <family>Segoe UI</family>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
             <italic>false</italic>
-            <bold>false</bold>
+            <bold>true</bold>
            </font>
           </property>
           <item>
