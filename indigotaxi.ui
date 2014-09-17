@@ -25,18 +25,8 @@
   <property name="windowTitle">
    <string>IndigoTaxi</string>
   </property>
-  <property name="unifiedTitleAndToolBarOnMac">
-   <bool>false</bool>
-  </property>
-  <widget class="QWidget" name="centralWidget">
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">#regionList QScrollBar:vertical, 
+  <property name="styleSheet">
+   <string notr="true">#regionList QScrollBar:vertical, 
 #regionListSettingsWidget QScrollBar:vertical,
 #regionDetailsList QScrollBar:vertical ,
 #messageTemplatesList QScrollBar:vertical
@@ -53,7 +43,96 @@
 	font-weight: bold;
 }
 
-#acceptRegionButton {
+QTabBar::tab {
+ 	height: 40px;
+	font: 10pt &quot;Segoe UI&quot;;
+	font-weight: bold; 
+}
+
+
+* {
+	font: 8pt 75 &quot;Segoe UI&quot;;
+}
+
+QPushButton {
+	border: none;
+	font: 8pt &quot;Segoe UI&quot;;
+	font-weight: bold;
+}
+
+#driverNumberButton, #orderPageDriverNumberButton {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#statusRowFrame * {
+	font: 6pt &quot;Segoe UI&quot;;
+}
+
+#timeLabel {
+	font-size: 8pt;
+}
+
+#driverNumberLabel {
+	padding-top: 13px;
+	padding-right: 10px;
+	font: 6pt 75 &quot;Segoe UI&quot;;
+}
+
+#serverMessage {
+	text-align: center;
+	font: 12pt 75 &quot;Segoe UI&quot;;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 0;
+}
+
+#serverMessageLabel {
+	font: 6pt 75 &quot;Segoe UI&quot;;
+	padding-left: 11px;
+	padding-top: 5px;
+}
+
+#taxiRateFrame * {
+	padding-left: 10px;
+	font: 6pt 75 &quot;Segoe UI&quot;;
+}
+
+#taxiRateFrame {
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+/* settibns */
+
+#paymentAmountLabel {
+	font-weight: bold;
+	font: 32pt &quot;Segoe UI&quot;;
+}
+
+#finalPaymentLabel {
+	font-weight: bold;
+	font: 16pt &quot;Segoe UI&quot;;
+}
+
+#finalPaymentAmountLabel {
+	font-weight: bold;
+	font: 40pt &quot;Segoe UI&quot;;
+}
+</string>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#acceptRegionButton {
 	background: #70a400;
 }
 
@@ -67,13 +146,6 @@
 	color: #fdfdfd;
 }
 
-QTabBar::tab {
- 	height: 40px; 
-/* width: 120px; */
-	font: 10pt &quot;Segoe UI&quot;;
-	font-weight: bold; 
-}
-
 QTabBar::tab:selected {
 	background: #63a400;
 }
@@ -83,19 +155,13 @@ QTabBar::tab:!selected {
 }
 
 * {
-	font: 8pt 75 &quot;Segoe UI&quot;;
 	background: #1d1d1d;
 	color: white;
 }
 
 QPushButton {
-	border: none;
 	color: #ffffff;
-	font: 8pt &quot;Segoe UI&quot;;
-	font-weight: bold;
 }
-
-
 
 #moveToClientButton{
 	background: #ea6b00;
@@ -131,8 +197,6 @@ QPushButton {
 
 #driverNumberButton, #orderPageDriverNumberButton {
 	background: #1d1d1d;
-	padding-top: 5px;
-	padding-bottom: 5px;
 	color: #909090;
 }
 
@@ -144,55 +208,25 @@ QPushButton {
 #statusRowFrame * {
 	background: #000000;
 	color: #ffffff;
-	font: 6pt &quot;Segoe UI&quot;;
-}
-
-#timeLabel {
-	font-size: 8pt;
 }
 
 #statusRowFrame {
 	background: #000000;
 }
 
-
 #driverNumberLabel {
-	padding-top: 13px;
-	padding-right: 10px;
-	font: 6pt 75 &quot;Segoe UI&quot;;
 	color: #909090;
 }
 
-#serverMessage {
-	text-align: center;
-	font: 12pt 75 &quot;Segoe UI&quot;;
-	padding-left: 10px;
-	padding-right: 10px;
-	border: 0;
-}
-
-#serverMessageLabel {
-	font: 6pt 75 &quot;Segoe UI&quot;;
-	padding-left: 11px;
-	padding-top: 5px;
-}
-
 #taxiRateFrame * {
-	padding-left: 10px;
 	background: #000000;
 	color: #b0b0b0;
-	font: 6pt 75 &quot;Segoe UI&quot;;
 }
 
 #taxiRateFrame {
-	padding-bottom: 5px;
-	padding-top: 5px;
 	background: #000000;
 	border-top: 1px solid #101010;
 }
-
-
-/* settibns */
 
 #driverNameLineEdit {
 	background: #fdfdfd;
@@ -230,21 +264,6 @@ QPushButton {
 
 #directionValueButton {
 	background: #6c0144;
-}
-
-#paymentAmountLabel {
-	font-weight: bold;
-	font: 32pt &quot;Segoe UI&quot;;
-}
-
-#finalPaymentLabel {
-	font-weight: bold;
-	font: 16pt &quot;Segoe UI&quot;;
-}
-
-#finalPaymentAmountLabel {
-	font-weight: bold;
-	font: 40pt &quot;Segoe UI&quot;;
 }
 
 #resumeVoyageButton {
@@ -502,7 +521,7 @@ QPushButton {
          <number>0</number>
         </property>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout" stretch="2,1,1,3,6,4">
+         <layout class="QVBoxLayout" name="verticalLayout" stretch="3,1,3,5,8,7">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -718,6 +737,9 @@ QPushButton {
            <widget class="QLabel" name="serverMessageLabel">
             <property name="text">
              <string>СООБЩЕНИЕ ДИСПЕТЧЕРА</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
             </property>
            </widget>
           </item>
