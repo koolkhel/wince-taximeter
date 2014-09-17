@@ -50,11 +50,12 @@ QTabBar::tab {
 }
 
 
-* {
+#centralWidget * {
 	font: 8pt 75 &quot;Segoe UI&quot;;
 }
 
-QPushButton {
+/* all buttons of main window */
+#centralWidget QPushButton {
 	border: none;
 	font: 8pt &quot;Segoe UI&quot;;
 	font-weight: bold;
@@ -132,17 +133,72 @@ QPushButton {
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">#acceptRegionButton {
+    <string notr="true">* {
+	background: #1d1d1d;
+	color: white;
+}
+
+QPushButton {
+	color: white;
+}
+
+#statusRowFrame * {
+	background: black;
+	color: white;
+}
+
+#statusRowFrame {
+	background: black;
+}
+
+#taxiRateFrame * {
+	background: black;
+	color: #b0b0b0;
+}
+
+#taxiRateFrame {
+	background: black;
+	border-top: 1px solid #101010;
+}
+
+#driverNumberButton, #orderPageDriverNumberButton {
+	color: #909090;
+}
+
+#acceptRegionButton {
 	background: #70a400;
 }
 
-#backToStandbyButton {
+#backToStandbyButton, #menuButton,#clearButton
+ {
 	background: #fdfdfd;
 	color: #1d1d1d;
 }
 
-#backToStandbyButton:pressed, #acceptRegionButton:pressed {
+/* colored buttons */
+#moveToClientButton:pressed, 
+#inPlaceButton:pressed,
+#startClientMoveButton:pressed,
+#backToStandbyButton:pressed, 
+#acceptRegionButton:pressed,
+#menuButton:pressed, 
+#clearButton:pressed,
+#resumeVoyageButton:pressed, 
+#farawayButton:pressed, 
+#paytimeButton:pressed,
+#overloadButton:pressed, 
+#trainCrossButton:pressed,
+#settingsTabWidget QPushButton:pressed
+{
 	background: black;
+}
+
+/* white buttons */
+#backToStandbyButton:pressed, 
+#acceptRegionButton:pressed,
+#menuButton:pressed, 
+#clearButton:pressed
+ {
 	color: #fdfdfd;
 }
 
@@ -154,34 +210,17 @@ QTabBar::tab:!selected {
 	background: #034900;
 }
 
-* {
-	background: #1d1d1d;
-	color: white;
-}
-
-QPushButton {
-	color: #ffffff;
-}
-
+/* three main buttons */
 #moveToClientButton{
 	background: #ea6b00;
 }
 
-#moveToClientButton:pressed, #inPlaceButton:pressed,
-#startClientMoveButton:pressed
-{
-	background: black;
-}
-
-#menuButton:pressed, #clearButton:pressed 
-{
-	background: black;
-	color: #FDFDFD;
-}
-
-
 #inPlaceButton {
 	background: #4ca2a6;
+}
+
+#startClientMoveButton {
+	background: #70a400;
 }
 
 #inPlaceButton[enabled=&quot;false&quot;],
@@ -191,48 +230,13 @@ QPushButton {
 	color: #364c4e;
 }
 
-#startClientMoveButton {
-	background: #70a400;
-}
-
-#driverNumberButton, #orderPageDriverNumberButton {
-	background: #1d1d1d;
-	color: #909090;
-}
-
-#menuButton,#clearButton {
-	background: #fdfdfd;
-	color: #1d1d1d;
-}
-
-#statusRowFrame * {
-	background: #000000;
-	color: #ffffff;
-}
-
-#statusRowFrame {
-	background: #000000;
-}
+/* --------------------- */
 
 #driverNumberLabel {
 	color: #909090;
 }
 
-#taxiRateFrame * {
-	background: #000000;
-	color: #b0b0b0;
-}
-
-#taxiRateFrame {
-	background: #000000;
-	border-top: 1px solid #101010;
-}
-
-#driverNameLineEdit {
-	background: #fdfdfd;
-}
-
-/* order page */
+/* ---------- order page --------------- */
 #paytimeButton {
 	background: #c23c00;
 }
@@ -242,15 +246,6 @@ QPushButton {
 }
 
 #overloadButton:checked {
-	background: #1d1d1d;
-}
-
-
-#clientStopButton {
-	background: #724b22;
-}
-
-#clientStopButton:checked {
 	background: #1d1d1d;
 }
 
@@ -266,6 +261,10 @@ QPushButton {
 	background: #6c0144;
 }
 
+/* ------------------ */
+
+/* --------------- paytime page ------------- */
+
 #resumeVoyageButton {
 	background: #ea6b00;
 }
@@ -278,31 +277,21 @@ QPushButton {
 #freeButton:pressed {
 	color: #fdfdfd;
 	background: #1d1d1d;
-	
 }
 
-#resumeVoyageButton:pressed, #farawayButton:pressed, #paytimeButton:pressed,
-#overloadButton:pressed, #trainCrossButton:pressed
-{
-	background: black;
-}
+/* ------------------------ */
 
+/* settings pages */
+/* all settings button are cyan */
 #settingsTabWidget QPushButton {
 	background: #4ca2a6;
-}
-
-#settingsTabWidget QPushButton:pressed {
-	/*background: #ff6401;*/
-	background: black;
-}
-
-#driverNameLineEdit {
-	color: black;
 }
 
 #dutyStart:checked {
 	background: #4c66b0;
 }
+
+
 </string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
@@ -2832,11 +2821,11 @@ QPushButton[pressed=true] {
          <widget class="QListWidget" name="regionList">
           <property name="font">
            <font>
-            <family>Segoe UI</family>
-            <pointsize>14</pointsize>
-            <weight>75</weight>
+            <family>75 Segoe UI</family>
+            <pointsize>8</pointsize>
+            <weight>50</weight>
             <italic>false</italic>
-            <bold>true</bold>
+            <bold>false</bold>
            </font>
           </property>
           <item>
