@@ -89,6 +89,8 @@ double ITaxiOrder::totalMileage()
 	return cityMileage() + outOfCityMileage();
 }
 
+#define ROUND_UPPER(val) (((int)((val + 0.5) * 10.0)) / 10)
+
 double ITaxiOrder::moneyCity()
 {	
 	double mileage_city_cost = cityMileage() * taxiRate.km_g();	
@@ -97,12 +99,12 @@ double ITaxiOrder::moneyCity()
 	return mileage_city_cost + mileage_city_overload_cost;
 }
 
-double ITaxiOrder::moneyMg()
+int ITaxiOrder::moneyMg()
 {
 	double mileage_out_of_city_cost = outOfCityMileage() * mgRate();
 	double mileage_out_of_city_overload_cost = outOfCityMileageOverload() * mgRate() * 1.5;
 
-	return mileage_out_of_city_cost + mileage_out_of_city_overload_cost;
+	return ROUND_UPPER(mileage_out_of_city_cost + mileage_out_of_city_overload_cost);
 }
 
 /* ============================================================= */
@@ -117,12 +119,11 @@ int ITaxiOrder::calculateSum()
 	// пробки
 	// double stops = taxiRate.car_min() * 0.5 * minutesStops();
 
-	double value = car_in 
-		+ moneyCity() + moneyMg()
-		+ client_stops;
+	int value = ROUND_UPPER(car_in + moneyCity() + client_stops) +
+				   moneyMg();
 	
 	// округляем рубли к ближайшему
-	return ((int)((value + 0.5) * 10.0)) / 10;
+	return value;
 }
 /* ============================================================= */
 

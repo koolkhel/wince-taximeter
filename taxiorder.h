@@ -46,7 +46,7 @@ public:
 
 	double moneyCity();
 
-	double moneyMg();
+	int moneyMg();
 	
 	void setOverload(bool overload) { _overload = overload; }
 	void setClientStop(bool clientStop) { _clientStop = clientStop; }
