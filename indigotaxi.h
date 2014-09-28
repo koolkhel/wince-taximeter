@@ -27,6 +27,11 @@
 
 #include "downloadmanager.h"
 
+enum IndigoColorTheme {
+	INDIGO_LIGHT_THEME = 0,
+	INDIGO_DARK_THEME = 1
+};
+
 class IndigoTaxi : public QMainWindow
 {
 	Q_OBJECT
@@ -129,6 +134,7 @@ public slots:
 	void dinnerStopClicked();
 
 	void driverNameEdited(QString newValue);
+	void switchColorsClicked();
 	void rebootSystem();
 
 	void notPayClicked();
@@ -264,6 +270,7 @@ private:
 
 	QStringList _messagesToShow;
 
+	// updates
 	QTime updateStartTime;
 	QTimer *updateStartTimer;
 	QTimer *updateDownloadTimeoutTimer;
@@ -271,6 +278,11 @@ private:
 	QTimer *_driverOrderUpdateTimer;
 
 	DownloadManager *downloadManager;
+
+	// colors
+	enum IndigoColorTheme colorTheme;
+
+	void applyColorTheme();
 };
 
 #endif // INDIGOTAXI_H

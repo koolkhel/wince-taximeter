@@ -20,7 +20,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
 	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0),
-	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0)
+	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0), colorTheme(INDIGO_LIGHT_THEME)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -170,6 +170,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	ui.messageHistoryTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	ui.messageHistoryTable->verticalHeader()->setVisible(false);
+
+	applyColorTheme();
 
 	backend->reconnect();
 }
@@ -1641,4 +1643,36 @@ void IndigoTaxi::newVersionDownloaded()
 			}
 		}
 	}
+}
+
+void IndigoTaxi::applyColorTheme()
+{
+	QString style = "";
+	switch (colorTheme) {
+		case INDIGO_LIGHT_THEME:
+			style = "#regionList,#regionListSettingsWidget,#regionDetailsList,#messageTemplatesList{font:14pt \"Segoe UI\";font-weight:bold}#regionList QScrollBar:vertical,#regionListSettingsWidget QScrollBar:vertical,#regionDetailsList QScrollBar:vertical,#messageTemplatesList QScrollBar:vertical{width:80px}*{background:white;color:#2b2b2b}QPushButton{color:#1d1d1d;border:2px solid #1d1d1d}#statusRowFrame *{background:#bdbec2;color:black}#statusRowFrame{background:#bdbec2}#taxiRateFrame *{background:white;color:#2b2b2b}#taxiRateFrame{background:white;border-top:1px solid #101010;border-bottom:1px solid black}#driverNumberButton,#orderPageDriverNumberButton{color:#909090;border:0}#acceptRegionButton{background:#70a400}#backToStandbyButton,#menuButton,#clearButton{background:#fdfdfd;color:#1d1d1d}#moveToClientButton:pressed,#inPlaceButton:pressed,#startClientMoveButton:pressed,#backToStandbyButton:pressed,#acceptRegionButton:pressed,#menuButton:pressed,#clearButton:pressed,#resumeVoyageButton:pressed,#farawayButton:pressed,#paytimeButton:pressed,#overloadButton:pressed,#trainCrossButton:pressed,#settingsTabWidget QPushButton:pressed{background:black}#backToStandbyButton:pressed,#acceptRegionButton:pressed,#menuButton:pressed,#clearButton:pressed{color:#fdfdfd}QTabBar::tab:selected{background:#5bcaff}QTabBar::tab:!selected{background:#dbddde;border:1px solid black}#moveToClientButton{background:#5bcaff}#inPlaceButton{background:#4cd964}#startClientMoveButton{background:#ff3b30}#inPlaceButton[enabled=\"false\"],#moveToClientButton[enabled=\"false\"],#startClientMoveButton[enabled=\"false\"]{background:#dbddde;color:#364c4e}#driverNumberLabel{color:#909090}#paytimeButton{background:#ff1300}#overloadButton{background:#8e8e93}#overloadButton:checked{background:#1d1d1d}#trainCrossButton{background:#5bcaff}#trainCrossButton:checked{background:#1d1d1d}#directionValueButton{background:#4cd964}#resumeVoyageButton{background:#ea6b00}#freeButton{background:#fdfdfd;color:#1d1d1d}#freeButton:pressed{color:#fdfdfd;background:#1d1d1d}#settingsTabWidget QPushButton{background:#4cd964}#dutyStart:checked{background:#4c66b0}";
+			ui.centralWidget->setStyleSheet(style);
+			break;
+		case INDIGO_DARK_THEME:
+			style = "#regionList,#regionListSettingsWidget,#regionDetailsList,#messageTemplatesList{font:14pt \"Segoe UI\";font-weight:bold}#regionList QScrollBar:vertical,#regionListSettingsWidget QScrollBar:vertical,#regionDetailsList QScrollBar:vertical,#messageTemplatesList QScrollBar:vertical{width:80px}*{background:#1d1d1d;color:white}QPushButton{color:white}#statusRowFrame *{background:black;color:white}#statusRowFrame{background:black}#taxiRateFrame *{background:black;color:#b0b0b0}#taxiRateFrame{background:black;border-top:1px solid #101010}#driverNumberButton,#orderPageDriverNumberButton{color:#909090}#acceptRegionButton{background:#70a400}#backToStandbyButton,#menuButton,#clearButton{background:#fdfdfd;color:#1d1d1d}#moveToClientButton:pressed,#inPlaceButton:pressed,#startClientMoveButton:pressed,#backToStandbyButton:pressed,#acceptRegionButton:pressed,#menuButton:pressed,#clearButton:pressed,#resumeVoyageButton:pressed,#farawayButton:pressed,#paytimeButton:pressed,#overloadButton:pressed,#trainCrossButton:pressed,#settingsTabWidget QPushButton:pressed{background:black}#backToStandbyButton:pressed,#acceptRegionButton:pressed,#menuButton:pressed,#clearButton:pressed{color:#fdfdfd}QTabBar::tab:selected{background:#63a400}QTabBar::tab:!selected{background:#034900}#moveToClientButton{background:#ea6b00}#inPlaceButton{background:#4ca2a6}#startClientMoveButton{background:#70a400}#inPlaceButton[enabled=\"false\"],#moveToClientButton[enabled=\"false\"],#startClientMoveButton[enabled=\"false\"]{background:#426063;color:#364c4e}#driverNumberLabel{color:#909090}#paytimeButton{background:#c23c00}#overloadButton{background:#4c66b0}#overloadButton:checked{background:#1d1d1d}#trainCrossButton{background:#275883}#trainCrossButton:checked{background:#1d1d1d}#directionValueButton{background:#6c0144}#resumeVoyageButton{background:#ea6b00}#freeButton{background:#fdfdfd;color:#1d1d1d}#freeButton:pressed{color:#fdfdfd;background:#1d1d1d}#settingsTabWidget QPushButton{background:#4ca2a6}#dutyStart:checked{background:#4c66b0}";
+			ui.centralWidget->setStyleSheet(style);
+			break;
+		default:
+			break;
+	}
+}
+
+void IndigoTaxi::switchColorsClicked()
+{
+	switch (colorTheme) {
+		case INDIGO_LIGHT_THEME:
+			colorTheme = INDIGO_DARK_THEME;
+			break;
+		case INDIGO_DARK_THEME:
+			colorTheme = INDIGO_LIGHT_THEME;
+			break;
+		default:
+			break;
+	}
+	applyColorTheme();
 }
