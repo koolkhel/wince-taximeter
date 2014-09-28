@@ -374,7 +374,7 @@ void IndigoTaxi::protobuf_message(hello message)
 	}
 
 	if (message.event() == hello_TaxiEvent_GET_DRIVER_ORDER) {
-		qDebug() << "new driver order";
+		qDebug() << "new driver sequence number";
 		if (message.driverinfo().region_order() != _driverOrder) {
 			emit driverOrderUpdated(message.driverinfo().region_order());
 		}
