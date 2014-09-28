@@ -135,7 +135,8 @@
 
 
 * {
-	background: #5BCAFF;
+	/* background: #5BCAFF; */
+	background: white;
 	color: #2b2b2b;
 }
 
@@ -154,13 +155,20 @@ QPushButton {
 }
 
 #taxiRateFrame * {
+/*
 	background: #5BCAFF;
+*/
+	background: white;
 	color: #2b2b2b;
 }
 
 #taxiRateFrame {
+/*
 	background: #5BCAFF;
+*/
+	background: white;
 	border-top: 1px solid #101010;
+	border-bottom: 1px solid black;
 }
 
 #driverNumberButton, #orderPageDriverNumberButton {
@@ -206,16 +214,17 @@ QPushButton {
 }
 
 QTabBar::tab:selected {
-	background: #5856D6;
+	background: #5BCAFF;
 }
 
 QTabBar::tab:!selected {
-	background: #8E8E93;
+	background: #DBDDDE;
+	border: 1px solid black;
 }
 
 /* three main buttons */
 #moveToClientButton{
-	background: #1D62F0;
+	background: #5BCAFF;
 }
 
 #inPlaceButton {
@@ -229,7 +238,7 @@ QTabBar::tab:!selected {
 #inPlaceButton[enabled=&quot;false&quot;],
 #moveToClientButton[enabled=&quot;false&quot;],
 #startClientMoveButton[enabled=&quot;false&quot;] {
-	background: #426063;
+	background: #DBDDDE;
 	color: #364c4e;
 }
 
@@ -245,7 +254,7 @@ QTabBar::tab:!selected {
 }
 
 #overloadButton {
-	background: #4c66b0;
+	background: #8E8E93;
 }
 
 #overloadButton:checked {
@@ -253,7 +262,7 @@ QTabBar::tab:!selected {
 }
 
 #trainCrossButton {
-	background: #5856D6;
+	background: #5BCAFF;
 }
 
 #trainCrossButton:checked {
@@ -775,7 +784,7 @@ QTabBar::tab:!selected {
                  <bool>true</bool>
                 </property>
                 <property name="plainText">
-                 <string>HELLO WORLD</string>
+                 <string/>
                 </property>
                 <property name="textInteractionFlags">
                  <set>Qt::NoTextInteraction</set>
@@ -846,7 +855,7 @@ QTabBar::tab:!selected {
             <item>
              <widget class="QPushButton" name="moveToClientButton">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -872,7 +881,7 @@ QTabBar::tab:!selected {
             <item>
              <widget class="QPushButton" name="inPlaceButton">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -892,7 +901,7 @@ QTabBar::tab:!selected {
             <item>
              <widget class="QPushButton" name="startClientMoveButton">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
