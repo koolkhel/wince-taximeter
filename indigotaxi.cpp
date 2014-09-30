@@ -451,11 +451,14 @@ void IndigoTaxi::handleTextMessage(hello var)
 	voiceLady->sayPhrase("MESSAGERECEIVED");
 	QString message = QString::fromUtf8(var.text_string().c_str());
 	addMessageHistory(message);
+	infoDialog->info(message);
+#if 0
 	if (ui.stackedWidget->currentWidget() == ui.standByPage1) {
 		infoDialog->info(message);
 	} else {
 		_messagesToShow.append(message);
 	}
+#endif
 }
 
 void IndigoTaxi::addMessageHistory(QString message)
@@ -879,7 +882,8 @@ void IndigoTaxi::dutyButtonClicked(bool pressed)
 		if (confirmDialog->ask("Вы подтверждаете начало смены?")) {
 			backend->sendEvent(hello_TaxiEvent_ARRIVED);
 			enableDutyUI(true);
-			infoDialog->info("Смена начата!");
+			infoDialog->info("Смена начата! Выберите район");
+			ui.settingsTabWidget->setCurrentWidget(ui.regionsSettingsTab4);
 		}
 		
 	} else {
