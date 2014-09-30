@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.023";
+static const char *version = "0.1.024";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -20,7 +20,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
 	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0),
-	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0), colorTheme(INDIGO_LIGHT_THEME)
+	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0), colorTheme(INDIGO_LIGHT_THEME),
+	_changeRegionStopEvent(hello_TaxiEvent_NOTHING)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -100,9 +101,6 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	connect(voiceLady, SIGNAL(playSound(QString)), iSoundPlayer, SLOT(playResourceSound(QString)));
 	connect(voiceLady, SIGNAL(playSoundFile(QString)), iSoundPlayer, SLOT(playFileSystemSound(QString)));
 
-	ui.stackedWidget->setCurrentWidget(ui.standByPage1);
-	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
-
 	//ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
 	//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
 	//int dpi = 122;
@@ -154,7 +152,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	ui.settingsTabWidget->setProperty("_q_customDpiX", QVariant(dpi));
 	ui.settingsTabWidget->setProperty("_q_customDpiY", QVariant(dpi));
 
-	int tab_width = width / ui.settingsTabWidget->count();
+	int tab_width = width / ui.settingsTabWidget->count() - 3;
 	ui.settingsTabWidget->setStyleSheet(QString("QTabBar::tab { width: %1px; height: %2px;}").arg(tab_width).arg((int) (height * 0.15)));
 
 	setCurrentScreenFromSettings();
@@ -174,6 +172,10 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	applyColorTheme();
 
 	backend->reconnect();
+
+	ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+	ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
+	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 		
 IndigoTaxi::~IndigoTaxi()
@@ -1005,7 +1007,10 @@ void IndigoTaxi::techhelpClicked()
 void IndigoTaxi::techhelpBackClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_TECHHELP);
+	// показываем выбор стоянки
+	_changeRegionStopEvent = hello_TaxiEvent_BACK_TECHHELP;
 	setSettingsStatus("OK");
+	ui.settingsTabWidget->setCurrentWidget(ui.regionsSettingsTab4);
 	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPage1);
 }
 
@@ -1429,7 +1434,12 @@ void IndigoTaxi::changeDriverRegionStopClicked()
 		TaxiRegionInfo *info = var.mutable_taxiregioninfo();
 		info->set_region_id(asked_region_id);
 		info->set_stop_id(stop_id);
-		var.set_event(hello_TaxiEvent_CHANGE_REGION);
+		if (_changeRegionStopEvent == hello_TaxiEvent_NOTHING) {
+			var.set_event(hello_TaxiEvent_CHANGE_REGION);
+		} else {
+			var.set_event(_changeRegionStopEvent);
+			_changeRegionStopEvent = hello_TaxiEvent_NOTHING;
+		}
 
 		backend->send_message(var);
 		ui.currentRegionLabel->setText(stop_name);

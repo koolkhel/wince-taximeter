@@ -268,6 +268,8 @@ private:
 
 	int _driverOrder;
 
+	hello_TaxiEvent _changeRegionStopEvent;
+
 	QStringList _messagesToShow;
 
 	// updates
