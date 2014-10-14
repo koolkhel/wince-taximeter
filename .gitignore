@@ -6,3 +6,4 @@ Win32/*
 *.pb.h
 CityTaxi.chm
 my.rcc
+DebugRelease/*

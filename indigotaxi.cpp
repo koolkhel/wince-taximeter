@@ -20,7 +20,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	satellitesUsed(0), movementStarted(false), currentParkingCost(0), currentParkingId(0),
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
 	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0),
-	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0), colorTheme(INDIGO_LIGHT_THEME),
+	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0), colorTheme(INDIGO_DARK_THEME),
 	_changeRegionStopEvent(hello_TaxiEvent_NOTHING)
 {
 	ui.setupUi(this);
