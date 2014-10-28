@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>480</height>
+    <width>798</width>
+    <height>487</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -430,7 +430,7 @@ QTabBar::tab:!selected {
         <widget class="QLabel" name="taxiNameLabel">
          <property name="minimumSize">
           <size>
-           <width>100</width>
+           <width>110</width>
            <height>0</height>
           </size>
          </property>
@@ -502,7 +502,7 @@ QTabBar::tab:!selected {
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
