@@ -20,6 +20,18 @@ void IConfirmationDialog::setText(QString text)
 
 bool IConfirmationDialog::ask(QString text)
 {
+	ui.pushButton->setText("ÍÀÇÀÄ");
+	ui.pushButton_2->setText("ÎÊ");
+	ui.textBrowser->setFontPointSize(16);
+	setText(text);
+	return exec() == QDialog::Accepted;
+}
+
+bool IConfirmationDialog::askYesNo(QString text)
+{
+	ui.pushButton->setText("ÍÅÒ");
+	ui.pushButton_2->setText("ÄÀ");
+	ui.textBrowser->setFontPointSize(14);
 	setText(text);
 	return exec() == QDialog::Accepted;
 }

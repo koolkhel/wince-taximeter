@@ -123,16 +123,16 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	
 	infoDialog->setProperty("_q_customDpiX", QVariant(dpi));
 	infoDialog->setProperty("_q_customDpiY", QVariant(dpi));
-	//infoDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
+	infoDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
 	
 	confirmDialog->setProperty("_q_customDpiX", QVariant(dpi));
 	confirmDialog->setProperty("_q_customDpiY", QVariant(dpi));
-	//confirmDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
-	//confirmDialog->setMaximumSize((int) width * 0.8, (int) height * 0.9);
+	confirmDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
+	confirmDialog->setMaximumSize((int) width * 0.8, (int) height * 0.9);
 	
 	driverNumberDialog->setProperty("_q_customDpiX", QVariant(dpi));
 	driverNumberDialog->setProperty("_q_customDpiY", QVariant(dpi));
-	//driverNumberDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
+	driverNumberDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
 
 	ui.regionList->setProperty("_q_customDpiX", QVariant(dpi));
 	ui.regionList->setProperty("_q_customDpiY", QVariant(dpi));
@@ -381,6 +381,11 @@ void IndigoTaxi::protobuf_message(hello message)
 		return;
 	}
 
+	if (message.event() == hello_TaxiEvent_ORDER_OFFER) {
+		handleOrderOffer(message);
+		return;
+	}
+
 	if (message.event() == hello_TaxiEvent_GET_DRIVER_ORDER) {
 		qDebug() << "new driver sequence number";
 		if (message.driverinfo().region_order() != _driverOrder) {
@@ -438,6 +443,22 @@ void IndigoTaxi::protobuf_message(hello message)
 	if (message.has_taxiregioninfo() && message.event() == hello_TaxiEvent_ASK_REGION) {
 		processAskRegionReply(message);
 	}
+}
+
+void IndigoTaxi::handleOrderOffer(hello var) {
+	QString address = QString::fromUtf8(var.taxiorder().address().c_str());
+	hello answer;
+	
+	if (confirmDialog->askYesNo("Адрес " + address + ". Заберешь по освобождению?")) {
+		answer.set_event(hello_TaxiEvent_YES);
+	} else {
+		answer.set_event(hello_TaxiEvent_NO);
+	}
+	
+	TaxiOrder *order = answer.mutable_taxiorder();
+	order->set_order_id(var.taxiorder().order_id());
+
+	backend->send_message(answer);
 }
 
 void IndigoTaxi::handleNewMessageTemplates()

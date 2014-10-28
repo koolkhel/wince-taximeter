@@ -14,6 +14,7 @@ public:
 
 	void setText(QString text);
 	bool ask(QString text);
+	bool askYesNo(QString text);
 public slots:
 	void clickSound();
 private:

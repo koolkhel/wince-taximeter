@@ -219,6 +219,7 @@ private:
 	void handleTextMessage(hello var);
 	void handleNewMessageTemplates();
 	void handleTaxiCount(hello var);
+	void handleOrderOffer(hello var);
 	ITaxiOrder *createTaxiOrder(int order_id, QString address = "");
 
 	bool movementStarted;
