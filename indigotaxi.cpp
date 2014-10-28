@@ -248,8 +248,9 @@ void IndigoTaxi::driverUpdateTimerTimeout()
 
 void IndigoTaxi::updateTime()
 {
-	QTime time = QTime::currentTime();    
-    QString text = time.toString("hh:mm");
+	QDateTime dateTime = QDateTime::currentDateTimeUtc();	
+	QTime time = dateTime.addSecs(3 * 3600).time(); // MSK+3
+	QString text = time.toString("hh:mm");
     ui.timeLabel->setText(text);
 
 	// если сразу не получили (не было интернета), но очень хочется
