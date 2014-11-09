@@ -449,6 +449,10 @@ void IndigoTaxi::handleOrderOffer(hello var) {
 	QString address = QString::fromUtf8(var.taxiorder().address().c_str());
 	hello answer;
 	
+	voiceLady->sayPhrase("MESSAGERECEIVED");
+	voiceLady->click();
+	voiceLady->click();
+	voiceLady->click();
 	if (confirmDialog->askYesNo("Адрес " + address + ". Заберешь по освобождению?")) {
 		answer.set_event(hello_TaxiEvent_YES);
 	} else {
