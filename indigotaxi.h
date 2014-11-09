@@ -49,6 +49,7 @@ signals:
 	
 	
 public slots:
+	void showInfoDialog(QString message);
 	// 1 -- межгород, 0 -- нет
 	void intercity(int intercity);
 
@@ -280,6 +281,10 @@ private:
 	QTimer *updateDownloadTimeoutTimer;
 
 	QTimer *_driverOrderUpdateTimer;
+
+	int _dpi;
+	int _width;
+	int _height;
 
 	DownloadManager *downloadManager;
 

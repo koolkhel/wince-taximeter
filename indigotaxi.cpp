@@ -21,7 +21,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
 	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0),
 	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0), colorTheme(INDIGO_DARK_THEME),
-	_changeRegionStopEvent(hello_TaxiEvent_NOTHING)
+	_changeRegionStopEvent(hello_TaxiEvent_NOTHING), _dpi(120), _width(800), _height(480)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -104,10 +104,10 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	//ui.driverNameLineEdit->setProperty("keyboard",true); // enable the keyboard. when there is no validator set the keyboard will show
 	//aTextLineEdit->setProperty("maxLength",25); //this can be used to limit the length of the string
 	//int dpi = 122;
-	int dpi = 170;
+	_dpi = 170;
 	QRect rect = QApplication::desktop()->geometry();
-	int width = rect.width();
-	int height = rect.height();
+	_width = rect.width();
+	_height = rect.height();
 
 #ifdef UNDER_CE
 	
@@ -118,43 +118,39 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	orderReceiveTimer->setSingleShot(false);
 	connect(orderReceiveTimer, SIGNAL(timeout()), SLOT(orderReceiveTimerTimeout()));
 
-	setProperty("_q_customDpiX", QVariant(dpi));
-	setProperty("_q_customDpiY", QVariant(dpi));
+	setProperty("_q_customDpiX", QVariant(_dpi));
+	setProperty("_q_customDpiY", QVariant(_dpi));
 	
-	infoDialog->setProperty("_q_customDpiX", QVariant(dpi));
-	infoDialog->setProperty("_q_customDpiY", QVariant(dpi));
-	infoDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
+	confirmDialog->setProperty("_q_customDpiX", QVariant(_dpi));
+	confirmDialog->setProperty("_q_customDpiY", QVariant(_dpi));
+	confirmDialog->setMinimumSize((int) _width * 0.8, (int) _height * 0.9);
+	confirmDialog->setMaximumSize((int) _width * 0.8, (int) _height * 0.9);
 	
-	confirmDialog->setProperty("_q_customDpiX", QVariant(dpi));
-	confirmDialog->setProperty("_q_customDpiY", QVariant(dpi));
-	confirmDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
-	confirmDialog->setMaximumSize((int) width * 0.8, (int) height * 0.9);
+	driverNumberDialog->setProperty("_q_customDpiX", QVariant(_dpi));
+	driverNumberDialog->setProperty("_q_customDpiY", QVariant(_dpi));
+	driverNumberDialog->setMinimumSize((int) _width * 0.8, (int) _height * 0.9);
+
+	ui.regionList->setProperty("_q_customDpiX", QVariant(_dpi));
+	ui.regionList->setProperty("_q_customDpiY", QVariant(_dpi));
+
+	ui.regionListSettingsWidget->setProperty("_q_customDpiX", QVariant(_dpi));
+	ui.regionListSettingsWidget->setProperty("_q_customDpiY", QVariant(_dpi));
 	
-	driverNumberDialog->setProperty("_q_customDpiX", QVariant(dpi));
-	driverNumberDialog->setProperty("_q_customDpiY", QVariant(dpi));
-	driverNumberDialog->setMinimumSize((int) width * 0.8, (int) height * 0.9);
-
-	ui.regionList->setProperty("_q_customDpiX", QVariant(dpi));
-	ui.regionList->setProperty("_q_customDpiY", QVariant(dpi));
-
-	ui.regionListSettingsWidget->setProperty("_q_customDpiX", QVariant(dpi));
-	ui.regionListSettingsWidget->setProperty("_q_customDpiY", QVariant(dpi));
+	ui.regionDetailsList->setProperty("_q_customDpiX", QVariant(_dpi));
+	ui.regionDetailsList->setProperty("_q_customDpiY", QVariant(_dpi));
 	
-	ui.regionDetailsList->setProperty("_q_customDpiX", QVariant(dpi));
-	ui.regionDetailsList->setProperty("_q_customDpiY", QVariant(dpi));
-	
-	ui.messageTemplatesList->setProperty("_q_customDpiX", QVariant(dpi));
-	ui.messageTemplatesList->setProperty("_q_customDpiY", QVariant(dpi));
+	ui.messageTemplatesList->setProperty("_q_customDpiX", QVariant(_dpi));
+	ui.messageTemplatesList->setProperty("_q_customDpiY", QVariant(_dpi));
 
-	ui.taxiRateTableWidget->setProperty("_q_customDpiX", QVariant(dpi));
-	ui.taxiRateTableWidget->setProperty("_q_customDpiY", QVariant(dpi));
+	ui.taxiRateTableWidget->setProperty("_q_customDpiX", QVariant(_dpi));
+	ui.taxiRateTableWidget->setProperty("_q_customDpiY", QVariant(_dpi));
 
-	ui.settingsTabWidget->setProperty("_q_customDpiX", QVariant(dpi));
-	ui.settingsTabWidget->setProperty("_q_customDpiY", QVariant(dpi));
+	ui.settingsTabWidget->setProperty("_q_customDpiX", QVariant(_dpi));
+	ui.settingsTabWidget->setProperty("_q_customDpiY", QVariant(_dpi));
 
-	int tab_width = width / ui.settingsTabWidget->count() - 3;
+	int tab_width = _width / ui.settingsTabWidget->count() - 3;
 	//int tab_width = 197;
-	int tab_height = (int) height * 0.15;
+	int tab_height = (int) _height * 0.15;
 	//de	int tab_height = 120;
 	ui.settingsTabWidget->setStyleSheet(QString("QTabBar::tab { width: %1px; height: %2px;}").arg(tab_width).arg(tab_height));
 
@@ -184,6 +180,17 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 IndigoTaxi::~IndigoTaxi()
 {
 
+}
+
+void IndigoTaxi::showInfoDialog(QString message)
+{
+	IInfoDialog *infoDialog = new IInfoDialog(this);
+	infoDialog->setProperty("_q_customDpiX", QVariant(_dpi));
+	infoDialog->setProperty("_q_customDpiY", QVariant(_dpi));
+	infoDialog->setMinimumSize((int) _width * 0.8, (int) _height * 0.9);
+	infoDialog->info(message);
+	
+	delete infoDialog;
 }
 
 void IndigoTaxi::changeDriverNumberClicked()
@@ -482,7 +489,7 @@ void IndigoTaxi::handleTextMessage(hello var)
 	voiceLady->sayPhrase("MESSAGERECEIVED");
 	QString message = QString::fromUtf8(var.text_string().c_str());
 	addMessageHistory(message);
-	infoDialog->info(message);
+	showInfoDialog(message);
 #if 0
 	if (ui.stackedWidget->currentWidget() == ui.standByPage1) {
 		infoDialog->info(message);
