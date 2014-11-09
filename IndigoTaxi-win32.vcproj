@@ -46,7 +46,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -w44353"
 				Optimization="4"
 				AdditionalIncludeDirectories="&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtNetwork&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles&quot;;&quot;.&quot;;&quot;.\GeneratedFiles\Debug-Win32&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;.\GeneratedFiles\debug-win32&quot;;&quot;.\..\..\..\qt\4.8.5-windows\mkspecs\default&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;c:\qt\qt-qtserialport\build-host\include;C:\Projects\protobuf-2.5.0\include"
 				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;QT_DLL;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;_SCL_SECURE_NO_WARNINGS;DEBUG"
@@ -58,7 +58,7 @@
 				AssemblerListingLocation="debug-win32\"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\vc90.pdb"
-				WarningLevel="3"
+				WarningLevel="2"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
