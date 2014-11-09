@@ -116,195 +116,105 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">#regionList, 
-#regionListSettingsWidget, 
-#regionDetailsList,
-#messageTemplatesList
-{
-	font: 14pt &quot;Segoe UI&quot;;
-	font-weight: bold;
+    <string notr="true">#regionList,#regionListSettingsWidget,#regionDetailsList,#messageTemplatesList {
+font:14pt &quot;Segoe UI&quot;;
+font-weight:700;
 }
 
-#regionList QScrollBar:vertical, 
-#regionListSettingsWidget QScrollBar:vertical,
-#regionDetailsList QScrollBar:vertical ,
-#messageTemplatesList QScrollBar:vertical
-{
-      width: 80px;
+#regionList QScrollBar:vertical,#regionListSettingsWidget QScrollBar:vertical,#regionDetailsList QScrollBar:vertical,#messageTemplatesList QScrollBar:vertical {
+width:80px;
 }
-
 
 * {
-	/* background: #5BCAFF; */
-	background: white;
-	color: #2b2b2b;
+background:#1d1d1d;
+color:#FFF;
 }
 
 QPushButton {
-	color: #1d1d1d;
-	border: 2px solid #1d1d1d;
+color:#FFF;
 }
 
 #statusRowFrame * {
-	background: #BDBEC2;
-	color: black;
-}
-
-#statusRowFrame {
-	background: #BDBEC2;
+background:#000;
+color:#FFF;
 }
 
 #taxiRateFrame * {
-/*
-	background: #5BCAFF;
-*/
-	background: white;
-	color: #2b2b2b;
+background:#000;
+color:#b0b0b0;
 }
 
 #taxiRateFrame {
-/*
-	background: #5BCAFF;
-*/
-	background: white;
-	border-top: 1px solid #101010;
-	border-bottom: 1px solid black;
+background:#000;
+border-top:1px solid #101010;
 }
 
-#driverNumberButton, #orderPageDriverNumberButton {
-	color: #909090;
-	border: none;
-}
-
-#acceptRegionButton {
-	background: #70a400;
-}
-
-#backToStandbyButton, #menuButton,#clearButton
- {
-	background: #fdfdfd;
-	color: #1d1d1d;
-}
-
-/* colored buttons */
-#moveToClientButton:pressed, 
-#inPlaceButton:pressed,
-#startClientMoveButton:pressed,
-#backToStandbyButton:pressed, 
-#acceptRegionButton:pressed,
-#menuButton:pressed, 
-#clearButton:pressed,
-#resumeVoyageButton:pressed, 
-#farawayButton:pressed, 
-#paytimeButton:pressed,
-#overloadButton:pressed, 
-#trainCrossButton:pressed,
-#settingsTabWidget QPushButton:pressed
-{
-	background: black;
-}
-
-/* white buttons */
-#backToStandbyButton:pressed, 
-#acceptRegionButton:pressed,
-#menuButton:pressed, 
-#clearButton:pressed
- {
-	color: #fdfdfd;
+#backToStandbyButton:pressed,#acceptRegionButton:pressed,#menuButton:pressed,#clearButton:pressed {
+color:#fdfdfd;
 }
 
 QTabBar::tab:selected {
-	background: #5BCAFF;
+background:#63a400;
 }
 
 QTabBar::tab:!selected {
-	background: #DBDDDE;
-	border: 1px solid black;
+background:#034900;
 }
 
-/* three main buttons */
-#moveToClientButton{
-	background: #5BCAFF;
+#inPlaceButton[enabled=&quot;false&quot;],#moveToClientButton[enabled=&quot;false&quot;],#startClientMoveButton[enabled=&quot;false&quot;] {
+background:#426063;
+color:#364c4e;
 }
 
-#inPlaceButton {
-	background: #4CD964;
-}
-
-#startClientMoveButton {
-	background: #FF3B30;
-}
-
-#inPlaceButton[enabled=&quot;false&quot;],
-#moveToClientButton[enabled=&quot;false&quot;],
-#startClientMoveButton[enabled=&quot;false&quot;] {
-	background: #DBDDDE;
-	color: #364c4e;
-}
-
-/* --------------------- */
-
-#driverNumberLabel {
-	color: #909090;
-}
-
-/* ---------- order page --------------- */
 #paytimeButton {
-	background: #FF1300;
-}
-
-#overloadButton {
-	background: #8E8E93;
-}
-
-#overloadButton:checked {
-	background: #1d1d1d;
+background:#c23c00;
 }
 
 #trainCrossButton {
-	background: #5BCAFF;
-}
-
-#trainCrossButton:checked {
-	background: #1d1d1d;
+background:#275883;
 }
 
 #directionValueButton {
-	background: #4CD964;
-}
-
-/* ------------------ */
-
-/* --------------- paytime page ------------- */
-
-#resumeVoyageButton {
-	background: #ea6b00;
-}
-
-#freeButton {
-	background: #fdfdfd;
-	color: #1d1d1d;
+background:#6c0144;
 }
 
 #freeButton:pressed {
-	color: #fdfdfd;
-	background: #1d1d1d;
+color:#fdfdfd;
+background:#1d1d1d;
 }
 
-/* ------------------------ */
-
-/* settings pages */
-/* all settings button are cyan */
-#settingsTabWidget QPushButton {
-	background: #4CD964;
+#statusRowFrame,#moveToClientButton:pressed,#inPlaceButton:pressed,#startClientMoveButton:pressed,#backToStandbyButton:pressed,#acceptRegionButton:pressed,#menuButton:pressed,#clearButton:pressed,#resumeVoyageButton:pressed,#farawayButton:pressed,#paytimeButton:pressed,#overloadButton:pressed,#trainCrossButton:pressed,#settingsTabWidget QPushButton:pressed {
+background:#000;
 }
 
-#dutyStart:checked {
-	background: #4c66b0;
+#driverNumberButton,#orderPageDriverNumberButton,#driverNumberLabel {
+color:#909090;
 }
 
+#acceptRegionButton,#startClientMoveButton {
+background:#70a400;
+}
 
-</string>
+#backToStandbyButton,#menuButton,#clearButton,#freeButton {
+background:#fdfdfd;
+color:#1d1d1d;
+}
+
+#moveToClientButton,#resumeVoyageButton {
+background:#ea6b00;
+}
+
+#inPlaceButton,#settingsTabWidget QPushButton {
+background:#4ca2a6;
+}
+
+#overloadButton,#dutyStart:checked {
+background:#4c66b0;
+}
+
+#overloadButton:checked,#trainCrossButton:checked {
+background:#1d1d1d;
+}</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
     <property name="spacing">
@@ -2704,7 +2614,7 @@ QPushButton[pressed=true] {
                    <font>
                     <family>Segoe UI</family>
                     <pointsize>14</pointsize>
-                    <weight>75</weight>
+                    <weight>87</weight>
                     <italic>false</italic>
                     <bold>true</bold>
                    </font>
@@ -2857,7 +2767,7 @@ QPushButton[pressed=true] {
            <font>
             <family>Segoe UI</family>
             <pointsize>14</pointsize>
-            <weight>75</weight>
+            <weight>87</weight>
             <italic>false</italic>
             <bold>true</bold>
            </font>
