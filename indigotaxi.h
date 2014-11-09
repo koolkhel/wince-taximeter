@@ -146,6 +146,7 @@ public slots:
 
 	// page 6
 	void settingsTabWidgetChanged(int);
+	void regionSettingsTabWidgetChanged(int);
 	void cancelRegionSelectClicked();
 	void showRegionDetailsClicked();
 	void changeDriverRegionStopClicked();

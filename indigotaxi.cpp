@@ -525,6 +525,14 @@ void IndigoTaxi::stackedWidgetCurrentChanged(int pageIndex)
 	}
 }
 
+// вернулись с деталей по району, обновляем список машин
+void IndigoTaxi::regionSettingsTabWidgetChanged(int)
+{
+	if (ui.regionsSettingsStackedWidget->currentWidget() == ui.regionsSettingsPage1) {
+		backend->sendEvent(hello_TaxiEvent_GET_TAXI_COUNT);
+	}
+}
+
 void IndigoTaxi::messagesBackClicked()
 {
 	ui.orderSettingsStackedWidget->setCurrentWidget(ui.orderSettingsStackedWidgetPage1);
@@ -710,13 +718,17 @@ void IndigoTaxi::settingsTabWidgetChanged(int tabNumber)
 
 void IndigoTaxi::handleTaxiCount(hello var)
 {
+	int currentRow = ui.regionListSettingsWidget->currentRow();
+	int count = var.taxicount().regions_size();
 	ui.regionListSettingsWidget->clear();
-	for (int i = 0; i < var.taxicount().regions_size(); i++) {
+	for (int i = 0; i < count; i++) {
 		QString regionName = QString::fromUtf8(var.taxicount().regions().Get(i).region_name().c_str());
 		QString count = QString::number(var.taxicount().regions().Get(i).taxi_count());
 		ui.regionListSettingsWidget->addItem(QString("%1 (%2)").arg(regionName).arg(count));
 	}
-	ui.regionListSettingsWidget->setCurrentRow(0);
+	if (currentRow >= count)
+		currentRow = count - 1;
+	ui.regionListSettingsWidget->setCurrentRow(currentRow);
 	voiceLady->click();
 }
 
