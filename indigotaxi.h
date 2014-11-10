@@ -286,6 +286,8 @@ private:
 	int _width;
 	int _height;
 
+	bool _orderOfferGuard;
+
 	DownloadManager *downloadManager;
 
 	// colors

@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.025";
+static const char *version = "0.1.026";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -21,7 +21,7 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 	newDirection(false), online(false), downloader(NULL), changeRegion(false), asked_region_id(0),
 	_taxiRateUpdated(false), _taxiRateReceived(false), _updatePerformed(false), _intercity(0),
 	_stop_sound_played(false), _start_sound_played(false), _driverOrder(0), colorTheme(INDIGO_DARK_THEME),
-	_changeRegionStopEvent(hello_TaxiEvent_NOTHING), _dpi(120), _width(800), _height(480)
+	_changeRegionStopEvent(hello_TaxiEvent_NOTHING), _dpi(120), _width(800), _height(480), _orderOfferGuard(false)
 {
 	ui.setupUi(this);
 #ifdef UNDER_CE
@@ -111,8 +111,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 #ifdef UNDER_CE
 	
-	dpi = (int) sqrt(width*width + height*height) / 4.5; // average screen size
-	qDebug() << "calculated DPI:" << dpi;
+	_dpi = (int) sqrt(_width*_width + _height*_height) / 4.5; // average screen size
+	qDebug() << "calculated DPI:" << _dpi;
 #endif
 	orderReceiveTimer = new QTimer(this);
 	orderReceiveTimer->setSingleShot(false);
@@ -456,20 +456,25 @@ void IndigoTaxi::handleOrderOffer(hello var) {
 	QString address = QString::fromUtf8(var.taxiorder().address().c_str());
 	hello answer;
 	
-	voiceLady->sayPhrase("MESSAGERECEIVED");
-	voiceLady->click();
-	voiceLady->click();
-	voiceLady->click();
-	if (confirmDialog->askYesNo("Адрес " + address + ". Заберешь по освобождению?")) {
-		answer.set_event(hello_TaxiEvent_YES);
-	} else {
-		answer.set_event(hello_TaxiEvent_NO);
-	}
+	if (!_orderOfferGuard) {
+		_orderOfferGuard = true;
+		voiceLady->sayPhrase("MESSAGERECEIVED");
+		voiceLady->click();
+		voiceLady->click();
+		voiceLady->click();
 	
-	TaxiOrder *order = answer.mutable_taxiorder();
-	order->set_order_id(var.taxiorder().order_id());
+		if (confirmDialog->askYesNo("Адрес " + address + ". Заберешь по освобождению?")) {
+			answer.set_event(hello_TaxiEvent_YES);
+		} else {
+			answer.set_event(hello_TaxiEvent_NO);
+		}
+	
+		TaxiOrder *order = answer.mutable_taxiorder();
+		order->set_order_id(var.taxiorder().order_id());
 
-	backend->send_message(answer);
+		backend->send_message(answer);
+		_orderOfferGuard = false;
+	}
 }
 
 void IndigoTaxi::handleNewMessageTemplates()
@@ -489,7 +494,7 @@ void IndigoTaxi::handleTextMessage(hello var)
 	voiceLady->sayPhrase("MESSAGERECEIVED");
 	QString message = QString::fromUtf8(var.text_string().c_str());
 	addMessageHistory(message);
-	showInfoDialog(message);
+	infoDialog->info(message);
 #if 0
 	if (ui.stackedWidget->currentWidget() == ui.standByPage1) {
 		infoDialog->info(message);
