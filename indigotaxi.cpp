@@ -42,7 +42,8 @@ IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
 
 	backend = new Backend(this);
 	
-	connect(backend, SIGNAL(protobuf_message(hello)), SLOT(protobuf_message(hello)));
+	qRegisterMetaType<hello>("hello");
+	connect(backend, SIGNAL(protobuf_message(hello)), SLOT(protobuf_message(hello)), Qt::QueuedConnection);
 	connect(backend, SIGNAL(connectedToServer(bool)), SLOT(connectionStatus(bool)));
 	connect(backend, SIGNAL(driverNameChanged(int)), SLOT(driverNameChanged(int)));
 	connect(backend, SIGNAL(newSpeed(int)), SLOT(newSpeed(int)));
@@ -218,17 +219,6 @@ void IndigoTaxi::backlight(bool onOff)
 #endif
 
 	//rebootSystem();
-}
-
-void IndigoTaxi::showInfoDialog(QString message)
-{
-	IInfoDialog *infoDialog = new IInfoDialog(this);
-	infoDialog->setProperty("_q_customDpiX", QVariant(_dpi));
-	infoDialog->setProperty("_q_customDpiY", QVariant(_dpi));
-	infoDialog->setMinimumSize((int) _width * 0.8, (int) _height * 0.9);
-	infoDialog->info(message);
-	
-	delete infoDialog;
 }
 
 void IndigoTaxi::changeDriverNumberClicked()
@@ -526,13 +516,27 @@ void IndigoTaxi::handleNewMessageTemplates()
 	}
 }
 
+void IndigoTaxi::showInfoDialog(QString message)
+{
+	IInfoDialog *infoDialog = new IInfoDialog(this);
+	
+	infoDialog->setProperty("_q_customDpiX", QVariant(_dpi));
+	infoDialog->setProperty("_q_customDpiY", QVariant(_dpi));
+	infoDialog->setMinimumSize((int) _width * 0.8, (int) _height * 0.9);
+
+	voiceLady->sayPhrase("MESSAGERECEIVED");
+	infoDialog->info(message);
+	
+	delete infoDialog;
+}
+
 void IndigoTaxi::handleTextMessage(hello var)
 {
 	// TODO нельзя в любой момент показать сообщение
-	voiceLady->sayPhrase("MESSAGERECEIVED");
+	
 	QString message = QString::fromUtf8(var.text_string().c_str());
 	addMessageHistory(message);
-	infoDialog->info(message);
+	showInfoDialog(message);
 #if 0
 	if (ui.stackedWidget->currentWidget() == ui.standByPage1) {
 		infoDialog->info(message);
