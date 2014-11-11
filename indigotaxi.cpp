@@ -182,6 +182,44 @@ IndigoTaxi::~IndigoTaxi()
 
 }
 
+void IndigoTaxi::changeBackLightClicked()
+{
+	bool onOff = true;
+	
+	QString registryKey = "HKEY_CURRENT_USER\\ControlPanel\\BackLight";
+	QSettings registry(registryKey, QSettings::NativeFormat);
+	
+	int value = (registry.value("ACPrescale", 100)).toInt();
+	
+	onOff = value == 100;
+
+	backlight(!onOff);
+}
+
+void IndigoTaxi::backlight(bool onOff)
+{
+	int value = onOff ? 100 : 0;
+	
+	QString registryKey = "HKEY_CURRENT_USER\\ControlPanel\\BackLight";
+	QSettings registry(registryKey, QSettings::NativeFormat);
+	
+	registry.setValue("ACPrescale", value);
+	registry.setValue("BatteryPrescale", value);
+	
+	registry.sync();
+
+#ifdef UNDER_CE
+	HANDLE hBackLightEvent = CreateEvent( NULL, FALSE, TRUE, TEXT("BackLightChangeEvent")); 
+
+	if (hBackLightEvent) { 
+		SetEvent(hBackLightEvent);
+		CloseHandle(hBackLightEvent); 
+	}
+#endif
+
+	//rebootSystem();
+}
+
 void IndigoTaxi::showInfoDialog(QString message)
 {
 	IInfoDialog *infoDialog = new IInfoDialog(this);

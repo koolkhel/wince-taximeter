@@ -412,7 +412,7 @@ background:#1d1d1d;
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1557,7 +1557,7 @@ background:#1d1d1d;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -2374,7 +2374,9 @@ QPushButton[pressed=true] {
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>Сменить цвета</string>
+                   <string>Сменить яркость
+экрана
+(день/ночь)</string>
                   </property>
                  </widget>
                 </item>
@@ -3042,8 +3044,8 @@ QPushButton[pressed=true] {
    <slot>cancelRegionSelectClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>52</x>
-     <y>49</y>
+     <x>57</x>
+     <y>388</y>
     </hint>
     <hint type="destinationlabel">
      <x>321</x>
@@ -3058,8 +3060,8 @@ QPushButton[pressed=true] {
    <slot>startClientMove()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>49</y>
+     <x>501</x>
+     <y>388</y>
     </hint>
     <hint type="destinationlabel">
      <x>479</x>
@@ -4018,8 +4020,8 @@ QPushButton[pressed=true] {
    <slot>messagesSendClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>89</y>
+     <x>790</x>
+     <y>94</y>
     </hint>
     <hint type="destinationlabel">
      <x>524</x>
@@ -4050,8 +4052,8 @@ QPushButton[pressed=true] {
    <slot>playClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>89</y>
+     <x>790</x>
+     <y>94</y>
     </hint>
     <hint type="destinationlabel">
      <x>567</x>
@@ -4380,22 +4382,6 @@ QPushButton[pressed=true] {
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_12</sender>
-   <signal>clicked()</signal>
-   <receiver>IndigoTaxiClass</receiver>
-   <slot>switchColorsClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>193</x>
-     <y>347</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>257</x>
-     <y>558</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>regionsSettingsStackedWidget</sender>
    <signal>currentChanged(int)</signal>
    <receiver>IndigoTaxiClass</receiver>
@@ -4408,6 +4394,22 @@ QPushButton[pressed=true] {
     <hint type="destinationlabel">
      <x>398</x>
      <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_12</sender>
+   <signal>clicked()</signal>
+   <receiver>IndigoTaxiClass</receiver>
+   <slot>changeBackLightClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>411</x>
+     <y>554</y>
     </hint>
    </hints>
   </connection>
@@ -4470,5 +4472,6 @@ QPushButton[pressed=true] {
   <slot>settingsTabWidgetChanged(int)</slot>
   <slot>switchColorsClicked()</slot>
   <slot>regionSettingsTabWidgetChanged(int)</slot>
+  <slot>changeBackLightClicked()</slot>
  </slots>
 </ui>

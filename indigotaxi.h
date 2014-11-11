@@ -49,6 +49,8 @@ signals:
 	
 	
 public slots:
+	void backlight(bool onOff);
+	void changeBackLightClicked();
 	void showInfoDialog(QString message);
 	// 1 -- межгород, 0 -- нет
 	void intercity(int intercity);
