@@ -134,6 +134,7 @@ public slots:
 	void playClick();
 
 	void dinnerStartClicked();
+	void dinnerHandleAnswer(hello var);
 	void dinnerStopClicked();
 
 	void driverNameEdited(QString newValue);

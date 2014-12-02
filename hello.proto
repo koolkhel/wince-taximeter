@@ -52,6 +52,9 @@ message hello
     YES = 36; // я возьму заказ (от навигатора)
     NO = 37; // я не возьму заказ (от навигатора)
     ORDER_OFFER = 38; // предлагаю заказ на такой-то адрес (от диспетчера)
+    MAY_GO_DINNER = 39; // с девайса -- можно ли на обед?
+    YES_GO_DINNER = 40; // да, иди
+    NO_GO_DINNER = 41; // нет, оставайся
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];

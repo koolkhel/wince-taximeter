@@ -410,6 +410,11 @@ void IndigoTaxi::startClientMove()
 // с сервера нам что-то пришло, надо реагировать
 void IndigoTaxi::protobuf_message(hello message)
 {
+	if (message.event() == hello_TaxiEvent_YES_GO_DINNER || message.event() == hello_TaxiEvent_NO_GO_DINNER) {
+		dinnerHandleAnswer(message);
+		return;
+	}
+	
 	// старый способ доставки адреса
 	if (message.event() == hello_TaxiEvent_ABORT_ORDER) {
 		abortOrder(message.taxiorder().order_id());
@@ -1006,9 +1011,22 @@ void IndigoTaxi::notPayClicked()
 
 void IndigoTaxi::dinnerStartClicked()
 {
-	backend->sendEvent(hello_TaxiEvent_GO_DINNER);
-	setSettingsStatus("DINNER");
-	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);
+	backend->sendEvent(hello_TaxiEvent_MAY_GO_DINNER);
+	showInfoDialog("Диспетчеру отправлен вопрос о вашем уходе на обед");	
+}
+
+void IndigoTaxi::dinnerHandleAnswer(hello var) {
+	if (var.event() == hello_TaxiEvent_YES_GO_DINNER) {
+		
+		if (confirmDialog->ask("Диспетчер отпускает Вас на обед. Подтвердите свой уход")) {
+			backend->sendEvent(hello_TaxiEvent_GO_DINNER);
+			setSettingsStatus("DINNER");
+			ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);
+		}
+	
+	} else if (var.event() == hello_TaxiEvent_NO_GO_DINNER) {
+		showInfoDialog("Диспетчер оставляет вас на линии");
+	}
 }
 
 void IndigoTaxi::dinnerStopClicked()
