@@ -720,6 +720,8 @@
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
+				CompileForArchitecture="0"
+				InterworkCalls="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -740,6 +742,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(QTDIR)\lib,$(QTDIR)\lib"
 				GenerateDebugInformation="true"
+				AssemblyDebug="0"
 				ProgramDatabaseFile=""
 				SubSystem="0"
 				OptimizeForWindows98="0"

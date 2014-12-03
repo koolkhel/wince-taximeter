@@ -13,7 +13,8 @@ ITaxiOrder::ITaxiOrder(int _order_id, TaxiRatePeriod _taxiRate, float _parkingCo
 	_out_of_city_rate(0),
 	
 	_destination_region_id(0),
-	taxiRate(_taxiRate), 
+	taxiRate(_taxiRate),
+	_is_talon(false),
 	
 	gotPosition(false), 
 	
@@ -94,17 +95,30 @@ double ITaxiOrder::totalMileage()
 double ITaxiOrder::moneyCity()
 {	
 	double mileage_city_cost = cityMileage() * taxiRate.km_g();	
+
+	return mileage_city_cost + moneyCityOverload();
+}
+
+double ITaxiOrder::moneyCityOverload() 
+{
 	double mileage_city_overload_cost = cityMileageOverload() * taxiRate.km_g() * 1.5;
 
-	return mileage_city_cost + mileage_city_overload_cost;
+	return mileage_city_overload_cost;
 }
 
 int ITaxiOrder::moneyMg()
 {
 	double mileage_out_of_city_cost = outOfCityMileage() * mgRate();
+
+	return ROUND_UPPER(mileage_out_of_city_cost + 
+		moneyMgOverload());
+}
+
+double ITaxiOrder::moneyMgOverload()
+{
 	double mileage_out_of_city_overload_cost = outOfCityMileageOverload() * mgRate() * 1.5;
 
-	return ROUND_UPPER(mileage_out_of_city_cost + mileage_out_of_city_overload_cost);
+	return mileage_out_of_city_overload_cost;
 }
 
 /* ============================================================= */

@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.027";
+static const char *version = "0.1.028";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -372,7 +372,8 @@ void IndigoTaxi::startClientMove()
 
 
 	float carInRate = iTaxiOrder->orderTaxiRate().car_in() + currentParkingCost;
-	ui.finalCarInLabel ->setText(QString("%1").arg(carInRate, 0, 'f', 1));
+	ui.finalCarInLabel->setText(QString("%1").arg(carInRate, 0, 'f', 1));
+	ui.finalCarInTotalLabel->setText(QString("%1").arg(carInRate, 0, 'f', 1));
 
 	// целевой регион
 	iTaxiOrder->setRegionId(taxiRegionList.regions().Get(ui.regionList->currentRow()).region_id());
@@ -529,7 +530,6 @@ void IndigoTaxi::showInfoDialog(QString message)
 	infoDialog->setProperty("_q_customDpiY", QVariant(_dpi));
 	infoDialog->setMinimumSize((int) _width * 0.8, (int) _height * 0.9);
 
-	voiceLady->sayPhrase("MESSAGERECEIVED");
 	infoDialog->info(message);
 	
 	delete infoDialog;
@@ -541,6 +541,8 @@ void IndigoTaxi::handleTextMessage(hello var)
 	
 	QString message = QString::fromUtf8(var.text_string().c_str());
 	addMessageHistory(message);
+	
+	voiceLady->sayPhrase("MESSAGERECEIVED");
 	showInfoDialog(message);
 #if 0
 	if (ui.stackedWidget->currentWidget() == ui.standByPage1) {
@@ -847,20 +849,29 @@ void IndigoTaxi::paytimeClick()
 	iTaxiOrder->stopOrder();
 	int payment = iTaxiOrder->calculateSum();
 
+	if (iTaxiOrder->getIsTalon()) {
+		ui.finalTalonLabel->setText("ПО ТАЛОНУ");
+	} else {
+		ui.finalTalonLabel->setText("");
+	}
+
 	ui.finalPaymentAmountLabel->setText(QString("%1р.").arg(payment));
 	
 	// километры
 	ui.finalMileageLabel->setText(QString("%1/%2")
 		.arg(iTaxiOrder->cityMileage(), 0, 'f', 1)
 		.arg(iTaxiOrder->outOfCityMileage(), 0, 'f', 1));
+	ui.finalMileageTotalLabel->setText(QString("%1").arg(iTaxiOrder->moneyCity() + iTaxiOrder->moneyMg()));
 
 	ui.finalOverloadLabel->setText(QString("%1/%2")
 		.arg(iTaxiOrder->cityMileageOverload(), 0, 'f', 1)
 		.arg(iTaxiOrder->outOfCityMileageOverload(), 0, 'f', 1));
+	ui.finalOverloadTotalLabel->setText(QString("%1").arg(iTaxiOrder->moneyCityOverload() + iTaxiOrder->moneyMgOverload()));
 	
 	ui.finalStopsTimeLabel->setText(QString("%1")
 		.arg(iTaxiOrder->minutesClientStops()));
 	ui.finalTotalTimeTravelledLabel->setText(QString("%1").arg(iTaxiOrder->minutesTotal()));
+	ui.finalStopsTotalLabel->setText(QString("%1").arg(iTaxiOrder->minutesClientStops() * iTaxiOrder->orderTaxiRate().client_stop()));
 
 	voiceLady->speakMoney(payment);
 	ui.stackedWidget->setCurrentWidget(ui.paytimePage3);
@@ -1017,14 +1028,18 @@ void IndigoTaxi::dinnerStartClicked()
 
 void IndigoTaxi::dinnerHandleAnswer(hello var) {
 	if (var.event() == hello_TaxiEvent_YES_GO_DINNER) {
-		
+				
+		voiceLady->sayPhrase("MESSAGERECEIVED");
 		if (confirmDialog->ask("Диспетчер отпускает Вас на обед. Подтвердите свой уход")) {
 			backend->sendEvent(hello_TaxiEvent_GO_DINNER);
 			setSettingsStatus("DINNER");
+			ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+			ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
 			ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageDinner2);
 		}
 	
-	} else if (var.event() == hello_TaxiEvent_NO_GO_DINNER) {
+	} else if (var.event() == hello_TaxiEvent_NO_GO_DINNER) {		
+		voiceLady->sayPhrase("MESSAGERECEIVED");
 		showInfoDialog("Диспетчер оставляет вас на линии");
 	}
 }
@@ -1278,6 +1293,13 @@ void IndigoTaxi::handleNewOrder(TaxiOrder taxiOrder)
 		//destroyCurrentOrder();
 
 		iTaxiOrder = createTaxiOrder(taxiOrder.order_id(), QString::fromUtf8(taxiOrder.address().c_str()));
+
+		// талон
+		if (taxiOrder.is_talon()) {
+			iTaxiOrder->setOrderTaxiRate(taxiOrder.talon_rate());
+			iTaxiOrder->setIsTalon(true);
+		}
+
 		voiceLady->alarm();
 
 		// ждём столько-то времени

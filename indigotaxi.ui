@@ -412,7 +412,7 @@ background:#1d1d1d;
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="standByPage1">
        <property name="sizePolicy">
@@ -1288,7 +1288,7 @@ background:#1d1d1d;
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_4" rowstretch="1,1,1,1,1,1" columnstretch="2,1,1,4">
+         <layout class="QGridLayout" name="gridLayout_4" rowstretch="1,1,1,1,1,1" columnstretch="2,1,1,1,4">
           <property name="leftMargin">
            <number>5</number>
           </property>
@@ -1313,7 +1313,7 @@ background:#1d1d1d;
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QLabel" name="label_19">
+           <widget class="QLabel" name="finalTalonLabel">
             <property name="text">
              <string/>
             </property>
@@ -1356,7 +1356,7 @@ background:#1d1d1d;
           <item row="2" column="1">
            <widget class="QLabel" name="finalCarInLabel">
             <property name="text">
-             <string>42.0</string>
+             <string>42</string>
             </property>
            </widget>
           </item>
@@ -1398,7 +1398,7 @@ background:#1d1d1d;
           <item row="0" column="2">
            <widget class="QLabel" name="label_23">
             <property name="text">
-             <string>КОЛ-ВО</string>
+             <string>ЕД</string>
             </property>
            </widget>
           </item>
@@ -1430,7 +1430,7 @@ background:#1d1d1d;
             </property>
            </widget>
           </item>
-          <item row="0" column="3" rowspan="6">
+          <item row="0" column="4" rowspan="6">
            <widget class="QLabel" name="finalPaymentAmountLabel">
             <property name="font">
              <font>
@@ -1449,6 +1449,41 @@ background:#1d1d1d;
             </property>
             <property name="margin">
              <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>ИТОГ</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QLabel" name="finalMileageTotalLabel">
+            <property name="text">
+             <string>555</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QLabel" name="finalOverloadTotalLabel">
+            <property name="text">
+             <string>666</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLabel" name="finalStopsTotalLabel">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLabel" name="finalCarInTotalLabel">
+            <property name="text">
+             <string>42</string>
             </property>
            </widget>
           </item>
@@ -1557,7 +1592,7 @@ background:#1d1d1d;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>

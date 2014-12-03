@@ -33,6 +33,9 @@ public:
 	void setOrderId(int order_id);
 	int calculateSum();
 	TaxiRatePeriod orderTaxiRate() { return taxiRate; }
+	void setIsTalon(bool talon) { _is_talon = talon; }
+	bool getIsTalon() { return _is_talon; }
+	void setOrderTaxiRate(TaxiRatePeriod _rate) { taxiRate = _rate; } 
 	double totalMileage();
 	
 	// километражи округляются до сотен метров
@@ -45,8 +48,10 @@ public:
 	int getCarIn() { return taxiRate.car_in(); }
 
 	double moneyCity();
+	double moneyCityOverload();
 
 	int moneyMg();
+	double moneyMgOverload();
 	
 	void setOverload(bool overload) { _overload = overload; }
 	void setClientStop(bool clientStop) { _clientStop = clientStop; }
@@ -108,6 +113,8 @@ public slots:
 private:	
 	// IMPORTANT ORDER VARIABLES (USED FOR MONEY COMPUATION)	
 	TaxiRatePeriod taxiRate;
+
+	bool _is_talon;
 
 	QString _address;
 	
