@@ -65,7 +65,14 @@ public:
 	// время округляется до минут
 	int minutesTraincrossStops() {return (seconds_traincross_stops + 30) / 60;}
 	int secondsTraincrossStops() { return seconds_traincross_stops; }
-	int minutesClientStops() {return (seconds_client_stops + 30) / 60;}
+	int minutesClientStops() {
+		// требование бригадира по поводу бесплатных секунд
+        int minutes = (seconds_client_stops + 30) / 60;
+        minutes -= 2; // 2 минуты из насчитанных остановок не идут в расчет
+        if (minutes < 0)
+            minutes = 0;
+        return minutes;
+	}
 	int secondsClientStops() { return seconds_client_stops; }
 	int minutesStops() { return (seconds_stops + 30) / 60; }
 	int secondsStops() { return seconds_stops; }
