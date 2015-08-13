@@ -12,7 +12,7 @@
 #include "voicelady.h"
 
 /* main version string! */
-static const char *version = "0.1.032";
+static const char *version = "0.1.035";
 int const IndigoTaxi::EXIT_CODE_REBOOT = -123456789;
 
 IndigoTaxi::IndigoTaxi(QWidget *parent, Qt::WFlags flags)
@@ -413,6 +413,11 @@ void IndigoTaxi::protobuf_message(hello message)
 {
 	if (message.event() == hello_TaxiEvent_YES_GO_DINNER || message.event() == hello_TaxiEvent_NO_GO_DINNER) {
 		dinnerHandleAnswer(message);
+		return;
+	}
+
+	if (message.event() == hello_TaxiEvent_YES_GO || message.event() == hello_TaxiEvent_NO_GO) {
+		mayGoHandleAnswer(message);
 		return;
 	}
 	
@@ -1044,6 +1049,24 @@ void IndigoTaxi::dinnerHandleAnswer(hello var) {
 	}
 }
 
+void IndigoTaxi::mayGoHandleAnswer(hello var)
+{
+    if (var.event() == hello_TaxiEvent_YES_GO) {
+        voiceLady->sayPhrase("MESSAGERECEIVED");
+        if (confirmDialog->ask("Диспетчер отпускает Вас отлучиться. Подтвердите свой уход")) {
+            backend->sendEvent(hello_TaxiEvent_MOVE_OUT);
+            setSettingsStatus("AWAY");
+            ui.stackedWidget->setCurrentWidget(ui.settingsPage4);
+            ui.settingsTabWidget->setCurrentWidget(ui.driverCabinetSettingsTab2);
+            ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageAway4);
+        }
+
+    } else if (var.event() == hello_TaxiEvent_NO_GO) {
+        voiceLady->sayPhrase("MESSAGERECEIVED");
+        showInfoDialog("Диспетчер оставляет вас на линии");
+    }
+}
+
 void IndigoTaxi::dinnerStopClicked()
 {
 	backend->sendEvent(hello_TaxiEvent_BACK_DINNER);
@@ -1071,9 +1094,8 @@ void IndigoTaxi::driverNameEdited(QString newValue)
 
 void IndigoTaxi::awayButtonClicked()
 {
-	backend->sendEvent(hello_TaxiEvent_MOVE_OUT);
-	setSettingsStatus("AWAY");
-	ui.driverCabinetSettingsStackWidget->setCurrentWidget(ui.driverCabinetPageAway4);
+	backend->sendEvent(hello_TaxiEvent_MAY_GO);
+    showInfoDialog("Диспетчеру отправлен вопрос о вашей просьбе отлучиться");
 }
 
 void IndigoTaxi::awayEndButtonClicked()
@@ -1442,6 +1464,15 @@ void IndigoTaxi::movementStart(int start)
 			ui.trainCrossButton->setChecked(false);
 			enableWidget(ui.trainCrossButton, true);
 		}
+
+		// если сейчас окно расчета, а мы поехали
+		if (ui.stackedWidget->currentWidget() == ui.paytimePage3) {
+			// переходим на страницу заказа
+			ui.stackedWidget->setCurrentWidget(ui.orderPage2);
+			// запускаем заново счет денег
+			iTaxiOrder->startOrder();
+		}
+	
 	} else { // if (movementStarted)
 		iTaxiOrder->setClientStop(true);
 	}
@@ -1682,7 +1713,7 @@ void IndigoTaxi::privateClientButtonClicked()
 
 void IndigoTaxi::infoClicked()
 {
-	infoDialog->info("ПРОГРАММА IndigoTaxi, версия " + QString(version) + ", 2014 год. Разработчик: ООО \"Системы Индиго\"");
+	infoDialog->info("ПРОГРАММА IndigoTaxi, версия " + QString(version) + ", 2014, 2015. Разработчик: ООО \"Системы Индиго\"");
 }
 
 void IndigoTaxi::updatesDownloadTipVersionString()

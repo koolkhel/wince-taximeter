@@ -135,6 +135,7 @@ public slots:
 
 	void dinnerStartClicked();
 	void dinnerHandleAnswer(hello var);
+	void mayGoHandleAnswer(hello var);
 	void dinnerStopClicked();
 
 	void driverNameEdited(QString newValue);

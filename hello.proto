@@ -54,7 +54,12 @@ message hello
     ORDER_OFFER = 38; // предлагаю заказ на такой-то адрес (от диспетчера)
     MAY_GO_DINNER = 39; // с девайса -- можно ли на обед?
     YES_GO_DINNER = 40; // да, иди
-    NO_GO_DINNER = 41; // нет, оставайся  
+    NO_GO_DINNER = 41; // нет, оставайся
+    DISCONNECT = 42; // девайс отвалился с линии, сообщение между коннектором и серваком только
+    SECURITY = 43; // сообщение безопасности  
+    MAY_GO = 44; // могу ли отлучиться?
+    YES_GO = 45; // да
+    NO_GO = 46;  // нет
 	}
 
 	optional TaxiEvent event = 3     [default = NOTHING];
@@ -72,6 +77,11 @@ message hello
   optional TaxiMessageTemplates taxiMessageTemplates = 13;
   optional TaxiCount taxiCount = 14;
   optional DriverInfo driverInfo = 15;
+  optional Security security = 16;
+}
+
+message Security {
+  optional string message = 1 [ default = "" ];
 }
 
 message DriverInfo {
@@ -160,6 +170,10 @@ message TaxiOrder {
   // при поездке по талону мы тариф нужный прицепляем прямо к заказу
   optional bool is_talon = 19 [ default = false ];
   optional TaxiRatePeriod talon_rate = 20;
+  
+  // десятая поездка, 15 минут -- отвяжемся от деталей, будем с сервера присылать только параметры.
+  optional bool free_ride_enabled = 21 [ default = false ];
+  optional int32 free_ride_time = 22 [ default = 0 ];
 }
 
 // MIN=60/TAL_IN=37/TAL_MIN=6.2/BONUS=5/MG=17;
